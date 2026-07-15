@@ -11,8 +11,8 @@ export type { OpenApiDocument } from "./types.js";
  * Crossplane, and Pulumi providers, the CLI, and the docs). Use it to generate
  * your own client, validate requests, or render API reference docs.
  *
- * The raw document is also shipped as `pgbeam-openapi/openapi.json` and
- * `pgbeam-openapi/openapi.yaml` for tools that consume a spec file directly.
+ * The raw document is also shipped as `@pgbeam/openapi/openapi.json` and
+ * `@pgbeam/openapi/openapi.yaml` for tools that consume a spec file directly.
  */
 export { openapiSpec, openapiVersion };
 

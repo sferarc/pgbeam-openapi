@@ -1,5 +1,5 @@
 {
-  "name": "pgbeam-openapi",
+  "name": "@pgbeam/openapi",
   "version": "0.2.0",
   "description": "Public OpenAPI specification for the PgBeam API — a globally distributed PostgreSQL proxy platform",
   "type": "module",

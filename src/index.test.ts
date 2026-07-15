@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import openapiDefault, { openapiSpec, openapiVersion } from "./index.js";
 
-describe("pgbeam-openapi mirror", () => {
+describe("@pgbeam/openapi mirror", () => {
   it("exports a valid OpenAPI 3.x document", () => {
     expect(openapiSpec.openapi).toMatch(/^3\./);
     expect(openapiSpec.info.title).toContain("PgBeam");
