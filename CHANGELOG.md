@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.2.1
+
+### Patch Changes
+
+- 9ce842e: Fix the mirror repository link in the README. It pointed at `sferarc/@pgbeam/openapi` (the npm scope path) instead of the GitHub repository `sferarc/pgbeam-openapi`.
+
 ## 0.2.0
 
 ### Minor Changes
