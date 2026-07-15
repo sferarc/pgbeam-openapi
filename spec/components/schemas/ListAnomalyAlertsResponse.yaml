@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of anomaly alerts for a project.
+required:
+  - anomalies
+properties:
+  anomalies:
+    type: array
+    description: Anomaly alerts on the current page.
+    items:
+      $ref: ./AnomalyAlert.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

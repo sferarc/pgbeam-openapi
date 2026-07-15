@@ -1,0 +1,74 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+get:
+  operationId: getDatabase
+  summary: Get a database
+  description: Returns a single database by ID.
+  tags:
+    - Databases
+  responses:
+    '200':
+      description: Database found.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Database.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+patch:
+  operationId: updateDatabase
+  summary: Update a database
+  description: Partially updates a database connection. Only provided fields are modified.
+  tags:
+    - Databases
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateDatabaseRequest.yaml
+  responses:
+    '200':
+      description: Database updated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Database.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+delete:
+  operationId: deleteDatabase
+  summary: Delete a database
+  description: Removes a database registration from the project.
+  tags:
+    - Databases
+  responses:
+    '204':
+      description: Database deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

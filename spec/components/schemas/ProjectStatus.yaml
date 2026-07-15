@@ -1,0 +1,6 @@
+type: string
+enum:
+  - active
+  - suspended
+  - deleted
+description: Project lifecycle status.

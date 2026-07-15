@@ -1,0 +1,73 @@
+post:
+  operationId: createProject
+  summary: Create a project
+  description: Creates a new project within the specified organization.
+  tags:
+    - Projects
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateProjectRequest.yaml
+  responses:
+    '201':
+      description: Project created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/CreateProjectResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listProjects
+  summary: List projects
+  description: Lists projects filtered by organization. Requires org_id query parameter.
+  tags:
+    - Projects
+  parameters:
+    - name: org_id
+      in: query
+      required: true
+      description: Organization ID to filter projects.
+      schema:
+        type: string
+        pattern: ^[\x20-\x7E]+$
+        example: org_abc123
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+    - name: sort_by
+      in: query
+      required: false
+      description: Sort field for projects list.
+      schema:
+        type: string
+        enum:
+          - name
+          - created_at
+          - active_connections
+        default: created_at
+        example: created_at
+  responses:
+    '200':
+      description: List of projects.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListProjectsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

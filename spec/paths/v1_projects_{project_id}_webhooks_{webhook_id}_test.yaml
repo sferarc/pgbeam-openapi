@@ -1,0 +1,25 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/WebhookId.yaml
+post:
+  operationId: testWebhookEndpoint
+  x-feature-flag: agent-gateway
+  summary: Send a test event
+  description: Enqueues a test event delivery to the webhook endpoint.
+  tags:
+    - Webhooks
+  responses:
+    '202':
+      description: Test delivery enqueued.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/WebhookTestResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

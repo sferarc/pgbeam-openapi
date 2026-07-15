@@ -1,0 +1,67 @@
+type: object
+description: Request body for registering an upstream database.
+required:
+  - host
+  - port
+  - name
+  - username
+  - password
+properties:
+  host:
+    type: string
+    minLength: 1
+    pattern: ^[^\s\x00]+$
+    description: PostgreSQL host.
+    example: db.example.com
+  port:
+    type: integer
+    minimum: 1
+    maximum: 65535
+    description: PostgreSQL port.
+    example: 5432
+  name:
+    type: string
+    minLength: 1
+    pattern: ^[^\x00]+$
+    description: PostgreSQL database name.
+    example: mydb
+  username:
+    type: string
+    minLength: 1
+    pattern: ^[^\x00]+$
+    description: PostgreSQL username.
+    example: pgbeam
+  password:
+    type: string
+    format: password
+    minLength: 1
+    pattern: ^[^\x00]+$
+    description: PostgreSQL password. Stored encrypted at rest.
+    writeOnly: true
+  ssl_mode:
+    $ref: ./SSLMode.yaml
+  role:
+    $ref: ./DatabaseRole.yaml
+  pool_region:
+    type: string
+    description: >
+      Region where the connection pool is maintained (near the database). When
+      set and different from the client's edge region, queries are relayed
+      through the pool region's data plane. Empty means direct connection.
+    example: us-east-1
+  query_timeout_ms:
+    type: integer
+    minimum: 0
+    maximum: 300000
+    default: 0
+    description: |
+      Query timeout in milliseconds. 0 means disabled (default).
+  auto_read_routing:
+    type: boolean
+    default: false
+    description: |
+      Auto-route SELECT queries to read replicas.
+  cache_config:
+    $ref: ./CacheConfig.yaml
+  pool_config:
+    $ref: ./PoolConfig.yaml

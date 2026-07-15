@@ -1,0 +1,51 @@
+type: object
+description: An ephemeral sandbox branch of a database used for write isolation.
+required:
+  - id
+  - database_id
+  - branch_name
+  - status
+  - created_at
+properties:
+  id:
+    type: string
+    description: Unique sandbox branch identifier (prefixed).
+    example: brn_01h455vb4pex5vsknk084sn02q
+  database_id:
+    type: string
+    description: Database this branch was created from.
+  credential_id:
+    type: string
+    nullable: true
+    description: Agent credential that requested the branch, if known.
+  session_id:
+    type: string
+    description: Identifier grouping a connection's statements.
+  branch_name:
+    type: string
+    description: Generated name for the branch.
+  status:
+    type: string
+    enum:
+      - pending
+      - ready
+      - error
+      - discarded
+    description: Provisioning state of the branch.
+  error:
+    type: string
+    description: Provisioning error, if any.
+  created_at:
+    type: string
+    format: date-time
+    description: When the branch was created.
+  expires_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the branch expires, if set.
+  discarded_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the branch was discarded, if any.

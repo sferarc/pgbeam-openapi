@@ -1,0 +1,31 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AnomalyId.yaml
+patch:
+  operationId: updateAnomalyAlert
+  x-feature-flag: agent-gateway
+  summary: Triage an anomaly alert
+  description: Updates the triage status of an anomaly alert (acknowledge or resolve).
+  tags:
+    - Anomalies
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateAnomalyAlertRequest.yaml
+  responses:
+    '200':
+      description: The updated anomaly alert.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnomalyAlert.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

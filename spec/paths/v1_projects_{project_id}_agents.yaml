@@ -1,0 +1,68 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createAgentCredential
+  x-feature-flag: agent-gateway
+  summary: Create an agent credential
+  description: >-
+    Issues a scoped Postgres login and hosted MCP token for an AI agent. The
+    connection string and MCP token are returned once and cannot be retrieved
+    again.
+  tags:
+    - Agents
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateAgentCredentialRequest.yaml
+  responses:
+    '201':
+      description: Agent credential created. Secrets shown once.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AgentCredentialSecrets.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      description: Agent credential quota reached for the organization plan.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listAgentCredentials
+  x-feature-flag: agent-gateway
+  summary: List agent credentials
+  description: Lists agent credentials for the project. Secrets are never returned.
+  tags:
+    - Agents
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of agent credentials.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListAgentCredentialsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

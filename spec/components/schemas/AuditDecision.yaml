@@ -1,0 +1,10 @@
+type: string
+description: >-
+  Coarse outcome filter that groups audit events. `allow` = query; `block` =
+  blocked, budget_exhausted, auth_failed, credential_expired; `mask` = masked;
+  `truncate` = truncated.
+enum:
+  - allow
+  - block
+  - mask
+  - truncate

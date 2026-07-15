@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of approval requests for a project.
+required:
+  - approvals
+properties:
+  approvals:
+    type: array
+    description: Approval requests on the current page.
+    items:
+      $ref: ./ApprovalRequest.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

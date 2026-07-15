@@ -1,0 +1,7 @@
+name: webhook_id
+in: path
+required: true
+description: Unique webhook endpoint identifier (prefixed, e.g. whk_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

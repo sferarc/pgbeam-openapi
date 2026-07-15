@@ -1,0 +1,45 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: listAuditLogs
+  x-feature-flag: agent-gateway
+  summary: List agent audit logs
+  description: >-
+    Returns agent statement audit entries for the project, newest first, with
+    optional credential, event, decision, source and date-range filters.
+  tags:
+    - Agents
+  parameters:
+    - $ref: ../components/parameters/AuditCredentialId.yaml
+    - $ref: ../components/parameters/AuditEvent.yaml
+    - $ref: ../components/parameters/AuditDecision.yaml
+    - $ref: ../components/parameters/AuditSource.yaml
+    - $ref: ../components/parameters/AuditStart.yaml
+    - $ref: ../components/parameters/AuditEnd.yaml
+    - name: before
+      in: query
+      required: false
+      description: >-
+        Return entries strictly older than this timestamp (keyset pagination
+        cursor).
+      schema:
+        type: string
+        format: date-time
+    - $ref: ../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: Page of audit entries.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListAuditLogsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,7 @@
+name: approval_id
+in: path
+required: true
+description: Unique approval request identifier (prefixed, e.g. apr_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

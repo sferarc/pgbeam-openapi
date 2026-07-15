@@ -1,0 +1,74 @@
+type: object
+description: One agent statement recorded by the gateway.
+required:
+  - id
+  - project_id
+  - event
+  - ts
+properties:
+  id:
+    type: string
+    description: Unique audit entry identifier.
+    example: aud_01h455vb4pex5vsknk084sn02q
+  project_id:
+    type: string
+    description: Owning project ID.
+  credential_id:
+    type: string
+    nullable: true
+    description: Agent credential that issued the statement, if known.
+  region:
+    type: string
+    description: Data plane region that served the statement.
+  event:
+    type: string
+    description: >-
+      Event type (query, blocked, masked, budget_exhausted, truncated,
+      auth_failed, credential_expired).
+  sql:
+    type: string
+    description: The statement text (truncated).
+  normalized_sql:
+    type: string
+    description: Statement with literals replaced by placeholders.
+  query_hash:
+    type: string
+    description: Hash of the normalized statement.
+  statement_kind:
+    type: string
+    description: Parsed statement kind.
+  decision_rule:
+    type: string
+    description: Machine-readable rule that produced a block, if any.
+  reason:
+    type: string
+    description: Human-readable explanation of the decision.
+  rows_returned:
+    type: integer
+    format: int64
+    description: Rows returned to the agent.
+  bytes_out:
+    type: integer
+    format: int64
+    description: Bytes sent to the agent.
+  latency_ms:
+    type: number
+    description: Statement latency in milliseconds.
+  cache_status:
+    type: string
+    description: Cache outcome for the statement.
+  client_ip:
+    type: string
+    description: Source IP of the agent connection.
+  session_id:
+    type: string
+    description: Identifier grouping a connection's statements.
+  source:
+    type: string
+    description: >-
+      Statement origin (wire, mcp, or control for control-plane lifecycle
+      events).
+  ts:
+    type: string
+    format: date-time
+    description: When the statement executed.

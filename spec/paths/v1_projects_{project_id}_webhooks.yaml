@@ -1,0 +1,59 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createWebhookEndpoint
+  x-feature-flag: agent-gateway
+  summary: Create a webhook endpoint
+  description: Creates a webhook endpoint that receives project event deliveries.
+  tags:
+    - Webhooks
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/WebhookEndpointInput.yaml
+  responses:
+    '201':
+      description: Webhook endpoint created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/WebhookEndpoint.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listWebhookEndpoints
+  x-feature-flag: agent-gateway
+  summary: List webhook endpoints
+  description: Lists webhook endpoints for the project.
+  tags:
+    - Webhooks
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of webhook endpoints.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListWebhookEndpointsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

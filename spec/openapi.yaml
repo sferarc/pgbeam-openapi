@@ -1,0 +1,324 @@
+openapi: 3.0.0
+info:
+  title: PgBeam Control Plane API
+  description: >
+    REST API for the PgBeam multi-tenant PostgreSQL proxy platform.
+
+    Manages projects, database connections, cache/pool configuration, and
+    regions.
+  version: 1.0.0
+  license:
+    name: Proprietary
+    url: https://pgbeam.com/terms
+  contact:
+    name: PgBeam
+    url: https://pgbeam.com
+servers:
+  - url: https://api.pgbeam.com
+    description: Production
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+tags:
+  - name: Projects
+    description: Project lifecycle, custom domains, read replicas, and cache rules
+    x-icon: FolderKanban
+  - name: Databases
+    description: Database connection management per project
+    x-icon: Database
+  - name: Policies
+    description: Policy profiles enforced on agent credentials
+    x-icon: ShieldCheck
+  - name: Agents
+    description: Scoped agent credentials for AI agent database access
+    x-icon: Bot
+  - name: Approvals
+    description: Human approval workflow for held agent statements
+    x-icon: CircleCheck
+  - name: Webhooks
+    description: Event delivery endpoints for project audit and anomaly events
+    x-icon: Webhook
+  - name: Anomalies
+    description: Anomalous-behavior alerts surfaced by the gateway
+    x-icon: TriangleAlert
+  - name: Branches
+    description: Ephemeral sandbox branches for write isolation
+    x-icon: GitBranch
+  - name: Migrations
+    description: Migration safety linting for schema changes
+    x-icon: FileCog
+  - name: Analytics
+    description: Usage metrics, billing data, and query insights
+    x-icon: ChartLine
+  - name: Platform
+    description: Regions and health checks
+    x-icon: Globe
+  - name: Account
+    description: Account data, privacy controls, and onboarding
+    x-icon: CircleUser
+  - name: Support
+    description: Support case management
+    x-icon: LifeBuoy
+  - name: Internal
+    description: Internal service-to-service endpoints
+  - name: MCP
+    description: Model Context Protocol (MCP) remote server endpoint
+    x-sdk-exclude:
+      - go
+      - ts
+paths:
+  /v1/account/export:
+    $ref: paths/v1_account_export.yaml
+  /v1/projects/{project_id}/agents:
+    $ref: paths/v1_projects_{project_id}_agents.yaml
+  /v1/projects/{project_id}/agents/{agent_id}:
+    $ref: paths/v1_projects_{project_id}_agents_{agent_id}.yaml
+  /v1/projects/{project_id}/agents/{agent_id}/rotate:
+    $ref: paths/v1_projects_{project_id}_agents_{agent_id}_rotate.yaml
+  /v1/projects/{project_id}/anomalies:
+    $ref: paths/v1_projects_{project_id}_anomalies.yaml
+  /v1/projects/{project_id}/anomalies/{anomaly_id}:
+    $ref: paths/v1_projects_{project_id}_anomalies_{anomaly_id}.yaml
+  /v1/projects/{project_id}/approvals:
+    $ref: paths/v1_projects_{project_id}_approvals.yaml
+  /v1/projects/{project_id}/approvals/{approval_id}/approve:
+    $ref: paths/v1_projects_{project_id}_approvals_{approval_id}_approve.yaml
+  /v1/projects/{project_id}/approvals/{approval_id}/reject:
+    $ref: paths/v1_projects_{project_id}_approvals_{approval_id}_reject.yaml
+  /v1/projects/{project_id}/audit-logs:
+    $ref: paths/v1_projects_{project_id}_audit-logs.yaml
+  /v1/projects/{project_id}/audit-logs/export:
+    $ref: paths/v1_projects_{project_id}_audit-logs_export.yaml
+  /v1/plans:
+    $ref: paths/v1_plans.yaml
+  /v1/organizations/{org_id}/plan:
+    $ref: paths/v1_organizations_{org_id}_plan.yaml
+  /v1/organizations/{org_id}/vercel-installation:
+    $ref: paths/v1_organizations_{org_id}_vercel-installation.yaml
+  /v1/organizations/{org_id}/spend-limit:
+    $ref: paths/v1_organizations_{org_id}_spend-limit.yaml
+  /v1/organizations/{org_id}/cancellation-feedback:
+    $ref: paths/v1_organizations_{org_id}_cancellation-feedback.yaml
+  /v1/projects/{project_id}/branches:
+    $ref: paths/v1_projects_{project_id}_branches.yaml
+  /v1/projects/{project_id}/branches/{branch_id}:
+    $ref: paths/v1_projects_{project_id}_branches_{branch_id}.yaml
+  /v1/projects/{project_id}/databases/{database_id}/cache-rules:
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}_cache-rules.yaml
+  /v1/projects/{project_id}/databases/{database_id}/cache-rules/{query_hash}:
+    $ref: >-
+      paths/v1_projects_{project_id}_databases_{database_id}_cache-rules_{query_hash}.yaml
+  /v1/projects/{project_id}/databases:
+    $ref: paths/v1_projects_{project_id}_databases.yaml
+  /v1/projects/{project_id}/databases/{database_id}:
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}.yaml
+  /v1/projects/{project_id}/databases/{database_id}/test-connection:
+    $ref: >-
+      paths/v1_projects_{project_id}_databases_{database_id}_test-connection.yaml
+  /v1/projects/{project_id}/databases/{database_id}/scan-pii:
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}_scan-pii.yaml
+  /v1/projects/{project_id}/databases/{database_id}/schema-catalog:
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}_schema-catalog.yaml
+  /v1/projects/{project_id}/domains:
+    $ref: paths/v1_projects_{project_id}_domains.yaml
+  /v1/projects/{project_id}/domains/{domain_id}:
+    $ref: paths/v1_projects_{project_id}_domains_{domain_id}.yaml
+  /v1/projects/{project_id}/domains/{domain_id}/verify:
+    $ref: paths/v1_projects_{project_id}_domains_{domain_id}_verify.yaml
+  /v1/health:
+    $ref: paths/v1_health.yaml
+  /v1/projects/{project_id}/insights:
+    $ref: paths/v1_projects_{project_id}_insights.yaml
+  /v1/mcp:
+    $ref: paths/v1_mcp.yaml
+  /v1/projects/{project_id}/migrations:lint:
+    $ref: paths/v1_projects_{project_id}_migrations:lint.yaml
+  /v1/organizations/{org_id}/onboarding:
+    $ref: paths/v1_organizations_{org_id}_onboarding.yaml
+  /v1/projects/{project_id}/policies:
+    $ref: paths/v1_projects_{project_id}_policies.yaml
+  /v1/projects/{project_id}/policies/{policy_id}:
+    $ref: paths/v1_projects_{project_id}_policies_{policy_id}.yaml
+  /v1/projects/{project_id}/policy-evaluations:
+    $ref: paths/v1_projects_{project_id}_policy-evaluations.yaml
+  /v1/projects:
+    $ref: paths/v1_projects.yaml
+  /v1/projects/{project_id}:
+    $ref: paths/v1_projects_{project_id}.yaml
+  /v1/projects/{project_id}/metrics:
+    $ref: paths/v1_projects_{project_id}_metrics.yaml
+  /v1/regions:
+    $ref: paths/v1_regions.yaml
+  /v1/databases/{database_id}/replicas:
+    $ref: paths/v1_databases_{database_id}_replicas.yaml
+  /v1/databases/{database_id}/replicas/{replica_id}:
+    $ref: paths/v1_databases_{database_id}_replicas_{replica_id}.yaml
+  /v1/organizations/{org_id}/support/cases:
+    $ref: paths/v1_organizations_{org_id}_support_cases.yaml
+  /v1/organizations/{org_id}/support/cases/{case_id}:
+    $ref: paths/v1_organizations_{org_id}_support_cases_{case_id}.yaml
+  /v1/organizations/{org_id}/support/cases/{case_id}/messages:
+    $ref: paths/v1_organizations_{org_id}_support_cases_{case_id}_messages.yaml
+  /v1/internal/support/slack-event:
+    $ref: paths/v1_internal_support_slack-event.yaml
+  /v1/organizations/{org_id}/usage:
+    $ref: paths/v1_organizations_{org_id}_usage.yaml
+  /v1/projects/{project_id}/usage:
+    $ref: paths/v1_projects_{project_id}_usage.yaml
+  /v1/projects/{project_id}/webhooks:
+    $ref: paths/v1_projects_{project_id}_webhooks.yaml
+  /v1/projects/{project_id}/webhooks/{webhook_id}:
+    $ref: paths/v1_projects_{project_id}_webhooks_{webhook_id}.yaml
+  /v1/projects/{project_id}/webhooks/{webhook_id}/test:
+    $ref: paths/v1_projects_{project_id}_webhooks_{webhook_id}_test.yaml
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT issued by Better Auth. Verified via JWKS.
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: APIKey
+      description: >-
+        API key issued via the dashboard. Pass it as `Authorization: Bearer
+        <api-key>`.
+    InternalSecret:
+      type: apiKey
+      in: header
+      name: X-Internal-Secret
+      description: Shared secret for dashboard-to-API service calls.
+x-iac-resources:
+  Project:
+    description: Manages a PgBeam project with a primary database.
+    operations:
+      create: createProject
+      read: getProject
+      update: updateProject
+      delete: deleteProject
+      list: listProjects
+    connection-details:
+      - proxy_host
+    extra-outputs:
+      primary_database_id:
+        path: database.id
+        description: ID of the primary database created with this project.
+    adoption:
+      match-fields:
+        - name
+      list-query-params:
+        org_id: org_id
+        page_size: 100
+  Database:
+    description: Manages an upstream database connection within a PgBeam project.
+    operations:
+      create: createDatabase
+      read: getDatabase
+      update: updateDatabase
+      delete: deleteDatabase
+      list: listDatabases
+    connection-details:
+      - connection_string
+  Replica:
+    description: Manages a read replica for a PgBeam database.
+    operations:
+      create: createReplica
+      delete: deleteReplica
+      list: listReplicas
+  CustomDomain:
+    description: Manages a custom domain for a PgBeam project.
+    operations:
+      create: createCustomDomain
+      delete: deleteCustomDomain
+      list: listCustomDomains
+      verify: verifyCustomDomain
+    connection-details:
+      - dns_verification_token
+  CacheRule:
+    description: Manages a per-query cache rule. Deletion disables caching (soft-delete).
+    id-field: query_hash
+    operations:
+      upsert: updateCacheRule
+      list: listCacheRules
+    soft-delete:
+      cache_enabled: false
+  SpendLimit:
+    description: Manages the monthly spend limit for an organization.
+    id-field: org_id
+    operations:
+      upsert: updateSpendLimit
+      read: getOrganizationPlan
+    soft-delete:
+      spend_limit: null
+  AgentCredential:
+    description: >-
+      Manages a scoped agent credential (a PgBeam-issued Postgres login plus a
+      hosted MCP token) for an AI agent. The connection string and MCP token are
+      one-time secrets returned only at creation and exposed as sensitive
+      computed outputs; they cannot be retrieved again. To rotate the secrets,
+      taint/replace the resource (or use the rotate endpoint out of band).
+    operations:
+      create: createAgentCredential
+      read: getAgentCredential
+      update: updateAgentCredentialStatus
+      delete: revokeAgentCredential
+      list: listAgentCredentials
+    extra-outputs:
+      connection_string:
+        path: connection_string
+        description: >-
+          One-time guarded Postgres connection string for this agent credential
+          (shown once).
+        sensitive: true
+      mcp_url:
+        path: mcp_url
+        description: >-
+          Hosted agent-database MCP endpoint for this project. Use with the
+          mcp_token as a bearer token.
+      mcp_token:
+        path: mcp_token
+        description: One-time bearer token for the hosted MCP endpoint (shown once).
+        sensitive: true
+    adoption:
+      match-fields:
+        - name
+      list-query-params:
+        page_size: 100
+  PolicyProfile:
+    description: >-
+      Manages a policy profile: a named bundle of agent-gateway enforcement
+      rules (access mode, table allow/deny lists, statement-kind rules, PII
+      masking rules, per-relation row filters, query/egress budgets, write mode,
+      approvals, and migration safety) attached to agent credentials and
+      enforced in the PG wire protocol. Nested-list fields (masking_rules,
+      row_filters) and the nested statement_rules object are expressed as
+      structured config.
+    operations:
+      create: createPolicyProfile
+      read: getPolicyProfile
+      update: updatePolicyProfile
+      delete: deletePolicyProfile
+      list: listPolicyProfiles
+    adoption:
+      match-fields:
+        - name
+      list-query-params:
+        page_size: 100
+  WebhookEndpoint:
+    description: >-
+      Manages a webhook endpoint that receives project audit and anomaly event
+      deliveries. The signing secret is write-only and never returned by the
+      API.
+    operations:
+      create: createWebhookEndpoint
+      read: getWebhookEndpoint
+      update: updateWebhookEndpoint
+      delete: deleteWebhookEndpoint
+      list: listWebhookEndpoints
+    adoption:
+      match-fields:
+        - url
+      list-query-params:
+        page_size: 100

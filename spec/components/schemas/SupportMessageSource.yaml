@@ -1,0 +1,5 @@
+type: string
+enum:
+  - user
+  - slack
+description: Origin of the message.

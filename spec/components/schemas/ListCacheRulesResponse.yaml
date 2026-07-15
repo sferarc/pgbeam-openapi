@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated cache-rule entries for a database.
+required:
+  - entries
+properties:
+  entries:
+    type: array
+    description: Query shapes returned for the current page.
+    items:
+      $ref: ./CacheRuleEntry.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

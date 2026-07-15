@@ -1,0 +1,6 @@
+type: string
+description: Statement origin (wire, mcp, or control).
+enum:
+  - wire
+  - mcp
+  - control

@@ -1,0 +1,17 @@
+type: object
+description: One result column that would be masked, with the mask kind applied.
+required:
+  - column
+  - kind
+properties:
+  column:
+    type: string
+    description: The output column name (post-alias) the client would see masked.
+    example: email
+  kind:
+    type: string
+    enum:
+      - redact
+      - 'null'
+      - hash
+    description: How the column is masked.

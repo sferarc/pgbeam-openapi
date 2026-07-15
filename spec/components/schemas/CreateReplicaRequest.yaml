@@ -1,0 +1,20 @@
+type: object
+description: Request body for adding a read replica to a database.
+required:
+  - host
+  - port
+properties:
+  host:
+    type: string
+    minLength: 1
+    pattern: ^[^\s\x00]+$
+    description: PostgreSQL replica host.
+    example: replica.us-west-2.rds.amazonaws.com
+  port:
+    type: integer
+    minimum: 1
+    maximum: 65535
+    description: PostgreSQL replica port.
+    example: 5432
+  ssl_mode:
+    $ref: ./SSLMode.yaml

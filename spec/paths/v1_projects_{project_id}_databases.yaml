@@ -1,0 +1,57 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createDatabase
+  summary: Add a database
+  description: Registers a new upstream PostgreSQL database for the project.
+  tags:
+    - Databases
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateDatabaseRequest.yaml
+  responses:
+    '201':
+      description: Database created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Database.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listDatabases
+  summary: List databases
+  description: Lists all databases registered for the project.
+  tags:
+    - Databases
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of databases.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListDatabasesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

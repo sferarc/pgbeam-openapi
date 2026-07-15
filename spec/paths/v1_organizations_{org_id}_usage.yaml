@@ -1,0 +1,42 @@
+get:
+  operationId: getOrganizationUsage
+  summary: Get organization usage
+  description: Returns daily usage data aggregated across all projects in the organization.
+  tags:
+    - Analytics
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/OrgId.yaml
+    - name: start_date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+        example: '2024-01-01'
+      description: Start date (inclusive, YYYY-MM-DD).
+    - name: end_date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+        example: '2024-01-31'
+      description: End date (inclusive, YYYY-MM-DD).
+  responses:
+    '200':
+      description: Daily usage data.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UsageResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

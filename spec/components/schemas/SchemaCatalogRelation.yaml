@@ -1,0 +1,33 @@
+type: object
+description: One relation (base table or view) in the schema catalog.
+required:
+  - schema
+  - name
+  - kind
+  - columns
+properties:
+  schema:
+    type: string
+    description: Schema the relation belongs to.
+    example: public
+  name:
+    type: string
+    description: Relation name.
+    example: users
+  kind:
+    type: string
+    enum:
+      - table
+      - view
+      - materialized_view
+      - other
+    description: >-
+      Relation kind. Allowlists, masking, and row-filters are enforced against
+      the named relation itself, NOT through a view to its base tables — so a
+      view over a row-filtered base table can leak. The editor warns when a
+      policy entry targets a view.
+  columns:
+    type: array
+    description: The relation's columns.
+    items:
+      $ref: ./SchemaCatalogColumn.yaml

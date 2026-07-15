@@ -1,0 +1,33 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/ApprovalId.yaml
+post:
+  operationId: approveApprovalRequest
+  x-feature-flag: agent-gateway
+  summary: Approve a held statement
+  description: Approves a pending approval request, releasing the held statement.
+  tags:
+    - Approvals
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ApprovalDecisionRequest.yaml
+  responses:
+    '200':
+      description: The updated approval request.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ApprovalRequest.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml

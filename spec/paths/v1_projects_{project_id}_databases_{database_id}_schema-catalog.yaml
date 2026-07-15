@@ -1,0 +1,33 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+get:
+  operationId: getSchemaCatalog
+  x-feature-flag: agent-gateway
+  summary: Read a database's schema catalog
+  description: >-
+    Connects to the upstream database read-only and returns its user relations
+    (tables and views) and columns. Powers table/column autocomplete and
+    view-aware warnings in the policy editor — relation kind distinguishes a
+    view (whose masking/row-filters apply to the view itself, not its base
+    tables) from a base table, and a per-column is_binary flag flags columns
+    that mask to NULL. System schemas are excluded; nothing is persisted.
+  tags:
+    - Databases
+  responses:
+    '200':
+      description: Schema catalog.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SchemaCatalog.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

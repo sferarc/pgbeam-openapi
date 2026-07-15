@@ -1,0 +1,41 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: listAnomalyAlerts
+  x-feature-flag: agent-gateway
+  summary: List anomaly alerts
+  description: >-
+    Lists anomaly alerts for the project, newest first, optionally filtered by
+    status.
+  tags:
+    - Anomalies
+  parameters:
+    - name: status
+      in: query
+      required: false
+      description: Filter to a single status.
+      schema:
+        type: string
+        enum:
+          - open
+          - acknowledged
+          - resolved
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: Page of anomaly alerts.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListAnomalyAlertsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,71 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AgentId.yaml
+get:
+  operationId: getAgentCredential
+  x-feature-flag: agent-gateway
+  summary: Get an agent credential
+  description: Returns a single agent credential. Secrets are never included.
+  tags:
+    - Agents
+  responses:
+    '200':
+      description: The agent credential (no secrets).
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AgentCredential.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+patch:
+  operationId: updateAgentCredentialStatus
+  x-feature-flag: agent-gateway
+  summary: Enable or disable an agent credential
+  description: Toggles the kill-switch. Disabling drops live connections within seconds.
+  tags:
+    - Agents
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateAgentCredentialStatusRequest.yaml
+  responses:
+    '200':
+      description: Updated agent credential.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AgentCredential.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+delete:
+  operationId: revokeAgentCredential
+  x-feature-flag: agent-gateway
+  summary: Revoke an agent credential
+  description: Permanently revokes the credential and drops any live connections.
+  tags:
+    - Agents
+  responses:
+    '204':
+      description: Agent credential revoked.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

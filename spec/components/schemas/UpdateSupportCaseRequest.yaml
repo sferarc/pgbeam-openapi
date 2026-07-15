@@ -1,0 +1,5 @@
+type: object
+description: Request body for updating a support case status.
+properties:
+  status:
+    $ref: ./SupportCaseStatus.yaml

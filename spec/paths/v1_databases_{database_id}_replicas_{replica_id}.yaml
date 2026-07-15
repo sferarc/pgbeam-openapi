@@ -1,0 +1,22 @@
+parameters:
+  - $ref: ../components/parameters/DatabaseId.yaml
+  - $ref: ../components/parameters/ReplicaId.yaml
+delete:
+  operationId: deleteReplica
+  summary: Delete a replica
+  description: Removes a read replica from a database.
+  tags:
+    - Projects
+  responses:
+    '204':
+      description: Replica deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

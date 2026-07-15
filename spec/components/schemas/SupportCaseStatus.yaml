@@ -1,0 +1,5 @@
+type: string
+enum:
+  - open
+  - closed
+description: Current status of the support case.

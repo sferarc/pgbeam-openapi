@@ -1,0 +1,23 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DomainId.yaml
+delete:
+  operationId: deleteCustomDomain
+  x-feature-flag: custom-domains
+  summary: Delete a custom domain
+  description: Removes a custom domain from the project and revokes its TLS certificate.
+  tags:
+    - Projects
+  responses:
+    '204':
+      description: Custom domain deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

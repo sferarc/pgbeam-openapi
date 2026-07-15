@@ -1,0 +1,56 @@
+type: object
+description: Request body for partially updating an upstream database.
+properties:
+  host:
+    type: string
+    minLength: 1
+    pattern: ^[^\x00]+$
+    description: Updated PostgreSQL host.
+    example: db.example.com
+  port:
+    type: integer
+    minimum: 1
+    maximum: 65535
+    description: Updated PostgreSQL port.
+    example: 5432
+  name:
+    type: string
+    pattern: ^[^\x00]*$
+    description: Updated PostgreSQL database name.
+    example: mydb
+  username:
+    type: string
+    pattern: ^[^\x00]*$
+    description: Updated PostgreSQL username.
+    example: pgbeam
+  password:
+    type: string
+    format: password
+    pattern: ^[^\x00]*$
+    description: Updated PostgreSQL password.
+    writeOnly: true
+  ssl_mode:
+    $ref: ./SSLMode.yaml
+  role:
+    $ref: ./DatabaseRole.yaml
+  pool_region:
+    type: string
+    description: >
+      Region where the connection pool is maintained (near the database). When
+      set and different from the client's edge region, queries are relayed
+      through the pool region's data plane. Empty means direct connection.
+    example: us-east-1
+  query_timeout_ms:
+    type: integer
+    minimum: 0
+    maximum: 300000
+    description: |
+      Query timeout in milliseconds. 0 means disabled.
+  auto_read_routing:
+    type: boolean
+    description: |
+      Auto-route SELECT queries to read replicas.
+  cache_config:
+    $ref: ./CacheConfig.yaml
+  pool_config:
+    $ref: ./PoolConfig.yaml

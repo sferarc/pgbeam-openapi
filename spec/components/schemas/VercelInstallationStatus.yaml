@@ -1,0 +1,32 @@
+type: object
+description: >-
+  Vercel Marketplace installation status for an organization, including its
+  resources.
+required:
+  - installation_id
+  - vercel_account_id
+  - plan
+  - status
+  - resources
+properties:
+  installation_id:
+    type: string
+    description: Vercel installation (integration configuration) identifier.
+  vercel_account_id:
+    type: string
+    description: Vercel account/team identifier that owns the installation.
+  plan:
+    type: string
+    description: Current plan tier for the organization.
+  status:
+    type: string
+    description: Installation status (active).
+  created_at:
+    type: string
+    format: date-time
+    description: When the installation was created.
+  resources:
+    type: array
+    description: Resources (projects) provisioned under this installation.
+    items:
+      $ref: ./VercelResourceStatus.yaml

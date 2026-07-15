@@ -1,0 +1,10 @@
+type: object
+description: Response envelope for available region queries.
+required:
+  - regions
+properties:
+  regions:
+    type: array
+    description: Regions currently known to the control plane.
+    items:
+      $ref: ./Region.yaml

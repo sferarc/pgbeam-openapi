@@ -1,0 +1,40 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: listDatabaseBranches
+  x-feature-flag: agent-gateway
+  summary: List sandbox branches
+  description: Lists ephemeral sandbox branches for the project's databases.
+  tags:
+    - Branches
+  parameters:
+    - name: status
+      in: query
+      required: false
+      description: Filter to a single status.
+      schema:
+        type: string
+        enum:
+          - pending
+          - ready
+          - error
+          - discarded
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: Page of sandbox branches.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListDatabaseBranchesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

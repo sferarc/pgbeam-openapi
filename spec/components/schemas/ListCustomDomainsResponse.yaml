@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of custom domains for a project.
+required:
+  - domains
+properties:
+  domains:
+    type: array
+    description: Custom domains on the current page.
+    items:
+      $ref: ./CustomDomain.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

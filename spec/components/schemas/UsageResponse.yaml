@@ -1,0 +1,10 @@
+type: object
+description: Response envelope for organization usage queries.
+required:
+  - usage
+properties:
+  usage:
+    type: array
+    description: Daily usage entries aggregated across the organization.
+    items:
+      $ref: ./DailyUsage.yaml

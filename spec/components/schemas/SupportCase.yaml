@@ -1,0 +1,61 @@
+type: object
+description: A support case filed by an organization member.
+required:
+  - id
+  - case_number
+  - org_id
+  - user_id
+  - title
+  - severity
+  - status
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique support case identifier (prefixed).
+    example: sc_01h455vb4pex5vsknk084sn02q
+  case_number:
+    type: integer
+    description: Human-readable sequential case number.
+    readOnly: true
+  org_id:
+    type: string
+    description: Organization that owns this case.
+  user_id:
+    type: string
+    description: User who created the case.
+  title:
+    type: string
+    description: Brief summary of the issue.
+  severity:
+    type: integer
+    minimum: 1
+    maximum: 4
+    description: 'Severity level: 1=Critical, 2=High, 3=Normal, 4=Low.'
+  status:
+    $ref: ./SupportCaseStatus.yaml
+  slack_channel_id:
+    type: string
+    description: Slack channel where the case thread lives.
+  slack_thread_ts:
+    type: string
+    description: Slack thread timestamp for the case.
+  created_at:
+    type: string
+    format: date-time
+    description: When the case was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the case was last updated.
+  closed_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the case was closed, if applicable.
+  message_count:
+    type: integer
+    format: int64
+    description: Number of messages in the case.
+    readOnly: true

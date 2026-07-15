@@ -1,0 +1,30 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/SupportCaseId.yaml
+post:
+  operationId: createSupportMessage
+  summary: Add a message to a support case
+  description: Adds a new message to an existing support case thread.
+  tags:
+    - Support
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateSupportMessageRequest.yaml
+  responses:
+    '201':
+      description: Message created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SupportMessage.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

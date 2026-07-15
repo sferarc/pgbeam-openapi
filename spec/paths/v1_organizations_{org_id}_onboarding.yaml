@@ -1,0 +1,54 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+get:
+  operationId: getOnboardingProgress
+  summary: Get onboarding progress
+  description: Returns the onboarding checklist progress for an organization.
+  tags:
+    - Account
+  responses:
+    '200':
+      description: Onboarding progress.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OnboardingProgress.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+patch:
+  operationId: updateOnboardingProgress
+  summary: Update onboarding progress
+  description: Mark an onboarding step as complete or dismiss the checklist.
+  tags:
+    - Account
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateOnboardingRequest.yaml
+  responses:
+    '200':
+      description: Updated onboarding progress.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OnboardingProgress.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

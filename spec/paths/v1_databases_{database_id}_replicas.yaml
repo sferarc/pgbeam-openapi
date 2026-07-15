@@ -1,0 +1,54 @@
+parameters:
+  - $ref: ../components/parameters/DatabaseId.yaml
+get:
+  operationId: listReplicas
+  summary: List replicas
+  description: Lists all read replicas for a database.
+  tags:
+    - Projects
+  responses:
+    '200':
+      description: List of replicas.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListReplicasResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+post:
+  operationId: createReplica
+  summary: Add a replica
+  description: Adds a read replica to a database.
+  tags:
+    - Projects
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateReplicaRequest.yaml
+  responses:
+    '201':
+      description: Replica created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Replica.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

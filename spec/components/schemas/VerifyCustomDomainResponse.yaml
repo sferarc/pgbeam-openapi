@@ -1,0 +1,13 @@
+type: object
+description: Result of checking DNS ownership for a custom domain.
+required:
+  - verified
+properties:
+  verified:
+    type: boolean
+    description: Whether DNS verification succeeded.
+  error:
+    type: string
+    description: Error message if verification failed.
+  domain:
+    $ref: ./CustomDomain.yaml

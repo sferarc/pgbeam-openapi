@@ -1,0 +1,79 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/PolicyId.yaml
+get:
+  operationId: getPolicyProfile
+  x-feature-flag: agent-gateway
+  summary: Get a policy profile
+  description: Returns a single policy profile by ID.
+  tags:
+    - Policies
+  responses:
+    '200':
+      description: The policy profile.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyProfile.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+put:
+  operationId: updatePolicyProfile
+  x-feature-flag: agent-gateway
+  summary: Update a policy profile
+  description: Updates a policy profile. Changes hot-reload to active agent sessions.
+  tags:
+    - Policies
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PolicyProfileInput.yaml
+  responses:
+    '200':
+      description: Updated policy profile.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyProfile.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+delete:
+  operationId: deletePolicyProfile
+  x-feature-flag: agent-gateway
+  summary: Delete a policy profile
+  description: Deletes a policy profile. Fails if agent credentials still reference it.
+  tags:
+    - Policies
+  responses:
+    '204':
+      description: Policy profile deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      description: Policy profile is still referenced by agent credentials.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml

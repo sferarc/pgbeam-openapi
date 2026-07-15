@@ -1,0 +1,16 @@
+type: object
+description: Query insights, cache performance, and latency for a project.
+required:
+  - queries
+  - cache
+  - latency
+properties:
+  queries:
+    type: array
+    description: Top query shapes observed for the project.
+    items:
+      $ref: ./QueryInsight.yaml
+  cache:
+    $ref: ./CacheSummary.yaml
+  latency:
+    $ref: ./LatencySummary.yaml

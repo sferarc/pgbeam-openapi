@@ -1,0 +1,16 @@
+type: object
+description: >-
+  A per-relation row filter. The predicate is a raw SQL boolean expression ANDed
+  into the WHERE clause for the matching relation.
+required:
+  - table
+  - predicate
+properties:
+  table:
+    type: string
+    description: Relation name, optionally schema-qualified (e.g. "public.orders").
+    example: orders
+  predicate:
+    type: string
+    description: Raw SQL boolean expression ANDed into WHERE for this relation.
+    example: tenant_id = current_setting('pgbeam.tenant')

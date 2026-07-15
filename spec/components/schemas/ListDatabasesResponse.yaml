@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of databases attached to a project.
+required:
+  - databases
+properties:
+  databases:
+    type: array
+    description: Databases on the current page.
+    items:
+      $ref: ./Database.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

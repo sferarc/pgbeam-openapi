@@ -1,0 +1,115 @@
+type: object
+description: Mutable fields of a policy profile (used for create and update).
+required:
+  - name
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 128
+    description: Human-readable name for the policy profile.
+  access_mode:
+    type: string
+    enum:
+      - read_only
+      - read_write
+    default: read_only
+    description: read_only blocks all data and schema mutations.
+  statement_rules:
+    $ref: ./StatementRules.yaml
+  table_allowlist:
+    type: array
+    description: If non-empty, only these relations are reachable.
+    items:
+      type: string
+      description: A relation name.
+  table_denylist:
+    type: array
+    description: Relations explicitly blocked.
+    items:
+      type: string
+      description: A relation name.
+  masking_rules:
+    type: array
+    description: Column masking rules applied to query results.
+    items:
+      $ref: ./MaskingRule.yaml
+  budget_queries_per_hour:
+    type: integer
+    minimum: 0
+    default: 0
+    description: Max queries per rolling hour window. 0 means unlimited.
+  budget_queries_per_day:
+    type: integer
+    minimum: 0
+    default: 0
+    description: Max queries per day window. 0 means unlimited.
+  max_rows:
+    type: integer
+    minimum: 0
+    default: 0
+    description: Max rows returned per query. 0 means unlimited.
+  statement_timeout_ms:
+    type: integer
+    minimum: 0
+    default: 0
+    description: Upstream statement timeout for agent sessions. 0 uses the project default.
+  row_filters:
+    type: array
+    description: Per-relation row filters ANDed into agent reads.
+    items:
+      $ref: ./RowFilter.yaml
+  write_mode:
+    type: string
+    enum:
+      - normal
+      - rollback
+      - sandbox
+    default: normal
+    description: >-
+      How writes are handled. normal commits, rollback auto-rolls back, sandbox
+      routes to an ephemeral branch.
+  approval_mode:
+    type: string
+    enum:
+      - 'off'
+      - writes
+      - ddl
+      - all
+    default: 'off'
+    description: Which statement classes require human approval before execution.
+  approval_auto_max_rows:
+    type: integer
+    minimum: 0
+    default: 0
+    description: >-
+      Statements touching at most this many rows are auto-approved. 0 means
+      none.
+  approval_timeout_seconds:
+    type: integer
+    minimum: 0
+    default: 300
+    description: How long a held statement waits for a decision before expiring.
+  migration_safety:
+    type: string
+    enum:
+      - 'off'
+      - warn
+      - block
+    default: 'off'
+    description: Migration safety mode. warn surfaces findings, block refuses unsafe DDL.
+  egress_bytes_per_day:
+    type: integer
+    format: int64
+    minimum: 0
+    default: 0
+    description: Per-day egress budget in bytes. 0 means unlimited.
+  max_affected_rows:
+    type: integer
+    minimum: 0
+    default: 0
+    description: >-
+      Hard cap on rows a single write (INSERT/UPDATE/DELETE) may affect. A write
+      whose affected-row count would exceed this is executed inside a
+      transaction, checked, and rolled back so nothing persists, then blocked.
+      Enforced independently of human approval. 0 means unlimited.

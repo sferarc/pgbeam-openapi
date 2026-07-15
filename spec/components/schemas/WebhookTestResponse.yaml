@@ -1,0 +1,18 @@
+type: object
+description: Result of sending a synthetic test event to a webhook endpoint.
+required:
+  - delivery_id
+  - status
+properties:
+  delivery_id:
+    type: string
+    description: Identifier of the test delivery.
+  status:
+    type: string
+    description: Outcome of the test delivery (delivered or failed).
+  status_code:
+    type: integer
+    description: HTTP status code returned by the endpoint, if a response was received.
+  error:
+    type: string
+    description: Error detail when the test delivery failed.

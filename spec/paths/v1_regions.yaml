@@ -1,0 +1,17 @@
+get:
+  operationId: listRegions
+  summary: List available regions
+  description: Returns all active data plane regions.
+  tags:
+    - Platform
+  responses:
+    '200':
+      description: List of regions.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListRegionsResponse.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

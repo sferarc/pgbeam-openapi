@@ -1,0 +1,42 @@
+get:
+  operationId: getProjectMetrics
+  summary: Get project metrics
+  description: Returns recent project metrics snapshots, optionally filtered by region.
+  tags:
+    - Projects
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/ProjectId.yaml
+    - name: limit
+      in: query
+      required: false
+      description: Maximum number of recent snapshots to return.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 60
+    - name: region
+      in: query
+      required: false
+      description: Filter metrics by region code.
+      schema:
+        type: string
+        example: us-east-1
+  responses:
+    '200':
+      description: Metrics snapshots
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ProjectMetricsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

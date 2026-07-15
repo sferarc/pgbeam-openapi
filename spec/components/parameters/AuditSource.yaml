@@ -1,0 +1,6 @@
+name: source
+in: query
+required: false
+description: Filter by statement origin (wire, mcp, or control).
+schema:
+  $ref: ../schemas/AuditSource.yaml

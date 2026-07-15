@@ -1,0 +1,15 @@
+type: object
+description: Paginated list of support cases.
+required:
+  - cases
+  - total
+properties:
+  cases:
+    type: array
+    description: Support cases for the current page.
+    items:
+      $ref: ./SupportCase.yaml
+  total:
+    type: integer
+    format: int64
+    description: Total number of cases matching the filter.

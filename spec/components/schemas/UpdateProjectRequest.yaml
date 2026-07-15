@@ -1,0 +1,55 @@
+type: object
+description: Request body for partially updating a project.
+properties:
+  name:
+    type: string
+    description: Updated project name.
+    minLength: 1
+    maxLength: 100
+    pattern: ^[^\x00]*$
+    example: my-app
+  description:
+    type: string
+    description: Updated project description.
+    maxLength: 500
+    example: Production database proxy
+  tags:
+    type: array
+    description: Replacement set of user-defined project labels.
+    maxItems: 10
+    example:
+      - production
+      - us-east-1
+    items:
+      type: string
+      maxLength: 50
+  status:
+    $ref: ./ProjectStatus.yaml
+  allowed_cidrs:
+    type: array
+    description: >
+      IP filtering rules as CIDR ranges with optional labels. Empty array means
+      allow all. Both IPv4 and IPv6 CIDR notation are supported.
+    example:
+      - cidr: 10.0.0.0/8
+        label: VPC
+      - cidr: 203.0.113.5/32
+        label: Office
+    items:
+      $ref: ./CidrEntry.yaml
+    maxItems: 50
+  default_policy_profile_id:
+    type: string
+    nullable: true
+    description: >
+      When set, passthrough/human connections are enforced against this policy
+      profile. Send an empty string to clear.
+    example: pol_01h455vb4pex5vsknk084sn02q
+  agents_disabled:
+    type: boolean
+    description: >
+      Project-level kill-switch. Set true to block ALL agent-credential
+      connections to this project (live agent sessions are dropped within
+      seconds); set false to re-enable them. Passthrough/human connections are
+      unaffected. Engaging the kill-switch emits a kill_switch webhook event.
+    example: true

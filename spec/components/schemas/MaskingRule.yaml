@@ -1,0 +1,26 @@
+type: object
+description: A column masking rule applied to agent query results.
+required:
+  - table
+  - column
+  - kind
+properties:
+  table:
+    type: string
+    description: >-
+      Relation name, optionally schema-qualified (e.g. "public.users" or
+      "users").
+    example: users
+  column:
+    type: string
+    description: Column to mask.
+    example: email
+  kind:
+    type: string
+    enum:
+      - redact
+      - 'null'
+      - hash
+    description: >-
+      How to mask. redact replaces with a token, null returns NULL, hash returns
+      a SHA-256 hex.

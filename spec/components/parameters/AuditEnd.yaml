@@ -1,0 +1,7 @@
+name: end
+in: query
+required: false
+description: Return entries strictly older than this timestamp (cursor / upper bound).
+schema:
+  type: string
+  format: date-time

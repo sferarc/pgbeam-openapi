@@ -1,0 +1,7 @@
+name: anomaly_id
+in: path
+required: true
+description: Unique anomaly alert identifier (prefixed, e.g. ano_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

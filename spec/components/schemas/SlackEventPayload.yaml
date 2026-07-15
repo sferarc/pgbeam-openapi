@@ -1,0 +1,20 @@
+type: object
+description: Slack event forwarded from the dashboard webhook handler.
+required:
+  - channel_id
+  - thread_ts
+  - user_id
+  - text
+properties:
+  channel_id:
+    type: string
+    description: Slack channel ID where the message was posted.
+  thread_ts:
+    type: string
+    description: Slack thread timestamp identifying the support case thread.
+  user_id:
+    type: string
+    description: Slack user ID of the message author.
+  text:
+    type: string
+    description: Message text from Slack.

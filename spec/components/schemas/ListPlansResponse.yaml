@@ -1,0 +1,10 @@
+type: object
+description: Response envelope for listing available billing plans.
+required:
+  - plans
+properties:
+  plans:
+    type: array
+    description: Billing plans available for self-serve signups.
+    items:
+      $ref: ./PlanInfo.yaml

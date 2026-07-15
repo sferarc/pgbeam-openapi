@@ -1,0 +1,71 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/WebhookId.yaml
+get:
+  operationId: getWebhookEndpoint
+  x-feature-flag: agent-gateway
+  summary: Get a webhook endpoint
+  description: Returns a single webhook endpoint by ID.
+  tags:
+    - Webhooks
+  responses:
+    '200':
+      description: The webhook endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/WebhookEndpoint.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+put:
+  operationId: updateWebhookEndpoint
+  x-feature-flag: agent-gateway
+  summary: Update a webhook endpoint
+  description: Updates a webhook endpoint.
+  tags:
+    - Webhooks
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/WebhookEndpointInput.yaml
+  responses:
+    '200':
+      description: Updated webhook endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/WebhookEndpoint.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+delete:
+  operationId: deleteWebhookEndpoint
+  x-feature-flag: agent-gateway
+  summary: Delete a webhook endpoint
+  description: Deletes a webhook endpoint and its pending deliveries.
+  tags:
+    - Webhooks
+  responses:
+    '204':
+      description: Webhook endpoint deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

@@ -1,0 +1,32 @@
+get:
+  operationId: getVercelInstallation
+  summary: Get Vercel Marketplace installation status
+  description: |
+    Returns the Vercel Marketplace installation for the organization,
+    including its provisioned resources and their current-period usage.
+    Returns 404 when the organization was not provisioned through the
+    Vercel Marketplace. Powers the dashboard's Vercel integration page.
+  tags:
+    - Analytics
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/OrgId.yaml
+  responses:
+    '200':
+      description: Vercel installation status.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/VercelInstallationStatus.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

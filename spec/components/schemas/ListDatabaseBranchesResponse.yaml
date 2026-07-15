@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of sandbox branches for a project.
+required:
+  - branches
+properties:
+  branches:
+    type: array
+    description: Sandbox branches on the current page.
+    items:
+      $ref: ./DatabaseBranch.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

@@ -1,0 +1,44 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: listApprovalRequests
+  x-feature-flag: agent-gateway
+  summary: List approval requests
+  description: >-
+    Lists approval requests for the project, newest first, optionally filtered
+    by status.
+  tags:
+    - Approvals
+  parameters:
+    - name: status
+      in: query
+      required: false
+      description: Filter to a single status.
+      schema:
+        type: string
+        enum:
+          - pending
+          - approved
+          - rejected
+          - expired
+          - executed
+          - failed
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: Page of approval requests.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListApprovalRequestsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

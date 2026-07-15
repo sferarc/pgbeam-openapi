@@ -1,0 +1,61 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createPolicyProfile
+  x-feature-flag: agent-gateway
+  summary: Create a policy profile
+  description: Creates a policy profile that can be attached to agent credentials.
+  tags:
+    - Policies
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PolicyProfileInput.yaml
+  responses:
+    '201':
+      description: Policy profile created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyProfile.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listPolicyProfiles
+  x-feature-flag: agent-gateway
+  summary: List policy profiles
+  description: Lists all policy profiles for the project.
+  tags:
+    - Policies
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of policy profiles.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListPolicyProfilesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

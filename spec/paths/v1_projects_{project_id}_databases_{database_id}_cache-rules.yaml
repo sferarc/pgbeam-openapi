@@ -1,0 +1,31 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+get:
+  operationId: listCacheRules
+  summary: List cache rules
+  description: |
+    Returns the cache rules for a database, showing all observed query
+    shapes with their stats and cache recommendations.
+  tags:
+    - Projects
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: Cache rule entries.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListCacheRulesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

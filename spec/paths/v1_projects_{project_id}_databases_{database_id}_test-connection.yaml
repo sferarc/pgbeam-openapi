@@ -1,0 +1,28 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+post:
+  operationId: testDatabaseConnection
+  summary: Test database connection
+  description: >-
+    Attempts to connect to the upstream database using the stored credentials
+    and returns the result.
+  tags:
+    - Databases
+  responses:
+    '200':
+      description: Connection test result.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/TestConnectionResult.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,7 @@
+name: policy_id
+in: path
+required: true
+description: Unique policy profile identifier (prefixed, e.g. pol_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

@@ -1,0 +1,32 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+post:
+  operationId: scanDatabaseForPii
+  x-feature-flag: agent-gateway
+  summary: Scan a database for likely-PII columns
+  description: >-
+    Connects to the upstream database read-only, inspects information_schema and
+    samples column values against PII heuristics, and returns ranked masking
+    suggestions. Suggestions are advisory — the operator reviews them and
+    applies the ones they want into a policy profile's masking rules. Nothing is
+    auto-applied.
+  tags:
+    - Databases
+  responses:
+    '200':
+      description: PII scan result.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ScanPiiResult.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

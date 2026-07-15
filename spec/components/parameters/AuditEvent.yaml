@@ -1,0 +1,7 @@
+name: event
+in: query
+required: false
+description: Filter to a single event type (e.g. blocked, masked, query).
+schema:
+  type: string
+  pattern: ^[a-z_]+$

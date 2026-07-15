@@ -1,0 +1,32 @@
+put:
+  operationId: updateSpendLimit
+  summary: Update spend limit
+  description: Sets the monthly spend limit for an organization. Null removes the limit.
+  tags:
+    - Analytics
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/OrgId.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateSpendLimitRequest.yaml
+  responses:
+    '200':
+      description: Spend limit updated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OrganizationPlan.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

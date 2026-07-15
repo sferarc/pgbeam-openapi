@@ -1,0 +1,9 @@
+type: object
+description: Response returned after creating a project and its primary database.
+required:
+  - project
+properties:
+  project:
+    $ref: ./Project.yaml
+  database:
+    $ref: ./Database.yaml

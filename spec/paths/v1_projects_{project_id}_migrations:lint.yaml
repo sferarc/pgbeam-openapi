@@ -1,0 +1,30 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: lintMigration
+  x-feature-flag: agent-gateway
+  summary: Lint a migration
+  description: Analyzes a migration script for unsafe schema changes and returns findings.
+  tags:
+    - Migrations
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/MigrationLintRequest.yaml
+  responses:
+    '200':
+      description: Lint results.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/MigrationLintResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

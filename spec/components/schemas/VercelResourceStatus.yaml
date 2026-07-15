@@ -1,0 +1,40 @@
+type: object
+description: >-
+  A PgBeam project provisioned as a Vercel Marketplace resource, with
+  current-period usage.
+required:
+  - resource_id
+  - project_id
+  - name
+  - billing_plan_id
+  - status
+  - period_queries
+  - period_bytes
+properties:
+  resource_id:
+    type: string
+    description: Vercel resource identifier.
+  project_id:
+    type: string
+    description: PgBeam project identifier backing the resource.
+  name:
+    type: string
+    description: Human-readable resource/project name.
+  billing_plan_id:
+    type: string
+    description: Plan tier the resource is billed on.
+  status:
+    type: string
+    enum:
+      - ready
+      - suspended
+      - deleted
+    description: Current resource lifecycle status.
+  period_queries:
+    type: integer
+    format: int64
+    description: Queries this resource has served in the current billing period.
+  period_bytes:
+    type: integer
+    format: int64
+    description: Bytes transferred by this resource in the current billing period.

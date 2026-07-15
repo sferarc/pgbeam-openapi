@@ -1,0 +1,73 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: getProject
+  summary: Get a project
+  description: Returns a single project by ID.
+  tags:
+    - Projects
+  responses:
+    '200':
+      description: Project found.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Project.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+patch:
+  operationId: updateProject
+  summary: Update a project
+  description: Partially updates a project. Only provided fields are modified.
+  tags:
+    - Projects
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateProjectRequest.yaml
+  responses:
+    '200':
+      description: Project updated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Project.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+delete:
+  operationId: deleteProject
+  summary: Delete a project
+  description: Soft-deletes a project and all associated databases.
+  tags:
+    - Projects
+  responses:
+    '204':
+      description: Project deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

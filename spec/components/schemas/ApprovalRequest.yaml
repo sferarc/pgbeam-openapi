@@ -1,0 +1,70 @@
+type: object
+description: A statement held by the gateway awaiting a human approval decision.
+required:
+  - id
+  - project_id
+  - policy_profile_id
+  - sql
+  - status
+  - requested_at
+  - expires_at
+properties:
+  id:
+    type: string
+    description: Unique approval request identifier (prefixed).
+    example: apr_01h455vb4pex5vsknk084sn02q
+  project_id:
+    type: string
+    description: Owning project ID.
+  credential_id:
+    type: string
+    nullable: true
+    description: Agent credential that submitted the statement, if known.
+  policy_profile_id:
+    type: string
+    description: Policy profile that required approval.
+  region:
+    type: string
+    description: Data plane region that held the statement.
+  session_id:
+    type: string
+    description: Identifier grouping a connection's statements.
+  sql:
+    type: string
+    description: The held statement text.
+  normalized_sql:
+    type: string
+    description: Statement with literals replaced by placeholders.
+  statement_kind:
+    type: string
+    description: Parsed statement kind (e.g. update, delete, ddl).
+  status:
+    type: string
+    enum:
+      - pending
+      - approved
+      - rejected
+      - expired
+      - executed
+      - failed
+    description: Current state of the approval request.
+  reason:
+    type: string
+    description: Human-readable note attached to a decision.
+  requested_at:
+    type: string
+    format: date-time
+    description: When the statement was first held.
+  decided_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When a decision was recorded, if any.
+  decided_by:
+    type: string
+    nullable: true
+    description: User who decided, if any.
+  expires_at:
+    type: string
+    format: date-time
+    description: When the request expires if undecided.

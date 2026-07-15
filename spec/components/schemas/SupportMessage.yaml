@@ -1,0 +1,37 @@
+type: object
+description: A message within a support case thread.
+required:
+  - id
+  - case_id
+  - source
+  - author_name
+  - body
+  - created_at
+properties:
+  id:
+    type: string
+    description: Unique message identifier (prefixed).
+    example: sm_01h455vb4pex5vsknk084sn02q
+  case_id:
+    type: string
+    description: Parent support case ID.
+  source:
+    $ref: ./SupportMessageSource.yaml
+  author_name:
+    type: string
+    description: Display name of the message author.
+  author_image:
+    type: string
+    description: URL to the author's avatar.
+    nullable: true
+  body:
+    type: string
+    description: Message content.
+  slack_user_id:
+    type: string
+    description: Slack user ID (for Slack-sourced messages).
+    nullable: true
+  created_at:
+    type: string
+    format: date-time
+    description: When the message was created.

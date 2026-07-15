@@ -1,0 +1,7 @@
+type: object
+description: Response returned after updating a cache rule.
+required:
+  - entry
+properties:
+  entry:
+    $ref: ./CacheRuleEntry.yaml

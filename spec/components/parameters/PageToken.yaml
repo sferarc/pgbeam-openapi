@@ -1,0 +1,7 @@
+name: page_token
+in: query
+required: false
+description: Opaque token for cursor-based pagination.
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

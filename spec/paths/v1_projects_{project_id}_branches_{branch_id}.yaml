@@ -1,0 +1,21 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/BranchId.yaml
+delete:
+  operationId: discardDatabaseBranch
+  x-feature-flag: agent-gateway
+  summary: Discard a sandbox branch
+  description: Marks an ephemeral sandbox branch as discarded for teardown.
+  tags:
+    - Branches
+  responses:
+    '204':
+      description: Sandbox branch discarded.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

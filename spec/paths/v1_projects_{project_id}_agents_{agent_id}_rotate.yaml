@@ -1,0 +1,35 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AgentId.yaml
+post:
+  operationId: rotateAgentCredential
+  x-feature-flag: agent-gateway
+  summary: Rotate an agent credential's secrets
+  description: >-
+    Generates a new Postgres password and MCP token for the credential in place,
+    keeping the same id, username, name, and policy. Live connections using the
+    old password are dropped within seconds. The new secrets are returned once
+    and cannot be retrieved again.
+  tags:
+    - Agents
+  responses:
+    '200':
+      description: Secrets rotated. New secrets shown once.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AgentCredentialSecrets.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      description: The credential is revoked and cannot be rotated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml

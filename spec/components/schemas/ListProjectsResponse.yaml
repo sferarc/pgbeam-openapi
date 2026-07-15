@@ -1,0 +1,17 @@
+type: object
+description: Cursor-paginated list of projects for an organization.
+required:
+  - projects
+  - total
+properties:
+  projects:
+    type: array
+    description: Projects on the current page.
+    items:
+      $ref: ./Project.yaml
+  total:
+    type: integer
+    description: Total number of projects (across all pages).
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

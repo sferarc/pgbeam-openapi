@@ -1,0 +1,7 @@
+name: project_id
+in: path
+required: true
+description: Unique project identifier (prefixed, e.g. prj_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

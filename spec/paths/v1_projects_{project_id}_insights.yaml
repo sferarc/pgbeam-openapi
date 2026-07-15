@@ -1,0 +1,50 @@
+get:
+  operationId: getProjectInsights
+  summary: Get query insights for a project
+  description: |
+    Returns aggregated query-level analytics for a project including top queries
+    by count, cache hit/miss summary, and latency statistics.
+  tags:
+    - Analytics
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/ProjectId.yaml
+    - name: range
+      in: query
+      required: false
+      description: Time range to query. Defaults to 24h.
+      schema:
+        type: string
+        enum:
+          - 1h
+          - 6h
+          - 24h
+          - 7d
+        default: 24h
+        example: 24h
+    - name: limit
+      in: query
+      required: false
+      description: Maximum number of top queries to return (1-100).
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+  responses:
+    '200':
+      description: Query insights for the project.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ProjectInsights.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

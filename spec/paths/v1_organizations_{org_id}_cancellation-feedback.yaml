@@ -1,0 +1,28 @@
+post:
+  operationId: submitCancellationFeedback
+  summary: Submit cancellation feedback
+  description: Records optional feedback when a user cancels their subscription.
+  tags:
+    - Analytics
+  security:
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  parameters:
+    - $ref: ../components/parameters/OrgId.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CancellationFeedbackRequest.yaml
+  responses:
+    '204':
+      description: Feedback recorded.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,33 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DomainId.yaml
+post:
+  operationId: verifyCustomDomain
+  x-feature-flag: custom-domains
+  summary: Verify custom domain DNS
+  description: >-
+    Checks DNS TXT record to verify domain ownership. Updates domain status on
+    success. Requires a Scale or Enterprise plan.
+  tags:
+    - Projects
+  responses:
+    '200':
+      description: Verification result.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/VerifyCustomDomainResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      description: Custom domains require a Scale or Enterprise plan.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,5 @@
+description: Operation not allowed by current plan limits.
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml

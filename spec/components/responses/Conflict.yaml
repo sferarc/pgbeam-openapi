@@ -1,0 +1,5 @@
+description: Resource already exists or conflicts with current state.
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml

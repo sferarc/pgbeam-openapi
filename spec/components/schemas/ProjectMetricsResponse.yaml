@@ -1,0 +1,10 @@
+type: object
+description: Response envelope for recent project metrics snapshots.
+required:
+  - snapshots
+properties:
+  snapshots:
+    type: array
+    description: Metrics snapshots ordered from newest to oldest.
+    items:
+      $ref: ./MetricsSnapshot.yaml

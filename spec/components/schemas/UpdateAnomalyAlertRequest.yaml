@@ -1,0 +1,11 @@
+type: object
+description: Request body for triaging an anomaly alert.
+required:
+  - status
+properties:
+  status:
+    type: string
+    enum:
+      - acknowledged
+      - resolved
+    description: New triage state for the alert.

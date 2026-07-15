@@ -1,0 +1,83 @@
+type: object
+description: >-
+  A single likely-PII column detected by the scanner, with a recommended masking
+  rule. Suggestions are advisory only — nothing is applied until the operator
+  reviews and adds it to a policy profile.
+required:
+  - schema
+  - table
+  - column
+  - data_type
+  - pii_type
+  - mask_kind
+  - confidence
+  - reasons
+properties:
+  schema:
+    type: string
+    description: Schema the column belongs to (e.g. "public").
+    example: public
+  table:
+    type: string
+    description: Table the column belongs to.
+    example: users
+  column:
+    type: string
+    description: The detected column name.
+    example: email
+  data_type:
+    type: string
+    description: PostgreSQL data type of the column.
+    example: text
+  pii_type:
+    type: string
+    enum:
+      - email
+      - phone
+      - ssn
+      - credit_card
+      - ip_address
+      - full_name
+      - street_address
+      - date_of_birth
+      - national_id
+      - passport
+      - bank_account
+      - api_secret
+      - other
+    description: The kind of personally identifiable information detected.
+  mask_kind:
+    type: string
+    enum:
+      - redact
+      - 'null'
+      - hash
+    description: >-
+      Recommended masking kind for this column. hash is suggested for join/group
+      keys (e.g. email), redact for free-text PII, null for highly sensitive
+      secrets.
+  confidence:
+    type: number
+    format: float
+    minimum: 0
+    maximum: 1
+    description: >-
+      Confidence score in [0,1]. Combines column-name signal and sampled-value
+      signal; higher is stronger evidence.
+    example: 0.95
+  reasons:
+    type: array
+    description: Human-readable explanations for why the column was flagged.
+    items:
+      type: string
+    example:
+      - column name matches 'email'
+      - 8/10 sampled values look like emails
+  sample_match_count:
+    type: integer
+    minimum: 0
+    description: Number of sampled non-null values that matched the PII pattern.
+  sample_size:
+    type: integer
+    minimum: 0
+    description: Number of non-null values sampled from the column.

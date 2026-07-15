@@ -1,0 +1,13 @@
+type: object
+description: Response envelope for listing registered replicas.
+required:
+  - replicas
+properties:
+  replicas:
+    type: array
+    description: Read replicas attached to the database.
+    items:
+      $ref: ./Replica.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of webhook endpoints for a project.
+required:
+  - webhooks
+properties:
+  webhooks:
+    type: array
+    description: Webhook endpoints on the current page.
+    items:
+      $ref: ./WebhookEndpoint.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

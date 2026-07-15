@@ -1,0 +1,7 @@
+type: object
+description: Optional note attached to an approve/reject decision.
+properties:
+  reason:
+    type: string
+    maxLength: 500
+    description: Human-readable note explaining the decision.

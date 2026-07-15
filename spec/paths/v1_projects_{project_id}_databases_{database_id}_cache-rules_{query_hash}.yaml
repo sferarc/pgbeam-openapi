@@ -1,0 +1,43 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/DatabaseId.yaml
+  - name: query_hash
+    in: path
+    required: true
+    description: xxhash64 hex of the normalized SQL.
+    schema:
+      type: string
+      pattern: ^[a-f0-9]+$
+      minLength: 16
+      maxLength: 16
+put:
+  operationId: updateCacheRule
+  summary: Update cache rule
+  description: |
+    Enable or disable caching for a specific query shape, with optional
+    TTL and SWR overrides. Requires the query to exist in the cache rules.
+  tags:
+    - Projects
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateCacheRuleRequest.yaml
+  responses:
+    '200':
+      description: Cache rule updated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/UpdateCacheRuleResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

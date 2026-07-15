@@ -1,0 +1,51 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/SupportCaseId.yaml
+get:
+  operationId: getSupportCase
+  summary: Get a support case
+  description: Returns a support case with all its messages.
+  tags:
+    - Support
+  responses:
+    '200':
+      description: Support case with messages.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/GetSupportCaseResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+patch:
+  operationId: updateSupportCase
+  summary: Update a support case
+  description: Updates the status of a support case (close or reopen).
+  tags:
+    - Support
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateSupportCaseRequest.yaml
+  responses:
+    '200':
+      description: Updated support case.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SupportCase.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

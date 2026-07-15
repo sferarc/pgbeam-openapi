@@ -1,0 +1,10 @@
+type: object
+description: Request body for adding a message to a support case.
+required:
+  - body
+properties:
+  body:
+    type: string
+    description: Message content.
+    minLength: 1
+    maxLength: 50000

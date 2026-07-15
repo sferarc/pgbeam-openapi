@@ -1,0 +1,9 @@
+name: decision
+in: query
+required: false
+description: >-
+  Coarse outcome filter that groups events. `allow` = query; `block` = blocked,
+  budget_exhausted, auth_failed, credential_expired; `mask` = masked; `truncate`
+  = truncated.
+schema:
+  $ref: ../schemas/AuditDecision.yaml

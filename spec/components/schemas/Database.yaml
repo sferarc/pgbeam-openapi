@@ -1,0 +1,86 @@
+type: object
+description: Registered upstream PostgreSQL database for a project.
+required:
+  - id
+  - project_id
+  - host
+  - port
+  - name
+  - username
+  - ssl_mode
+  - cache_config
+  - pool_config
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique database identifier (prefixed).
+    example: db_01h455vb4pex5vsknk084sn02q
+  project_id:
+    type: string
+    description: Owning project ID.
+    example: prj_01h455vb4pex5vsknk084sn02q
+  connection_string:
+    type: string
+    description: >-
+      Connection string for connecting through PgBeam proxy. Password is
+      replaced with a placeholder.
+    readOnly: true
+    example: postgresql://myuser:YOUR_PASSWORD@myproject.proxy.pgbeam.app:5432/mydb
+  host:
+    type: string
+    description: PostgreSQL host.
+    example: db.example.com
+  port:
+    type: integer
+    minimum: 1
+    maximum: 65535
+    description: PostgreSQL port.
+    example: 5432
+  name:
+    type: string
+    description: PostgreSQL database name.
+    example: mydb
+  username:
+    type: string
+    description: PostgreSQL username.
+    example: pgbeam
+  ssl_mode:
+    $ref: ./SSLMode.yaml
+  role:
+    $ref: ./DatabaseRole.yaml
+  pool_region:
+    type: string
+    description: >
+      Region where the connection pool is maintained (near the database). When
+      set and different from the client's edge region, queries are relayed
+      through the pool region's data plane. Empty means direct connection.
+    example: us-east-1
+  query_timeout_ms:
+    type: integer
+    minimum: 0
+    maximum: 300000
+    default: 0
+    description: >
+      Query timeout in milliseconds. When set (> 0), the proxy sends SET
+      statement_timeout on upstream connections. 0 means disabled (default).
+  auto_read_routing:
+    type: boolean
+    default: false
+    description: >
+      When enabled and replicas are configured, SELECT queries automatically
+      route to read replicas without requiring the @pgbeam:replica SQL
+      annotation.
+  cache_config:
+    $ref: ./CacheConfig.yaml
+  pool_config:
+    $ref: ./PoolConfig.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: When the database registration was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the database registration was last updated.

@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated list of policy profiles for a project.
+required:
+  - policies
+properties:
+  policies:
+    type: array
+    description: Policy profiles on the current page.
+    items:
+      $ref: ./PolicyProfile.yaml
+  next_page_token:
+    type: string
+    description: Token for the next page. Empty if no more results.

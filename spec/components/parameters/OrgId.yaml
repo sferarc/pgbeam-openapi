@@ -1,0 +1,8 @@
+name: org_id
+in: path
+required: true
+description: Unique organization identifier.
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$
+  example: org_abc123

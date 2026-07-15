@@ -1,0 +1,67 @@
+post:
+  operationId: mcpTransport
+  summary: MCP server (Streamable HTTP)
+  description: >-
+    Model Context Protocol endpoint using the Streamable HTTP transport. Accepts
+    JSON-RPC 2.0 requests and exposes every public API operation as an MCP tool.
+    Use this with any MCP-compatible client (Claude Code, Cursor, Windsurf,
+    custom agents) to let AI assistants manage PgBeam resources.
+
+
+    **Transport:** Streamable HTTP (MCP spec 2025-03-26)
+
+    **Protocol:** JSON-RPC 2.0
+
+    **Methods:** `initialize`, `tools/list`, `tools/call`, `ping`
+
+
+    Prefer the CLI (`pgbeam mcp`) for local stdio transport. Use this endpoint
+    for remote or server-to-server MCP integration.
+  tags:
+    - MCP
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/McpRequest.yaml
+        examples:
+          initialize:
+            summary: Initialize session
+            value:
+              jsonrpc: '2.0'
+              id: '1'
+              method: initialize
+              params:
+                protocolVersion: '2025-03-26'
+                capabilities: {}
+                clientInfo:
+                  name: my-agent
+                  version: 1.0.0
+          tools_list:
+            summary: List available tools
+            value:
+              jsonrpc: '2.0'
+              id: '2'
+              method: tools/list
+          tools_call:
+            summary: Call a tool
+            value:
+              jsonrpc: '2.0'
+              id: '3'
+              method: tools/call
+              params:
+                name: listProjects
+                arguments:
+                  org_id: org_abc123
+  responses:
+    '200':
+      description: JSON-RPC 2.0 response.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/McpResponse.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

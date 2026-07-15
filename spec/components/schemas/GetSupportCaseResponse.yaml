@@ -1,0 +1,13 @@
+type: object
+description: Support case with its message thread.
+required:
+  - case
+  - messages
+properties:
+  case:
+    $ref: ./SupportCase.yaml
+  messages:
+    type: array
+    description: Messages in the support case thread.
+    items:
+      $ref: ./SupportMessage.yaml

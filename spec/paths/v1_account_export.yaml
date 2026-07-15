@@ -1,0 +1,22 @@
+get:
+  operationId: exportAccountData
+  summary: Export account data
+  description: >-
+    Returns all personal data associated with the authenticated user in a
+    structured JSON format. Supports GDPR data portability and CCPA right to
+    know. Audit logs are limited to the most recent 1000 entries.
+  tags:
+    - Account
+  responses:
+    '200':
+      description: Account data export.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AccountExport.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

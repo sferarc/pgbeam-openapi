@@ -1,0 +1,7 @@
+name: start
+in: query
+required: false
+description: Return entries at or after this timestamp (inclusive lower bound).
+schema:
+  type: string
+  format: date-time

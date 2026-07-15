@@ -1,0 +1,7 @@
+name: agent_id
+in: path
+required: true
+description: Unique agent credential identifier (prefixed, e.g. agt_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

@@ -16,7 +16,8 @@
       }
     },
     "./openapi.json": "./openapi.json",
-    "./openapi.yaml": "./openapi.yaml"
+    "./openapi.yaml": "./openapi.yaml",
+    "./spec/openapi.yaml": "./spec/openapi.yaml"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -27,7 +28,8 @@
   "files": [
     "dist",
     "openapi.json",
-    "openapi.yaml"
+    "openapi.yaml",
+    "spec"
   ],
   "keywords": [
     "pgbeam",

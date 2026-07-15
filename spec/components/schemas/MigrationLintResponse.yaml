@@ -1,0 +1,14 @@
+type: object
+description: Result of linting a migration script.
+required:
+  - safe
+  - findings
+properties:
+  safe:
+    type: boolean
+    description: True when no error-severity findings were detected.
+  findings:
+    type: array
+    description: Findings detected across all statements.
+    items:
+      $ref: ./MigrationFinding.yaml

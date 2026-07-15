@@ -1,0 +1,25 @@
+post:
+  operationId: handleSlackSupportEvent
+  summary: Handle a Slack support event
+  description: >-
+    Receives a forwarded Slack event from the dashboard webhook handler and
+    creates a support message.
+  tags:
+    - Internal
+  security:
+    - InternalSecret: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SlackEventPayload.yaml
+  responses:
+    '200':
+      description: Event processed.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

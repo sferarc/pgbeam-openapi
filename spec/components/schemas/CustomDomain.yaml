@@ -1,0 +1,49 @@
+type: object
+description: Custom database hostname attached to a project.
+required:
+  - id
+  - project_id
+  - domain
+  - verified
+  - dns_verification_token
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique domain identifier (prefixed).
+    example: dom_01h455vb4pex5vsknk084sn02q
+  project_id:
+    type: string
+    description: Owning project ID.
+    example: prj_01h455vb4pex5vsknk084sn02q
+  domain:
+    type: string
+    description: The custom domain name.
+    example: db.example.com
+  verified:
+    type: boolean
+    description: Whether DNS ownership has been verified.
+  verified_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When DNS verification was completed.
+  tls_cert_expiry:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the TLS certificate expires.
+  dns_verification_token:
+    type: string
+    description: Token value for the DNS TXT record verification.
+  dns_instructions:
+    $ref: ./DnsInstructions.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: When the custom domain was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the custom domain was last updated.

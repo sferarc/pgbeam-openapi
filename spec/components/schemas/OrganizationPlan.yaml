@@ -1,0 +1,77 @@
+type: object
+description: Billing state and plan limits for an organization.
+required:
+  - org_id
+  - plan
+  - limits
+properties:
+  org_id:
+    type: string
+    description: Organization identifier the plan applies to.
+    example: org_abc123
+  plan:
+    type: string
+    enum:
+      - starter
+      - pro
+      - scale
+      - enterprise
+    description: Current plan tier.
+  billing_provider:
+    type: string
+    enum:
+      - stripe
+      - vercel
+      - aws
+      - manual
+    description: Which billing provider manages this organization's subscription.
+  subscription_status:
+    type: string
+    enum:
+      - none
+      - active
+      - trialing
+      - past_due
+      - canceled
+      - unpaid
+      - incomplete
+      - incomplete_expired
+      - paused
+    description: Stripe subscription status.
+  current_period_end:
+    type: string
+    format: date-time
+    description: End of current billing period.
+  enabled:
+    type: boolean
+    description: Whether the organization billing is active (false = suspended).
+  custom_pricing:
+    type: boolean
+    description: Whether the organization has custom enterprise pricing.
+  spend_limit:
+    type: number
+    format: double
+    nullable: true
+    description: Monthly spend limit in dollars. Null means no limit.
+    example: 500
+  spend_capped:
+    type: boolean
+    description: >-
+      Whether the organization has hit its spend limit and agent access is
+      paused at the proxy. Lifts automatically when usage resets for the new
+      billing period, or immediately when the spend limit is raised or removed.
+  spend_capped_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the spend cap was applied. Null when not capped.
+  limits:
+    $ref: ./PlanLimits.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: When the billing record was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the billing record was last updated.

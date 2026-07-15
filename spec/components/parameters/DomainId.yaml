@@ -1,0 +1,7 @@
+name: domain_id
+in: path
+required: true
+description: Unique custom domain identifier (prefixed, e.g. dom_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

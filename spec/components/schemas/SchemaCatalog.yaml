@@ -1,0 +1,30 @@
+type: object
+description: >-
+  A read-only snapshot of a database's user relations (tables and views) and
+  their columns, used to power table/column autocomplete and view-aware warnings
+  in the policy editor. System schemas (pg_catalog, information_schema,
+  pg_toast) are excluded.
+required:
+  - relations
+  - scanned_relations
+  - scanned_columns
+properties:
+  relations:
+    type: array
+    description: User relations, ordered by schema then name.
+    items:
+      $ref: ./SchemaCatalogRelation.yaml
+  scanned_relations:
+    type: integer
+    minimum: 0
+    description: Number of relations in the catalog.
+  scanned_columns:
+    type: integer
+    minimum: 0
+    description: Number of columns in the catalog.
+  truncated:
+    type: boolean
+    description: True when the catalog stopped early at the column limit.
+  error:
+    type: string
+    description: Present when introspection failed to connect or read the schema.

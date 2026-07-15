@@ -1,0 +1,13 @@
+type: object
+description: Time-ordered page of audit entries (newest first).
+required:
+  - entries
+properties:
+  entries:
+    type: array
+    description: Audit entries on the current page.
+    items:
+      $ref: ./AuditLogEntry.yaml
+  next_page_token:
+    type: string
+    description: Cursor for the next page. Empty if no more results.

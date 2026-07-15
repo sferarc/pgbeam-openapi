@@ -1,0 +1,20 @@
+type: object
+description: >-
+  A SQL statement to test plus the policy to test it against. Supply exactly one
+  of policy_id (an existing saved policy) or policy (an unsaved draft, e.g. the
+  in-progress editor form).
+required:
+  - sql
+properties:
+  sql:
+    type: string
+    minLength: 1
+    maxLength: 100000
+    description: The single SQL statement to evaluate.
+    example: SELECT email FROM users WHERE id = 1
+  policy_id:
+    type: string
+    description: ID of an existing saved policy profile to evaluate against.
+    example: pol_01h455vb4pex5vsknk084sn02q
+  policy:
+    $ref: ./PolicyProfileInput.yaml

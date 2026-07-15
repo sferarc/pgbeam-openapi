@@ -1,0 +1,67 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createCustomDomain
+  x-feature-flag: custom-domains
+  summary: Add a custom domain
+  description: >-
+    Registers a new custom domain for the project. Returns DNS verification
+    instructions. Requires a Scale or Enterprise plan.
+  tags:
+    - Projects
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateCustomDomainRequest.yaml
+  responses:
+    '201':
+      description: Custom domain created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/CustomDomain.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      description: Custom domains require a Scale or Enterprise plan.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listCustomDomains
+  x-feature-flag: custom-domains
+  summary: List custom domains
+  description: Lists all custom domains registered for the project.
+  tags:
+    - Projects
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of custom domains.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListCustomDomainsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

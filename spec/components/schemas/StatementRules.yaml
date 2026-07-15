@@ -1,0 +1,19 @@
+type: object
+description: >-
+  Per-statement-kind allow/deny lists. Empty allow means all kinds permitted by
+  the access mode.
+properties:
+  allow:
+    type: array
+    description: >-
+      Allowed statement kinds (select, insert, update, delete, ddl, copy, set,
+      show, explain, transaction).
+    items:
+      type: string
+      description: A statement kind.
+  deny:
+    type: array
+    description: Denied statement kinds (takes precedence over allow).
+    items:
+      type: string
+      description: A statement kind.
