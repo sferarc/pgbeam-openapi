@@ -1,0 +1,15 @@
+type: object
+description: Request body for issuing a self-host enrollment token.
+properties:
+  region_label:
+    type: string
+    description: Operator-supplied label for where the proxy runs.
+    maxLength: 100
+    pattern: ^[^\x00]*$
+    example: customer-vpc-us-east
+  description:
+    type: string
+    description: Optional human-readable note.
+    maxLength: 500
+    pattern: ^[^\x00]*$
+    example: prod cluster

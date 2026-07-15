@@ -72,3 +72,17 @@ properties:
     type: string
     format: date-time
     description: When the statement executed.
+  seq:
+    type: integer
+    format: int64
+    description: Monotonic per-project position in the tamper-evident hash chain.
+  prev_hash:
+    type: string
+    description: >-
+      Hex SHA-256 of the previous chained entry (a fixed genesis value for the
+      first entry). Empty for pre-chain legacy entries.
+  entry_hash:
+    type: string
+    description: >-
+      Hex SHA-256 of this entry's canonical content chained onto prev_hash.
+      Empty for pre-chain legacy entries.

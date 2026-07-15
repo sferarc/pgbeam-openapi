@@ -1,0 +1,29 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - name: enrollment_id
+    in: path
+    required: true
+    description: Unique enrollment identifier.
+    schema:
+      type: string
+      pattern: ^[a-zA-Z0-9_.-]+$
+      example: she_01h455vb4pex5vsknk084sn02q
+delete:
+  operationId: revokeSelfHostEnrollment
+  summary: Revoke a self-host enrollment
+  description: >-
+    Revokes an enrollment so its token can no longer authenticate a proxy.
+    Connected proxies keep their last-known config until they reconnect.
+  tags:
+    - Platform
+  responses:
+    '204':
+      description: Enrollment revoked.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

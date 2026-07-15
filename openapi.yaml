@@ -526,6 +526,40 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /v1/projects/{project_id}/audit-logs/verify:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      operationId: verifyAuditChain
+      x-feature-flag: agent-gateway
+      summary: Verify the tamper-evident audit chain
+      description: >-
+        Recomputes the project's audit hash chain over an optional time range and reports whether it is intact. Each
+        audit entry is linked to its predecessor with a SHA-256 hash, so editing or deleting any row breaks the chain.
+        On a break, the response reports the first sequence number where a tampered or deleted entry was detected.
+        Requires the same audit:read permission as the list and export endpoints.
+      tags:
+        - Agents
+      parameters:
+        - $ref: '#/components/parameters/AuditStart'
+        - $ref: '#/components/parameters/AuditEnd'
+      responses:
+        '200':
+          description: Chain verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditChainVerification'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
   /v1/plans:
     get:
       operationId: listPlans
@@ -1847,6 +1881,91 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /v1/organizations/{org_id}/self-host-enrollments:
+    parameters:
+      - $ref: '#/components/parameters/OrgId'
+    post:
+      operationId: createSelfHostEnrollment
+      summary: Issue a self-host enrollment token
+      description: >-
+        Issues an enrollment token a self-hosted (BYOC) proxy uses to authenticate to the control plane's config/audit
+        gRPC stream. The token is returned once and cannot be retrieved again. Requires the Scale or enterprise plan.
+      tags:
+        - Platform
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSelfHostEnrollmentRequest'
+      responses:
+        '201':
+          description: Enrollment created. Token shown once.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelfHostEnrollmentSecret'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: The organization's plan is not entitled to self-host.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    get:
+      operationId: listSelfHostEnrollments
+      summary: List self-host enrollments
+      description: Lists an organization's self-host enrollments. Tokens are never returned.
+      tags:
+        - Platform
+      responses:
+        '200':
+          description: List of enrollments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSelfHostEnrollmentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}:
+    parameters:
+      - $ref: '#/components/parameters/OrgId'
+      - name: enrollment_id
+        in: path
+        required: true
+        description: Unique enrollment identifier.
+        schema:
+          type: string
+          pattern: ^[a-zA-Z0-9_.-]+$
+          example: she_01h455vb4pex5vsknk084sn02q
+    delete:
+      operationId: revokeSelfHostEnrollment
+      summary: Revoke a self-host enrollment
+      description: >-
+        Revokes an enrollment so its token can no longer authenticate a proxy. Connected proxies keep their last-known
+        config until they reconnect.
+      tags:
+        - Platform
+      responses:
+        '204':
+          description: Enrollment revoked.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/organizations/{org_id}/support/cases:
     parameters:
       - $ref: '#/components/parameters/OrgId'
@@ -3179,6 +3298,18 @@ components:
           type: string
           format: date-time
           description: When the statement executed.
+        seq:
+          type: integer
+          format: int64
+          description: Monotonic per-project position in the tamper-evident hash chain.
+        prev_hash:
+          type: string
+          description: >-
+            Hex SHA-256 of the previous chained entry (a fixed genesis value for the first entry). Empty for pre-chain
+            legacy entries.
+        entry_hash:
+          type: string
+          description: Hex SHA-256 of this entry's canonical content chained onto prev_hash. Empty for pre-chain legacy entries.
     ListAuditLogsResponse:
       type: object
       description: Time-ordered page of audit entries (newest first).
@@ -3193,6 +3324,55 @@ components:
         next_page_token:
           type: string
           description: Cursor for the next page. Empty if no more results.
+    AuditChainVerification:
+      type: object
+      description: >-
+        Result of recomputing the project's tamper-evident audit hash chain over a time range. The chain links each
+        entry to its predecessor, so editing or deleting any row breaks it.
+      required:
+        - ok
+        - verified_count
+        - unchained_count
+        - verified_at
+      properties:
+        ok:
+          type: boolean
+          description: True when every chained entry in the range links correctly and no tampering or deletion was detected.
+        verified_count:
+          type: integer
+          format: int64
+          description: Number of chained entries checked.
+        unchained_count:
+          type: integer
+          format: int64
+          description: >-
+            Pre-chain (legacy) entries in the range that predate the hash chain and were skipped rather than treated as
+            tampering.
+        chain_start_seq:
+          type: integer
+          format: int64
+          nullable: true
+          description: Sequence number of the first chained entry checked. Null when none.
+        chain_end_seq:
+          type: integer
+          format: int64
+          nullable: true
+          description: Sequence number of the last chained entry checked. Null when none.
+        first_broken_seq:
+          type: integer
+          format: int64
+          nullable: true
+          description: Sequence number where verification first failed (a tampered or deleted entry). Null when ok.
+        failure_reason:
+          type: string
+          nullable: true
+          description: >-
+            Machine-readable failure kind: hash_mismatch (entry content edited), broken_link (prev_hash does not match
+            the predecessor), or missing_entry (a sequence number was deleted). Null when ok.
+        verified_at:
+          type: string
+          format: date-time
+          description: When verification ran.
     OrganizationPlan:
       type: object
       description: Billing state and plan limits for an organization.
@@ -4991,6 +5171,14 @@ components:
             - gcp
           description: Cloud provider where the project runs.
           readOnly: true
+        self_hosted:
+          type: boolean
+          description: >
+            When true, this project's data plane runs in the customer's own VPC/cluster (BYOC): the control plane does
+            not provision hosted infra, and a self-hosted proxy dials home over the config/audit gRPC stream. Requires
+            the Scale or enterprise plan.
+          readOnly: true
+          example: false
         proxy_host:
           type: string
           description: Proxy hostname for connecting through PgBeam (e.g., myproject.proxy.pgbeam.app).
@@ -5038,6 +5226,8 @@ components:
           nullable: true
           description: When set, passthrough/human connections are enforced against this policy profile.
           example: pol_01h455vb4pex5vsknk084sn02q
+        residency:
+          $ref: '#/components/schemas/DataResidency'
         agents_disabled:
           type: boolean
           description: >
@@ -5069,6 +5259,19 @@ components:
         - suspended
         - deleted
       description: Project lifecycle status.
+    DataResidency:
+      type: string
+      enum:
+        - any
+        - us
+        - eu
+      default: any
+      description: >
+        Data-residency requirement for the project. "any" (default) lets queries be served from the nearest data-plane
+        metro. "us" or "eu" require the serving metro to be in that jurisdiction; the proxy fails a connection closed
+        when it is served from a metro outside the required jurisdiction, so regulated workloads never process outside
+        their permitted region.
+      example: eu
     CreateProjectRequest:
       type: object
       description: Request body for creating a project and its primary database.
@@ -5113,6 +5316,12 @@ components:
             - gcp
           description: Cloud provider for the project.
           default: aws
+        self_hosted:
+          type: boolean
+          description: >
+            Mark this project as running on a self-hosted (BYOC) data plane in the customer's own VPC/cluster. Requires
+            the Scale or enterprise plan.
+          default: false
         database:
           $ref: '#/components/schemas/CreateDatabaseRequest'
           description: Primary database. Created atomically with the project.
@@ -5174,6 +5383,8 @@ components:
             When set, passthrough/human connections are enforced against this policy profile. Send an empty string to
             clear.
           example: pol_01h455vb4pex5vsknk084sn02q
+        residency:
+          $ref: '#/components/schemas/DataResidency'
         agents_disabled:
           type: boolean
           description: >
@@ -5429,6 +5640,92 @@ components:
         error:
           type: string
           description: Present when introspection failed to connect or read the schema.
+    SelfHostEnrollment:
+      type: object
+      description: >
+        An enrollment that lets a self-hosted (BYOC) proxy authenticate to the control plane's config/audit gRPC stream
+        on behalf of an organization. The token itself is never returned after creation, only its metadata.
+      required:
+        - id
+        - org_id
+        - created_at
+      properties:
+        id:
+          type: string
+          description: Unique enrollment identifier.
+          example: she_01h455vb4pex5vsknk084sn02q
+        org_id:
+          type: string
+          description: Organization that owns this enrollment.
+          example: org_abc123
+        region_label:
+          type: string
+          description: Operator-supplied label for where the proxy runs (informational).
+          example: customer-vpc-us-east
+        description:
+          type: string
+          description: Optional human-readable note.
+          example: prod cluster
+        created_by:
+          type: string
+          nullable: true
+          description: User ID that created the enrollment.
+        created_at:
+          type: string
+          format: date-time
+          description: When the enrollment was created.
+        last_seen_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Last time a proxy authenticated with this enrollment.
+        revoked_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the enrollment was revoked. Null means active.
+    SelfHostEnrollmentSecret:
+      type: object
+      description: >
+        Response returned once when an enrollment is created. The token is shown a single time and cannot be retrieved
+        again; set it as GRPC_AUTH_TOKEN on the self-hosted proxy.
+      required:
+        - enrollment
+        - token
+      properties:
+        enrollment:
+          $ref: '#/components/schemas/SelfHostEnrollment'
+        token:
+          type: string
+          description: The plaintext enrollment token (pbh_...). Shown once.
+          example: pbh_01h455vb4pex5vsknk084sn02q9zk3m7
+    CreateSelfHostEnrollmentRequest:
+      type: object
+      description: Request body for issuing a self-host enrollment token.
+      properties:
+        region_label:
+          type: string
+          description: Operator-supplied label for where the proxy runs.
+          maxLength: 100
+          pattern: ^[^\x00]*$
+          example: customer-vpc-us-east
+        description:
+          type: string
+          description: Optional human-readable note.
+          maxLength: 500
+          pattern: ^[^\x00]*$
+          example: prod cluster
+    ListSelfHostEnrollmentsResponse:
+      type: object
+      description: List of self-host enrollments for an organization.
+      required:
+        - enrollments
+      properties:
+        enrollments:
+          type: array
+          description: The organization's self-host enrollments, newest first.
+          items:
+            $ref: '#/components/schemas/SelfHostEnrollment'
     SupportCase:
       type: object
       description: A support case filed by an organization member.

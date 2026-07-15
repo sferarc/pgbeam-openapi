@@ -1,0 +1,44 @@
+type: object
+description: >
+  An enrollment that lets a self-hosted (BYOC) proxy authenticate to the control
+  plane's config/audit gRPC stream on behalf of an organization. The token
+  itself is never returned after creation, only its metadata.
+required:
+  - id
+  - org_id
+  - created_at
+properties:
+  id:
+    type: string
+    description: Unique enrollment identifier.
+    example: she_01h455vb4pex5vsknk084sn02q
+  org_id:
+    type: string
+    description: Organization that owns this enrollment.
+    example: org_abc123
+  region_label:
+    type: string
+    description: Operator-supplied label for where the proxy runs (informational).
+    example: customer-vpc-us-east
+  description:
+    type: string
+    description: Optional human-readable note.
+    example: prod cluster
+  created_by:
+    type: string
+    nullable: true
+    description: User ID that created the enrollment.
+  created_at:
+    type: string
+    format: date-time
+    description: When the enrollment was created.
+  last_seen_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: Last time a proxy authenticated with this enrollment.
+  revoked_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the enrollment was revoked. Null means active.

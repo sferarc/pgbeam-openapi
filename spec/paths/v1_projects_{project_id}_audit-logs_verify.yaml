@@ -1,0 +1,35 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: verifyAuditChain
+  x-feature-flag: agent-gateway
+  summary: Verify the tamper-evident audit chain
+  description: >-
+    Recomputes the project's audit hash chain over an optional time range and
+    reports whether it is intact. Each audit entry is linked to its predecessor
+    with a SHA-256 hash, so editing or deleting any row breaks the chain. On a
+    break, the response reports the first sequence number where a tampered or
+    deleted entry was detected. Requires the same audit:read permission as the
+    list and export endpoints.
+  tags:
+    - Agents
+  parameters:
+    - $ref: ../components/parameters/AuditStart.yaml
+    - $ref: ../components/parameters/AuditEnd.yaml
+  responses:
+    '200':
+      description: Chain verification result.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuditChainVerification.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

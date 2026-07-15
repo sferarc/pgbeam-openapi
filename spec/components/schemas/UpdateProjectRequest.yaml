@@ -45,6 +45,8 @@ properties:
       When set, passthrough/human connections are enforced against this policy
       profile. Send an empty string to clear.
     example: pol_01h455vb4pex5vsknk084sn02q
+  residency:
+    $ref: ./DataResidency.yaml
   agents_disabled:
     type: boolean
     description: >

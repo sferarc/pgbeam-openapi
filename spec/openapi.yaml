@@ -89,6 +89,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_audit-logs.yaml
   /v1/projects/{project_id}/audit-logs/export:
     $ref: paths/v1_projects_{project_id}_audit-logs_export.yaml
+  /v1/projects/{project_id}/audit-logs/verify:
+    $ref: paths/v1_projects_{project_id}_audit-logs_verify.yaml
   /v1/plans:
     $ref: paths/v1_plans.yaml
   /v1/organizations/{org_id}/plan:
@@ -153,6 +155,10 @@ paths:
     $ref: paths/v1_databases_{database_id}_replicas.yaml
   /v1/databases/{database_id}/replicas/{replica_id}:
     $ref: paths/v1_databases_{database_id}_replicas_{replica_id}.yaml
+  /v1/organizations/{org_id}/self-host-enrollments:
+    $ref: paths/v1_organizations_{org_id}_self-host-enrollments.yaml
+  /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}:
+    $ref: paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}.yaml
   /v1/organizations/{org_id}/support/cases:
     $ref: paths/v1_organizations_{org_id}_support_cases.yaml
   /v1/organizations/{org_id}/support/cases/{case_id}:

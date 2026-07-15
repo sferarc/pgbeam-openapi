@@ -1,0 +1,55 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+post:
+  operationId: createSelfHostEnrollment
+  summary: Issue a self-host enrollment token
+  description: >-
+    Issues an enrollment token a self-hosted (BYOC) proxy uses to authenticate
+    to the control plane's config/audit gRPC stream. The token is returned once
+    and cannot be retrieved again. Requires the Scale or enterprise plan.
+  tags:
+    - Platform
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateSelfHostEnrollmentRequest.yaml
+  responses:
+    '201':
+      description: Enrollment created. Token shown once.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SelfHostEnrollmentSecret.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      description: The organization's plan is not entitled to self-host.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listSelfHostEnrollments
+  summary: List self-host enrollments
+  description: Lists an organization's self-host enrollments. Tokens are never returned.
+  tags:
+    - Platform
+  responses:
+    '200':
+      description: List of enrollments.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListSelfHostEnrollmentsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml

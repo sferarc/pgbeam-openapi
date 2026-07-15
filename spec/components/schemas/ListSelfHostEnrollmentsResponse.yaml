@@ -1,0 +1,10 @@
+type: object
+description: List of self-host enrollments for an organization.
+required:
+  - enrollments
+properties:
+  enrollments:
+    type: array
+    description: The organization's self-host enrollments, newest first.
+    items:
+      $ref: ./SelfHostEnrollment.yaml

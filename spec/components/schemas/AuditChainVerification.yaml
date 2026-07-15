@@ -1,0 +1,54 @@
+type: object
+description: >-
+  Result of recomputing the project's tamper-evident audit hash chain over a
+  time range. The chain links each entry to its predecessor, so editing or
+  deleting any row breaks it.
+required:
+  - ok
+  - verified_count
+  - unchained_count
+  - verified_at
+properties:
+  ok:
+    type: boolean
+    description: >-
+      True when every chained entry in the range links correctly and no
+      tampering or deletion was detected.
+  verified_count:
+    type: integer
+    format: int64
+    description: Number of chained entries checked.
+  unchained_count:
+    type: integer
+    format: int64
+    description: >-
+      Pre-chain (legacy) entries in the range that predate the hash chain and
+      were skipped rather than treated as tampering.
+  chain_start_seq:
+    type: integer
+    format: int64
+    nullable: true
+    description: Sequence number of the first chained entry checked. Null when none.
+  chain_end_seq:
+    type: integer
+    format: int64
+    nullable: true
+    description: Sequence number of the last chained entry checked. Null when none.
+  first_broken_seq:
+    type: integer
+    format: int64
+    nullable: true
+    description: >-
+      Sequence number where verification first failed (a tampered or deleted
+      entry). Null when ok.
+  failure_reason:
+    type: string
+    nullable: true
+    description: >-
+      Machine-readable failure kind: hash_mismatch (entry content edited),
+      broken_link (prev_hash does not match the predecessor), or missing_entry
+      (a sequence number was deleted). Null when ok.
+  verified_at:
+    type: string
+    format: date-time
+    description: When verification ran.

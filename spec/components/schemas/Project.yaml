@@ -45,6 +45,15 @@ properties:
       - gcp
     description: Cloud provider where the project runs.
     readOnly: true
+  self_hosted:
+    type: boolean
+    description: >
+      When true, this project's data plane runs in the customer's own
+      VPC/cluster (BYOC): the control plane does not provision hosted infra, and
+      a self-hosted proxy dials home over the config/audit gRPC stream. Requires
+      the Scale or enterprise plan.
+    readOnly: true
+    example: false
   proxy_host:
     type: string
     description: >-
@@ -99,6 +108,8 @@ properties:
       When set, passthrough/human connections are enforced against this policy
       profile.
     example: pol_01h455vb4pex5vsknk084sn02q
+  residency:
+    $ref: ./DataResidency.yaml
   agents_disabled:
     type: boolean
     description: >

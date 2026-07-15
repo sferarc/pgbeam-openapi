@@ -1,0 +1,13 @@
+type: string
+enum:
+  - any
+  - us
+  - eu
+default: any
+description: >
+  Data-residency requirement for the project. "any" (default) lets queries be
+  served from the nearest data-plane metro. "us" or "eu" require the serving
+  metro to be in that jurisdiction; the proxy fails a connection closed when it
+  is served from a metro outside the required jurisdiction, so regulated
+  workloads never process outside their permitted region.
+example: eu
