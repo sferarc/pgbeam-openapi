@@ -1,0 +1,46 @@
+{
+  "name": "pgbeam-openapi",
+  "version": "0.1.0",
+  "description": "Public OpenAPI specification for the PgBeam API — a globally distributed PostgreSQL proxy platform",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./openapi.json": "./openapi.json",
+    "./openapi.yaml": "./openapi.yaml"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "openapi.json",
+    "openapi.yaml"
+  ],
+  "keywords": [
+    "pgbeam",
+    "openapi",
+    "openapi-spec",
+    "swagger",
+    "postgresql",
+    "postgres",
+    "api"
+  ],
+  "homepage": "https://pgbeam.com",
+  "scripts": {
+    "build": "bunchee",
+    "prepublishOnly": "pnpm build"
+  }
+}
