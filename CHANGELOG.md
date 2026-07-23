@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.2.3
+
+### Patch Changes
+
+- 31cb990: feat(byoc): self-host enrollment hardening, optional `expires_at` on enrollment create/list and a rotate operation that mints a new `pbh_` token once and atomically invalidates the old one
+
 ## 0.2.2
 
 ### Patch Changes
