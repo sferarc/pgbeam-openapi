@@ -1,0 +1,43 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - name: enrollment_id
+    in: path
+    required: true
+    description: Unique enrollment identifier.
+    schema:
+      type: string
+      pattern: ^[a-zA-Z0-9_.-]+$
+      example: she_01h455vb4pex5vsknk084sn02q
+post:
+  operationId: rotateSelfHostEnrollment
+  summary: Rotate a self-host enrollment token
+  description: >-
+    Mints a new enrollment token in place, keeping the same enrollment id,
+    metadata, and expiry. The swap is atomic: the old token stops authenticating
+    new proxy connections the moment this call returns. An already-connected
+    proxy keeps its existing gRPC streams until it disconnects, then must
+    present the new token to reconnect. The new token is returned once and
+    cannot be retrieved again.
+  tags:
+    - Platform
+  responses:
+    '200':
+      description: Token rotated. New token shown once.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SelfHostEnrollmentSecret.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      description: The enrollment is revoked and cannot be rotated.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml

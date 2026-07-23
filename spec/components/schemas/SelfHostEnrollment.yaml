@@ -42,3 +42,11 @@ properties:
     format: date-time
     nullable: true
     description: When the enrollment was revoked. Null means active.
+  expires_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: >-
+      When the enrollment token expires and stops authenticating new proxy
+      connections. Null means it never expires. Enforcement is fail-closed at
+      the gRPC auth gate the instant this time passes.

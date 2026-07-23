@@ -13,3 +13,11 @@ properties:
     maxLength: 500
     pattern: ^[^\x00]*$
     example: prod cluster
+  expires_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: >-
+      Optional expiry. When set, the enrollment token stops authenticating new
+      proxy connections at this time (must be in the future). Omit or set null
+      for a token that never expires.

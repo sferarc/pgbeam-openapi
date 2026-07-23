@@ -161,6 +161,9 @@ paths:
     $ref: paths/v1_organizations_{org_id}_self-host-enrollments.yaml
   /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}:
     $ref: paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}.yaml
+  /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}/rotate:
+    $ref: >-
+      paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}_rotate.yaml
   /v1/organizations/{org_id}/support/cases:
     $ref: paths/v1_organizations_{org_id}_support_cases.yaml
   /v1/organizations/{org_id}/support/cases/{case_id}:
