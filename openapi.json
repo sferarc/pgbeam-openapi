@@ -4808,6 +4808,19 @@
             "type": "string",
             "description": "Parsed statement kind (e.g. update, delete, ddl)."
           },
+          "estimated_rows": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true,
+            "description": "Best-effort estimate of how many rows the statement would affect, attached by the data plane when the statement was held. Either the planner estimate from EXPLAIN or the exact count observed in a rolled-back trial execution. Null when no estimate could be made; treat it as an estimate, not a guarantee."
+          },
+          "target_tables": {
+            "type": "array",
+            "description": "Relations the statement touches, from the gateway's parse analysis.",
+            "items": {
+              "type": "string"
+            }
+          },
           "status": {
             "type": "string",
             "enum": [
