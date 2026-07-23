@@ -1,0 +1,58 @@
+type: object
+description: >-
+  One distinct recorded query and the decision the candidate policy would reach
+  for it.
+required:
+  - query_hash
+  - sql
+  - occurrences
+  - first_seen
+  - last_seen
+  - recorded_event
+  - change
+  - result
+properties:
+  query_hash:
+    type: string
+    description: Normalized query hash identifying this statement shape.
+  sql:
+    type: string
+    description: >-
+      The recorded statement (normalized, literals replaced with $N
+      placeholders), from its most recent occurrence.
+  statement_kind:
+    type: string
+    description: Statement kind (select, insert, update, delete, ddl, ...).
+  occurrences:
+    type: integer
+    format: int64
+    description: How many recorded entries share this query shape in the window.
+  first_seen:
+    type: string
+    format: date-time
+    description: Oldest occurrence in the window.
+  last_seen:
+    type: string
+    format: date-time
+    description: Newest occurrence in the window.
+  recorded_event:
+    type: string
+    description: >-
+      The most recent recorded outcome for this query (query, masked, truncated,
+      or blocked).
+  recorded_rule:
+    type: string
+    description: The decision rule recorded with a blocked outcome.
+  change:
+    type: string
+    enum:
+      - newly_blocked
+      - newly_allowed
+      - still_allowed
+      - still_blocked
+    description: >-
+      How the candidate decision compares to the recorded outcome. newly_blocked
+      and newly_allowed are the changes worth reviewing before rollout;
+      still_allowed and still_blocked are unchanged.
+  result:
+    $ref: ./DryEvalResult.yaml

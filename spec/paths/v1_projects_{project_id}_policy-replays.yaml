@@ -1,0 +1,43 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: replayPolicy
+  x-feature-flag: agent-gateway
+  summary: Replay recorded agent traffic against a policy
+  description: >-
+    Replays the project's recorded agent audit traffic against a candidate
+    policy (either a draft supplied inline or an existing policy referenced by
+    id) and reports what would change: which queries that ran would now be
+    blocked, which blocked queries would now be permitted, and which results
+    would be masked or row-filtered. Traffic is deduplicated by normalized query
+    shape, newest first, and every statement is evaluated through the data
+    plane's own policy engine, so the verdicts match real enforcement. Stateful
+    checks (budgets, approvals, write-mode routing) are reported as
+    informational notes on each result, not verdicts. This endpoint reads only
+    the audit log; it never connects to the upstream database and persists
+    nothing.
+  tags:
+    - Policies
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PolicyReplayInput.yaml
+  responses:
+    '200':
+      description: The replay summary and per-query decisions.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyReplayResult.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,57 @@
+type: object
+description: Aggregate outcome of a policy replay.
+required:
+  - entries_scanned
+  - distinct_queries
+  - evaluated
+  - would_allow
+  - would_block
+  - would_mask
+  - would_row_filter
+  - newly_blocked
+  - newly_allowed
+  - skipped_unparseable
+  - truncated
+properties:
+  entries_scanned:
+    type: integer
+    format: int64
+    description: Recorded audit entries covered by the replayed queries.
+  distinct_queries:
+    type: integer
+    description: Distinct normalized queries found in the window (capped at limit).
+  evaluated:
+    type: integer
+    description: Distinct queries actually evaluated against the candidate policy.
+  would_allow:
+    type: integer
+    description: Queries the candidate policy would allow unchanged.
+  would_block:
+    type: integer
+    description: Queries the candidate policy would block.
+  would_mask:
+    type: integer
+    description: Queries the candidate policy would mask result columns on.
+  would_row_filter:
+    type: integer
+    description: Queries the candidate policy would inject a row filter into.
+  newly_blocked:
+    type: integer
+    description: >-
+      Queries that executed under the recorded policy but the candidate policy
+      would block.
+  newly_allowed:
+    type: integer
+    description: >-
+      Queries that were blocked when recorded but the candidate policy would
+      permit.
+  skipped_unparseable:
+    type: integer
+    description: >-
+      Distinct queries skipped because the stored statement was truncated at
+      record time and can no longer be parsed faithfully.
+  truncated:
+    type: boolean
+    description: >-
+      True when the window contained more distinct queries than limit; only the
+      newest were replayed.

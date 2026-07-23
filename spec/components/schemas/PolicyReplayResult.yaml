@@ -1,0 +1,17 @@
+type: object
+description: >-
+  The outcome of replaying recorded agent traffic against a candidate policy: an
+  aggregate summary plus per-query decisions, changes first.
+required:
+  - summary
+  - items
+properties:
+  summary:
+    $ref: ./PolicyReplaySummary.yaml
+  items:
+    type: array
+    description: >-
+      Per-query replay decisions, ordered changes first (newly blocked, then
+      newly allowed), then by occurrence count.
+    items:
+      $ref: ./PolicyReplayItem.yaml

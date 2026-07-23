@@ -1,0 +1,32 @@
+type: object
+description: >-
+  A window of recorded agent traffic to replay plus the candidate policy to
+  replay it against. Supply exactly one of policy_id (an existing saved policy)
+  or policy (an unsaved draft, e.g. the in-progress editor form).
+properties:
+  policy_id:
+    type: string
+    description: ID of an existing saved policy profile to replay against.
+    example: pol_01h455vb4pex5vsknk084sn02q
+  policy:
+    $ref: ./PolicyProfileInput.yaml
+  credential_id:
+    type: string
+    description: Restrict the replay to traffic recorded for one agent credential.
+    example: cred_01h455vb4pex5vsknk084sn02q
+  start_ts:
+    type: string
+    format: date-time
+    description: Start of the traffic window (inclusive). Defaults to 7 days before end_ts.
+  end_ts:
+    type: string
+    format: date-time
+    description: End of the traffic window (exclusive). Defaults to now.
+  limit:
+    type: integer
+    minimum: 1
+    maximum: 500
+    default: 200
+    description: >-
+      Maximum number of distinct queries to replay, newest first. Traffic is
+      deduplicated by normalized query hash before evaluation.

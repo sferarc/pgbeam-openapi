@@ -1594,6 +1594,46 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /v1/projects/{project_id}/policy-replays:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    post:
+      operationId: replayPolicy
+      x-feature-flag: agent-gateway
+      summary: Replay recorded agent traffic against a policy
+      description: >-
+        Replays the project's recorded agent audit traffic against a candidate policy (either a draft supplied inline or
+        an existing policy referenced by id) and reports what would change: which queries that ran would now be blocked,
+        which blocked queries would now be permitted, and which results would be masked or row-filtered. Traffic is
+        deduplicated by normalized query shape, newest first, and every statement is evaluated through the data plane's
+        own policy engine, so the verdicts match real enforcement. Stateful checks (budgets, approvals, write-mode
+        routing) are reported as informational notes on each result, not verdicts. This endpoint reads only the audit
+        log; it never connects to the upstream database and persists nothing.
+      tags:
+        - Policies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyReplayInput'
+      responses:
+        '200':
+          description: The replay summary and per-query decisions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyReplayResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
   /v1/projects:
     post:
       operationId: createProject
@@ -5054,6 +5094,162 @@ components:
           example: pol_01h455vb4pex5vsknk084sn02q
         policy:
           $ref: '#/components/schemas/PolicyProfileInput'
+    PolicyReplayInput:
+      type: object
+      description: >-
+        A window of recorded agent traffic to replay plus the candidate policy to replay it against. Supply exactly one
+        of policy_id (an existing saved policy) or policy (an unsaved draft, e.g. the in-progress editor form).
+      properties:
+        policy_id:
+          type: string
+          description: ID of an existing saved policy profile to replay against.
+          example: pol_01h455vb4pex5vsknk084sn02q
+        policy:
+          $ref: '#/components/schemas/PolicyProfileInput'
+        credential_id:
+          type: string
+          description: Restrict the replay to traffic recorded for one agent credential.
+          example: cred_01h455vb4pex5vsknk084sn02q
+        start_ts:
+          type: string
+          format: date-time
+          description: Start of the traffic window (inclusive). Defaults to 7 days before end_ts.
+        end_ts:
+          type: string
+          format: date-time
+          description: End of the traffic window (exclusive). Defaults to now.
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 200
+          description: >-
+            Maximum number of distinct queries to replay, newest first. Traffic is deduplicated by normalized query hash
+            before evaluation.
+    PolicyReplaySummary:
+      type: object
+      description: Aggregate outcome of a policy replay.
+      required:
+        - entries_scanned
+        - distinct_queries
+        - evaluated
+        - would_allow
+        - would_block
+        - would_mask
+        - would_row_filter
+        - newly_blocked
+        - newly_allowed
+        - skipped_unparseable
+        - truncated
+      properties:
+        entries_scanned:
+          type: integer
+          format: int64
+          description: Recorded audit entries covered by the replayed queries.
+        distinct_queries:
+          type: integer
+          description: Distinct normalized queries found in the window (capped at limit).
+        evaluated:
+          type: integer
+          description: Distinct queries actually evaluated against the candidate policy.
+        would_allow:
+          type: integer
+          description: Queries the candidate policy would allow unchanged.
+        would_block:
+          type: integer
+          description: Queries the candidate policy would block.
+        would_mask:
+          type: integer
+          description: Queries the candidate policy would mask result columns on.
+        would_row_filter:
+          type: integer
+          description: Queries the candidate policy would inject a row filter into.
+        newly_blocked:
+          type: integer
+          description: Queries that executed under the recorded policy but the candidate policy would block.
+        newly_allowed:
+          type: integer
+          description: Queries that were blocked when recorded but the candidate policy would permit.
+        skipped_unparseable:
+          type: integer
+          description: >-
+            Distinct queries skipped because the stored statement was truncated at record time and can no longer be
+            parsed faithfully.
+        truncated:
+          type: boolean
+          description: True when the window contained more distinct queries than limit; only the newest were replayed.
+    PolicyReplayItem:
+      type: object
+      description: One distinct recorded query and the decision the candidate policy would reach for it.
+      required:
+        - query_hash
+        - sql
+        - occurrences
+        - first_seen
+        - last_seen
+        - recorded_event
+        - change
+        - result
+      properties:
+        query_hash:
+          type: string
+          description: Normalized query hash identifying this statement shape.
+        sql:
+          type: string
+          description: >-
+            The recorded statement (normalized, literals replaced with $N placeholders), from its most recent
+            occurrence.
+        statement_kind:
+          type: string
+          description: Statement kind (select, insert, update, delete, ddl, ...).
+        occurrences:
+          type: integer
+          format: int64
+          description: How many recorded entries share this query shape in the window.
+        first_seen:
+          type: string
+          format: date-time
+          description: Oldest occurrence in the window.
+        last_seen:
+          type: string
+          format: date-time
+          description: Newest occurrence in the window.
+        recorded_event:
+          type: string
+          description: The most recent recorded outcome for this query (query, masked, truncated, or blocked).
+        recorded_rule:
+          type: string
+          description: The decision rule recorded with a blocked outcome.
+        change:
+          type: string
+          enum:
+            - newly_blocked
+            - newly_allowed
+            - still_allowed
+            - still_blocked
+          description: >-
+            How the candidate decision compares to the recorded outcome. newly_blocked and newly_allowed are the changes
+            worth reviewing before rollout; still_allowed and still_blocked are unchanged.
+        result:
+          $ref: '#/components/schemas/DryEvalResult'
+    PolicyReplayResult:
+      type: object
+      description: >-
+        The outcome of replaying recorded agent traffic against a candidate policy: an aggregate summary plus per-query
+        decisions, changes first.
+      required:
+        - summary
+        - items
+      properties:
+        summary:
+          $ref: '#/components/schemas/PolicyReplaySummary'
+        items:
+          type: array
+          description: >-
+            Per-query replay decisions, ordered changes first (newly blocked, then newly allowed), then by occurrence
+            count.
+          items:
+            $ref: '#/components/schemas/PolicyReplayItem'
     DryEvalMaskedColumn:
       type: object
       description: One result column that would be masked, with the mask kind applied.

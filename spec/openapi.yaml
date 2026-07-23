@@ -143,6 +143,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_policies_{policy_id}.yaml
   /v1/projects/{project_id}/policy-evaluations:
     $ref: paths/v1_projects_{project_id}_policy-evaluations.yaml
+  /v1/projects/{project_id}/policy-replays:
+    $ref: paths/v1_projects_{project_id}_policy-replays.yaml
   /v1/projects:
     $ref: paths/v1_projects.yaml
   /v1/projects/{project_id}:
