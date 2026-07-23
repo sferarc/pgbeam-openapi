@@ -1,5 +1,12 @@
 # @pgbeam/openapi
 
+## 0.2.2
+
+### Patch Changes
+
+- 19a6caf: feat(approvals): affected-row estimate, target tables, and statement kind on approval requests
+- 5d49e15: feat(providers): SelfHostEnrollment resource in all three IaC providers, gateway-resource secret-lifecycle tests, crossplane generator fix for immutable resources with wrapped create responses
+
 ## 0.2.1
 
 ### Patch Changes
