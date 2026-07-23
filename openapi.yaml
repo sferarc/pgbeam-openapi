@@ -6543,3 +6543,17 @@ x-iac-resources:
         - url
       list-query-params:
         page_size: 100
+  SelfHostEnrollment:
+    description: >-
+      Manages a self-host (BYOC) enrollment: a token a self-hosted proxy uses to authenticate to the control plane's
+      config/audit stream. The token is a one-time secret returned only at creation and exposed as a sensitive computed
+      output; it cannot be retrieved again. To rotate the token, replace the resource. Deletion revokes the enrollment.
+    operations:
+      create: createSelfHostEnrollment
+      delete: revokeSelfHostEnrollment
+      list: listSelfHostEnrollments
+    extra-outputs:
+      token:
+        path: token
+        description: One-time enrollment token (pbh_...) for the self-hosted proxy's GRPC_AUTH_TOKEN (shown once).
+        sensitive: true
