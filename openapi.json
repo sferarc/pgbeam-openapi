@@ -3998,7 +3998,7 @@
         "name": "source",
         "in": "query",
         "required": false,
-        "description": "Filter by statement origin (wire, mcp, or control).",
+        "description": "Filter by statement origin (wire, mcp, rest, or control).",
         "schema": {
           "$ref": "#/components/schemas/AuditSource"
         }
@@ -4890,10 +4890,11 @@
       },
       "AuditSource": {
         "type": "string",
-        "description": "Statement origin (wire, mcp, or control).",
+        "description": "Statement origin (wire, mcp, rest, or control).",
         "enum": [
           "wire",
           "mcp",
+          "rest",
           "control"
         ]
       },
@@ -4981,7 +4982,7 @@
           },
           "source": {
             "type": "string",
-            "description": "Statement origin (wire, mcp, or control for control-plane lifecycle events)."
+            "description": "Statement origin (wire, mcp, rest, or control for control-plane lifecycle events)."
           },
           "ts": {
             "type": "string",
