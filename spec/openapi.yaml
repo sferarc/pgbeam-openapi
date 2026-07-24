@@ -137,6 +137,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_migrations:lint.yaml
   /v1/organizations/{org_id}/onboarding:
     $ref: paths/v1_organizations_{org_id}_onboarding.yaml
+  /v1/organizations:
+    $ref: paths/v1_organizations.yaml
   /v1/projects/{project_id}/policies:
     $ref: paths/v1_projects_{project_id}_policies.yaml
   /v1/projects/{project_id}/policies/{policy_id}:

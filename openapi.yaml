@@ -1412,6 +1412,27 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /v1/organizations:
+    get:
+      operationId: listOrganizations
+      summary: List organizations
+      description: >-
+        Lists the organizations visible to the caller's credential. An organization-scoped API key (pbo_) returns
+        exactly the organization it belongs to. A user credential (account-scoped API key or dashboard session token)
+        returns the organizations the user is a member of, including the caller's role in each.
+      tags:
+        - Account
+      responses:
+        '200':
+          description: Organizations visible to the caller.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
   /v1/projects/{project_id}/policies:
     parameters:
       - $ref: '#/components/parameters/ProjectId'
@@ -4711,6 +4732,43 @@ components:
         dismiss:
           type: boolean
           description: Set to true to dismiss the onboarding checklist.
+    OrganizationSummary:
+      type: object
+      description: An organization visible to the caller's credential.
+      required:
+        - id
+        - name
+        - slug
+      properties:
+        id:
+          type: string
+          description: Organization identifier.
+          example: org_abc123
+        name:
+          type: string
+          description: Organization display name.
+          example: Acme Corp
+        slug:
+          type: string
+          description: Organization slug used in URLs and routing.
+          example: acme-corp
+        role:
+          type: string
+          description: >-
+            The caller's role within the organization. Omitted for organization-scoped API keys, which act as the
+            organization itself rather than as a member.
+          example: owner
+    ListOrganizationsResponse:
+      type: object
+      description: Organizations visible to the caller's credential.
+      required:
+        - organizations
+      properties:
+        organizations:
+          type: array
+          description: Organizations the caller can access.
+          items:
+            $ref: '#/components/schemas/OrganizationSummary'
     PiiSuggestion:
       type: object
       description: >-

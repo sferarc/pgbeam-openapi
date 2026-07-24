@@ -1,0 +1,10 @@
+type: object
+description: Organizations visible to the caller's credential.
+required:
+  - organizations
+properties:
+  organizations:
+    type: array
+    description: Organizations the caller can access.
+    items:
+      $ref: ./OrganizationSummary.yaml

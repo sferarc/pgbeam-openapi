@@ -1,0 +1,25 @@
+type: object
+description: An organization visible to the caller's credential.
+required:
+  - id
+  - name
+  - slug
+properties:
+  id:
+    type: string
+    description: Organization identifier.
+    example: org_abc123
+  name:
+    type: string
+    description: Organization display name.
+    example: Acme Corp
+  slug:
+    type: string
+    description: Organization slug used in URLs and routing.
+    example: acme-corp
+  role:
+    type: string
+    description: >-
+      The caller's role within the organization. Omitted for organization-scoped
+      API keys, which act as the organization itself rather than as a member.
+    example: owner

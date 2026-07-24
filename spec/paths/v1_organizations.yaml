@@ -1,0 +1,22 @@
+get:
+  operationId: listOrganizations
+  summary: List organizations
+  description: >-
+    Lists the organizations visible to the caller's credential. An
+    organization-scoped API key (pbo_) returns exactly the organization it
+    belongs to. A user credential (account-scoped API key or dashboard session
+    token) returns the organizations the user is a member of, including the
+    caller's role in each.
+  tags:
+    - Account
+  responses:
+    '200':
+      description: Organizations visible to the caller.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListOrganizationsResponse.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
