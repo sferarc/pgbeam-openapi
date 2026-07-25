@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated schema annotations for a project.
+required:
+  - annotations
+properties:
+  annotations:
+    type: array
+    description: Annotations returned for the current page.
+    items:
+      $ref: ./SchemaAnnotation.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

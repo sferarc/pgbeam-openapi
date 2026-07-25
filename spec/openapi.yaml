@@ -41,6 +41,9 @@ tags:
   - name: Honeytokens
     description: Decoy (canary) relations that trip on agent access
     x-icon: Fingerprint
+  - name: SchemaAnnotations
+    description: Human-written table and column descriptions for the schema catalog
+    x-icon: BookText
   - name: Anomalies
     description: Anomalous-behavior alerts surfaced by the gateway
     x-icon: TriangleAlert
@@ -169,6 +172,8 @@ paths:
     $ref: paths/v1_databases_{database_id}_replicas.yaml
   /v1/databases/{database_id}/replicas/{replica_id}:
     $ref: paths/v1_databases_{database_id}_replicas_{replica_id}.yaml
+  /v1/projects/{project_id}/schema-annotations:
+    $ref: paths/v1_projects_{project_id}_schema-annotations.yaml
   /v1/organizations/{org_id}/self-host-enrollments:
     $ref: paths/v1_organizations_{org_id}_self-host-enrollments.yaml
   /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}:

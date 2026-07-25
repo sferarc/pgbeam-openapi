@@ -1,0 +1,105 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: listSchemaAnnotations
+  summary: List schema annotations
+  description: >
+    Lists the project's human-written table and column descriptions. These are
+    surfaced to connected agents through the MCP schema catalog.
+  tags:
+    - SchemaAnnotations
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of schema annotations.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListSchemaAnnotationsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+put:
+  operationId: putSchemaAnnotation
+  summary: Create or replace a schema annotation
+  description: >
+    Attaches an operator-written description to a table (omit column_name) or a
+    column. Keyed by (schema_name, table_name, column_name); an existing
+    annotation with the same key is replaced.
+  tags:
+    - SchemaAnnotations
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/SchemaAnnotationInput.yaml
+  responses:
+    '200':
+      description: The created or updated annotation.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/SchemaAnnotation.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+delete:
+  operationId: deleteSchemaAnnotation
+  summary: Delete a schema annotation
+  description: >
+    Removes a single annotation identified by its natural key. Omit column_name
+    to delete a table-level annotation, and omit schema_name to match the
+    unqualified form.
+  tags:
+    - SchemaAnnotations
+  parameters:
+    - name: table_name
+      in: query
+      required: true
+      description: Relation (table or view) the annotation describes.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+    - name: schema_name
+      in: query
+      required: false
+      description: Optional schema. Omit to match the unqualified form.
+      schema:
+        type: string
+        maxLength: 255
+    - name: column_name
+      in: query
+      required: false
+      description: Optional column. Omit to delete a table-level annotation.
+      schema:
+        type: string
+        maxLength: 255
+  responses:
+    '204':
+      description: Annotation deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

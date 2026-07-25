@@ -39,6 +39,9 @@ tags:
   - name: Honeytokens
     description: Decoy (canary) relations that trip on agent access
     x-icon: Fingerprint
+  - name: SchemaAnnotations
+    description: Human-written table and column descriptions for the schema catalog
+    x-icon: BookText
   - name: Anomalies
     description: Anomalous-behavior alerts surfaced by the gateway
     x-icon: TriangleAlert
@@ -2116,6 +2119,110 @@ paths:
           $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /v1/projects/{project_id}/schema-annotations:
+    parameters:
+      - $ref: '#/components/parameters/ProjectId'
+    get:
+      operationId: listSchemaAnnotations
+      summary: List schema annotations
+      description: >
+        Lists the project's human-written table and column descriptions. These are surfaced to connected agents through
+        the MCP schema catalog.
+      tags:
+        - SchemaAnnotations
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: List of schema annotations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSchemaAnnotationsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    put:
+      operationId: putSchemaAnnotation
+      summary: Create or replace a schema annotation
+      description: >
+        Attaches an operator-written description to a table (omit column_name) or a column. Keyed by (schema_name,
+        table_name, column_name); an existing annotation with the same key is replaced.
+      tags:
+        - SchemaAnnotations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchemaAnnotationInput'
+      responses:
+        '200':
+          description: The created or updated annotation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaAnnotation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    delete:
+      operationId: deleteSchemaAnnotation
+      summary: Delete a schema annotation
+      description: >
+        Removes a single annotation identified by its natural key. Omit column_name to delete a table-level annotation,
+        and omit schema_name to match the unqualified form.
+      tags:
+        - SchemaAnnotations
+      parameters:
+        - name: table_name
+          in: query
+          required: true
+          description: Relation (table or view) the annotation describes.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: schema_name
+          in: query
+          required: false
+          description: Optional schema. Omit to match the unqualified form.
+          schema:
+            type: string
+            maxLength: 255
+        - name: column_name
+          in: query
+          required: false
+          description: Optional column. Omit to delete a table-level annotation.
+          schema:
+            type: string
+            maxLength: 255
+      responses:
+        '204':
+          description: Annotation deleted.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/organizations/{org_id}/self-host-enrollments:
     parameters:
       - $ref: '#/components/parameters/OrgId'
@@ -6203,6 +6310,103 @@ components:
           description: Read replicas attached to the database.
           items:
             $ref: '#/components/schemas/Replica'
+        next_page_token:
+          type: string
+          description: Opaque token for cursor-based pagination.
+    SchemaAnnotation:
+      type: object
+      description: >
+        A human-written description for a table or column, attached by a project operator and surfaced through the
+        agent-facing MCP catalog. When present it takes precedence over the DB-native comment for the same relation or
+        column.
+      required:
+        - id
+        - project_id
+        - table_name
+        - description
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique annotation identifier.
+          example: sca_01j9x8y7z6w5v4u3t2s1r0q9p8
+        project_id:
+          type: string
+          description: Project the annotation belongs to.
+          example: prj_01j9x8y7z6w5v4u3t2s1r0q9p8
+        schema_name:
+          type: string
+          nullable: true
+          description: |
+            Optional schema. Null matches the unqualified form, mirroring the relation allowlist normalization.
+          example: public
+        table_name:
+          type: string
+          description: Relation (table or view) the annotation describes.
+          example: users
+        column_name:
+          type: string
+          nullable: true
+          description: |
+            Optional column. Null means the annotation describes the table itself.
+          example: email
+        description:
+          type: string
+          description: The operator-written description text.
+          example: Primary customer account. One row per signed-up user.
+        created_at:
+          type: string
+          format: date-time
+          description: When the annotation was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When the annotation was last updated.
+    SchemaAnnotationInput:
+      type: object
+      description: >
+        Request body for creating or replacing a schema annotation. Keyed by (schema_name, table_name, column_name); an
+        existing annotation with the same key is replaced.
+      required:
+        - table_name
+        - description
+      properties:
+        schema_name:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: Optional schema. Null or empty matches the unqualified form.
+          example: public
+        table_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Relation (table or view) the annotation describes.
+          example: users
+        column_name:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: Optional column. Null describes the table itself.
+          example: email
+        description:
+          type: string
+          minLength: 1
+          maxLength: 4096
+          description: The operator-written description text.
+          example: Primary customer account. One row per signed-up user.
+    ListSchemaAnnotationsResponse:
+      type: object
+      description: Cursor-paginated schema annotations for a project.
+      required:
+        - annotations
+      properties:
+        annotations:
+          type: array
+          description: Annotations returned for the current page.
+          items:
+            $ref: '#/components/schemas/SchemaAnnotation'
         next_page_token:
           type: string
           description: Opaque token for cursor-based pagination.

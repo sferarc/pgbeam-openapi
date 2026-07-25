@@ -1,0 +1,50 @@
+type: object
+description: >
+  A human-written description for a table or column, attached by a project
+  operator and surfaced through the agent-facing MCP catalog. When present it
+  takes precedence over the DB-native comment for the same relation or column.
+required:
+  - id
+  - project_id
+  - table_name
+  - description
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique annotation identifier.
+    example: sca_01j9x8y7z6w5v4u3t2s1r0q9p8
+  project_id:
+    type: string
+    description: Project the annotation belongs to.
+    example: prj_01j9x8y7z6w5v4u3t2s1r0q9p8
+  schema_name:
+    type: string
+    nullable: true
+    description: >
+      Optional schema. Null matches the unqualified form, mirroring the relation
+      allowlist normalization.
+    example: public
+  table_name:
+    type: string
+    description: Relation (table or view) the annotation describes.
+    example: users
+  column_name:
+    type: string
+    nullable: true
+    description: |
+      Optional column. Null means the annotation describes the table itself.
+    example: email
+  description:
+    type: string
+    description: The operator-written description text.
+    example: Primary customer account. One row per signed-up user.
+  created_at:
+    type: string
+    format: date-time
+    description: When the annotation was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the annotation was last updated.
