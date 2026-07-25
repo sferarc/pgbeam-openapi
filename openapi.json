@@ -410,6 +410,62 @@
         }
       }
     },
+    "/v1/projects/{project_id}/agents/{agent_id}/policy-recommendation": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ProjectId"
+        },
+        {
+          "$ref": "#/components/parameters/AgentId"
+        }
+      ],
+      "post": {
+        "operationId": "recommendAgentPolicy",
+        "x-feature-flag": "agent-gateway",
+        "summary": "Recommend a least-privilege policy from recorded traffic",
+        "description": "Derives the tightest policy that would still pass every statement this agent credential has legitimately run, using its recorded audit history over a lookback window (default 30 days). The candidate's table allowlist is the union of relations actually referenced, its statement-kind allow set is the observed set, it downgrades to read-only when no writes were seen, and its max_rows ceiling comes from an observed high-percentile row count. The candidate is proven safe by replaying it through the data plane's own policy engine against the same history: a good recommendation has replay.summary.newly_blocked == 0. This endpoint is advisory only. It reads the audit log, never connects to the upstream database, and never creates, updates, or mutates any policy or credential; the operator loads the candidate into the editor and saves it themselves.",
+        "tags": [
+          "Policies"
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyRecommendationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The recommended candidate policy and its replay proof.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyRecommendation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
     "/v1/projects/{project_id}/anomalies": {
       "parameters": [
         {
@@ -7530,6 +7586,79 @@
             "description": "Per-query replay decisions, ordered changes first (newly blocked, then newly allowed), then by occurrence count.",
             "items": {
               "$ref": "#/components/schemas/PolicyReplayItem"
+            }
+          }
+        }
+      },
+      "PolicyRecommendationInput": {
+        "type": "object",
+        "description": "Optional parameters for a least-privilege policy recommendation. Every field is optional; an empty body analyzes the last 30 days of the credential's audit history.",
+        "properties": {
+          "lookback_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365,
+            "default": 30,
+            "description": "How many days of recorded audit history to analyze."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 200,
+            "description": "Maximum number of distinct query shapes to analyze and replay, newest first. Traffic is deduplicated by normalized query hash."
+          }
+        }
+      },
+      "PolicyRecommendation": {
+        "type": "object",
+        "description": "A least-privilege policy derived from an agent credential's recorded audit history, together with the replay diff that proves the candidate would not newly block any statement the credential legitimately ran. Advisory only: this endpoint never creates, updates, or otherwise mutates a policy or a credential. A good recommendation has replay.summary.newly_blocked == 0.",
+        "required": [
+          "sufficient_history",
+          "observed_queries",
+          "observed_entries",
+          "window_start",
+          "window_end"
+        ],
+        "properties": {
+          "sufficient_history": {
+            "type": "boolean",
+            "description": "True when there was enough parseable, executed traffic to derive a candidate. When false, candidate and replay are omitted and message explains why no recommendation could be made."
+          },
+          "message": {
+            "type": "string",
+            "description": "Present when sufficient_history is false; a clear explanation of why no recommendation could be produced (e.g. no executed traffic in the window)."
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/PolicyProfileInput"
+          },
+          "replay": {
+            "$ref": "#/components/schemas/PolicyReplayResult"
+          },
+          "observed_queries": {
+            "type": "integer",
+            "description": "Distinct executed query shapes the candidate was derived from (blocked attempts are excluded from derivation)."
+          },
+          "observed_entries": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Recorded audit entries covered by the analyzed window."
+          },
+          "window_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the analyzed traffic window (inclusive)."
+          },
+          "window_end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End of the analyzed traffic window (exclusive)."
+          },
+          "notes": {
+            "type": "array",
+            "description": "Human-readable rationale for each tightening decision (e.g. why the candidate was downgraded to read-only, or how max_rows was chosen).",
+            "items": {
+              "type": "string"
             }
           }
         }

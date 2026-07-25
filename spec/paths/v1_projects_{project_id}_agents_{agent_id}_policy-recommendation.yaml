@@ -1,0 +1,45 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AgentId.yaml
+post:
+  operationId: recommendAgentPolicy
+  x-feature-flag: agent-gateway
+  summary: Recommend a least-privilege policy from recorded traffic
+  description: >-
+    Derives the tightest policy that would still pass every statement this agent
+    credential has legitimately run, using its recorded audit history over a
+    lookback window (default 30 days). The candidate's table allowlist is the
+    union of relations actually referenced, its statement-kind allow set is the
+    observed set, it downgrades to read-only when no writes were seen, and its
+    max_rows ceiling comes from an observed high-percentile row count. The
+    candidate is proven safe by replaying it through the data plane's own policy
+    engine against the same history: a good recommendation has
+    replay.summary.newly_blocked == 0. This endpoint is advisory only. It reads
+    the audit log, never connects to the upstream database, and never creates,
+    updates, or mutates any policy or credential; the operator loads the
+    candidate into the editor and saves it themselves.
+  tags:
+    - Policies
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/PolicyRecommendationInput.yaml
+  responses:
+    '200':
+      description: The recommended candidate policy and its replay proof.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyRecommendation.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

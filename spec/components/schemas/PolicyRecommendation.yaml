@@ -1,0 +1,53 @@
+type: object
+description: >-
+  A least-privilege policy derived from an agent credential's recorded audit
+  history, together with the replay diff that proves the candidate would not
+  newly block any statement the credential legitimately ran. Advisory only: this
+  endpoint never creates, updates, or otherwise mutates a policy or a
+  credential. A good recommendation has replay.summary.newly_blocked == 0.
+required:
+  - sufficient_history
+  - observed_queries
+  - observed_entries
+  - window_start
+  - window_end
+properties:
+  sufficient_history:
+    type: boolean
+    description: >-
+      True when there was enough parseable, executed traffic to derive a
+      candidate. When false, candidate and replay are omitted and message
+      explains why no recommendation could be made.
+  message:
+    type: string
+    description: >-
+      Present when sufficient_history is false; a clear explanation of why no
+      recommendation could be produced (e.g. no executed traffic in the window).
+  candidate:
+    $ref: ./PolicyProfileInput.yaml
+  replay:
+    $ref: ./PolicyReplayResult.yaml
+  observed_queries:
+    type: integer
+    description: >-
+      Distinct executed query shapes the candidate was derived from (blocked
+      attempts are excluded from derivation).
+  observed_entries:
+    type: integer
+    format: int64
+    description: Recorded audit entries covered by the analyzed window.
+  window_start:
+    type: string
+    format: date-time
+    description: Start of the analyzed traffic window (inclusive).
+  window_end:
+    type: string
+    format: date-time
+    description: End of the analyzed traffic window (exclusive).
+  notes:
+    type: array
+    description: >-
+      Human-readable rationale for each tightening decision (e.g. why the
+      candidate was downgraded to read-only, or how max_rows was chosen).
+    items:
+      type: string

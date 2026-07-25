@@ -75,6 +75,9 @@ paths:
     $ref: paths/v1_projects_{project_id}_agents_{agent_id}.yaml
   /v1/projects/{project_id}/agents/{agent_id}/rotate:
     $ref: paths/v1_projects_{project_id}_agents_{agent_id}_rotate.yaml
+  /v1/projects/{project_id}/agents/{agent_id}/policy-recommendation:
+    $ref: >-
+      paths/v1_projects_{project_id}_agents_{agent_id}_policy-recommendation.yaml
   /v1/projects/{project_id}/anomalies:
     $ref: paths/v1_projects_{project_id}_anomalies.yaml
   /v1/projects/{project_id}/anomalies/{anomaly_id}:

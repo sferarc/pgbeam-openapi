@@ -1,0 +1,20 @@
+type: object
+description: >-
+  Optional parameters for a least-privilege policy recommendation. Every field
+  is optional; an empty body analyzes the last 30 days of the credential's audit
+  history.
+properties:
+  lookback_days:
+    type: integer
+    minimum: 1
+    maximum: 365
+    default: 30
+    description: How many days of recorded audit history to analyze.
+  limit:
+    type: integer
+    minimum: 1
+    maximum: 500
+    default: 200
+    description: >-
+      Maximum number of distinct query shapes to analyze and replay, newest
+      first. Traffic is deduplicated by normalized query hash.
