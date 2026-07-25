@@ -59,6 +59,11 @@
       "x-icon": "Webhook"
     },
     {
+      "name": "Honeytokens",
+      "description": "Decoy (canary) relations that trip on agent access",
+      "x-icon": "Fingerprint"
+    },
+    {
       "name": "Anomalies",
       "description": "Anomalous-behavior alerts surfaced by the gateway",
       "x-icon": "TriangleAlert"
@@ -1987,6 +1992,210 @@
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/projects/{project_id}/honeytokens": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ProjectId"
+        }
+      ],
+      "post": {
+        "operationId": "createHoneytoken",
+        "summary": "Register a honeytoken",
+        "description": "Registers a decoy (canary) relation for the project. Any agent statement\nthat references it is blocked and recorded as a canary_tripped audit event.\n",
+        "tags": [
+          "Honeytokens"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HoneytokenInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Honeytoken registered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Honeytoken"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listHoneytokens",
+        "summary": "List honeytokens",
+        "description": "Lists the project's honeytokens.",
+        "tags": [
+          "Honeytokens"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of honeytokens.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListHoneytokensResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/projects/{project_id}/honeytokens/{honeytoken_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ProjectId"
+        },
+        {
+          "$ref": "#/components/parameters/HoneytokenId"
+        }
+      ],
+      "get": {
+        "operationId": "getHoneytoken",
+        "summary": "Get a honeytoken",
+        "description": "Returns a single honeytoken by ID.",
+        "tags": [
+          "Honeytokens"
+        ],
+        "responses": {
+          "200": {
+            "description": "The honeytoken.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Honeytoken"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateHoneytoken",
+        "summary": "Update a honeytoken",
+        "description": "Updates a honeytoken's relation or action.",
+        "tags": [
+          "Honeytokens"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HoneytokenInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated honeytoken.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Honeytoken"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteHoneytoken",
+        "summary": "Delete a honeytoken",
+        "description": "Removes a honeytoken from the project.",
+        "tags": [
+          "Honeytokens"
+        ],
+        "responses": {
+          "204": {
+            "description": "Honeytoken deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -4062,6 +4271,16 @@
         "in": "path",
         "required": true,
         "description": "Unique webhook endpoint identifier (prefixed, e.g. whk_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "HoneytokenId": {
+        "name": "honeytoken_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique honeytoken identifier (prefixed, e.g. hnt_xxx).",
         "schema": {
           "type": "string",
           "pattern": "^[a-zA-Z0-9_.-]+$"
@@ -6445,6 +6664,111 @@
             "type": "string",
             "format": "date-time",
             "description": "Server time."
+          }
+        }
+      },
+      "Honeytoken": {
+        "type": "object",
+        "description": "A decoy (canary) relation. Any agent statement that references it is blocked (fail closed) and recorded as a canary_tripped audit event.\n",
+        "required": [
+          "id",
+          "project_id",
+          "relation_name",
+          "action",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique honeytoken identifier.",
+            "example": "hnt_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "Project the honeytoken belongs to.",
+            "example": "prj_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "schema_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Optional schema. Null matches the unqualified/public form, mirroring the relation allowlist normalization.\n",
+            "example": "public"
+          },
+          "relation_name": {
+            "type": "string",
+            "description": "Relation (table or view) name of the decoy.",
+            "example": "customer_ssns"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "audit_only",
+              "kill"
+            ],
+            "description": "Response when tripped. audit_only blocks the statement, records the event, and fires webhooks. kill additionally disables the tripping credential via the kill-switch.\n"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the honeytoken was registered."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the honeytoken was last updated."
+          }
+        }
+      },
+      "HoneytokenInput": {
+        "type": "object",
+        "description": "Request body for creating or updating a honeytoken.",
+        "required": [
+          "relation_name",
+          "action"
+        ],
+        "properties": {
+          "schema_name": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Optional schema. Null or empty matches the unqualified/public form.",
+            "example": "public"
+          },
+          "relation_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Relation (table or view) name of the decoy.",
+            "example": "customer_ssns"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "audit_only",
+              "kill"
+            ],
+            "description": "Response when the honeytoken is tripped."
+          }
+        }
+      },
+      "ListHoneytokensResponse": {
+        "type": "object",
+        "description": "Cursor-paginated honeytokens for a project.",
+        "required": [
+          "honeytokens"
+        ],
+        "properties": {
+          "honeytokens": {
+            "type": "array",
+            "description": "Honeytokens returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/Honeytoken"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
           }
         }
       },

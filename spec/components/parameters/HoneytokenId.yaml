@@ -1,0 +1,7 @@
+name: honeytoken_id
+in: path
+required: true
+description: Unique honeytoken identifier (prefixed, e.g. hnt_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated honeytokens for a project.
+required:
+  - honeytokens
+properties:
+  honeytokens:
+    type: array
+    description: Honeytokens returned for the current page.
+    items:
+      $ref: ./Honeytoken.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

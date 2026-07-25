@@ -1,0 +1,59 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createHoneytoken
+  summary: Register a honeytoken
+  description: |
+    Registers a decoy (canary) relation for the project. Any agent statement
+    that references it is blocked and recorded as a canary_tripped audit event.
+  tags:
+    - Honeytokens
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/HoneytokenInput.yaml
+  responses:
+    '201':
+      description: Honeytoken registered.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Honeytoken.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listHoneytokens
+  summary: List honeytokens
+  description: Lists the project's honeytokens.
+  tags:
+    - Honeytokens
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of honeytokens.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListHoneytokensResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

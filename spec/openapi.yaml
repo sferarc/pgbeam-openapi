@@ -38,6 +38,9 @@ tags:
   - name: Webhooks
     description: Event delivery endpoints for project audit and anomaly events
     x-icon: Webhook
+  - name: Honeytokens
+    description: Decoy (canary) relations that trip on agent access
+    x-icon: Fingerprint
   - name: Anomalies
     description: Anomalous-behavior alerts surfaced by the gateway
     x-icon: TriangleAlert
@@ -132,6 +135,10 @@ paths:
     $ref: paths/v1_projects_{project_id}_domains_{domain_id}_verify.yaml
   /v1/health:
     $ref: paths/v1_health.yaml
+  /v1/projects/{project_id}/honeytokens:
+    $ref: paths/v1_projects_{project_id}_honeytokens.yaml
+  /v1/projects/{project_id}/honeytokens/{honeytoken_id}:
+    $ref: paths/v1_projects_{project_id}_honeytokens_{honeytoken_id}.yaml
   /v1/projects/{project_id}/insights:
     $ref: paths/v1_projects_{project_id}_insights.yaml
   /v1/mcp:

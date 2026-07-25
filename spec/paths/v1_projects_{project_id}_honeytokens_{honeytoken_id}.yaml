@@ -1,0 +1,68 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/HoneytokenId.yaml
+get:
+  operationId: getHoneytoken
+  summary: Get a honeytoken
+  description: Returns a single honeytoken by ID.
+  tags:
+    - Honeytokens
+  responses:
+    '200':
+      description: The honeytoken.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Honeytoken.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+put:
+  operationId: updateHoneytoken
+  summary: Update a honeytoken
+  description: Updates a honeytoken's relation or action.
+  tags:
+    - Honeytokens
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/HoneytokenInput.yaml
+  responses:
+    '200':
+      description: Updated honeytoken.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Honeytoken.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+delete:
+  operationId: deleteHoneytoken
+  summary: Delete a honeytoken
+  description: Removes a honeytoken from the project.
+  tags:
+    - Honeytokens
+  responses:
+    '204':
+      description: Honeytoken deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
