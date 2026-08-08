@@ -1,0 +1,68 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/CrmDealId.yaml
+get:
+  operationId: getCrmDeal
+  summary: Get a deal
+  description: Get a deal.
+  tags:
+    - Crm
+  responses:
+    '200':
+      description: The deal.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Deal.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+put:
+  operationId: updateCrmDeal
+  summary: Update a deal
+  description: Update a deal.
+  tags:
+    - Crm
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/DealInput.yaml
+  responses:
+    '200':
+      description: Updated deal.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Deal.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+delete:
+  operationId: deleteCrmDeal
+  summary: Delete a deal
+  description: Delete a deal.
+  tags:
+    - Crm
+  responses:
+    '204':
+      description: Deal deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

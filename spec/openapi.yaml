@@ -44,6 +44,11 @@ tags:
   - name: SchemaAnnotations
     description: Human-written table and column descriptions for the schema catalog
     x-icon: BookText
+  - name: Crm
+    description: >-
+      Customer relationship management: companies, contacts, deals, and an
+      autonomous research task queue that enriches them.
+    x-icon: Contact
   - name: Anomalies
     description: Anomalous-behavior alerts surfaced by the gateway
     x-icon: TriangleAlert
@@ -119,6 +124,36 @@ paths:
   /v1/projects/{project_id}/databases/{database_id}/cache-rules/{query_hash}:
     $ref: >-
       paths/v1_projects_{project_id}_databases_{database_id}_cache-rules_{query_hash}.yaml
+  /v1/organizations/{org_id}/crm/companies:
+    $ref: paths/v1_organizations_{org_id}_crm_companies.yaml
+  /v1/organizations/{org_id}/crm/companies/{company_id}:
+    $ref: paths/v1_organizations_{org_id}_crm_companies_{company_id}.yaml
+  /v1/organizations/{org_id}/crm/contacts:
+    $ref: paths/v1_organizations_{org_id}_crm_contacts.yaml
+  /v1/organizations/{org_id}/crm/contacts/{contact_id}:
+    $ref: paths/v1_organizations_{org_id}_crm_contacts_{contact_id}.yaml
+  /v1/organizations/{org_id}/crm/deals:
+    $ref: paths/v1_organizations_{org_id}_crm_deals.yaml
+  /v1/organizations/{org_id}/crm/pipeline:
+    $ref: paths/v1_organizations_{org_id}_crm_pipeline.yaml
+  /v1/organizations/{org_id}/crm/deals/{deal_id}:
+    $ref: paths/v1_organizations_{org_id}_crm_deals_{deal_id}.yaml
+  /v1/organizations/{org_id}/crm/research-tasks:
+    $ref: paths/v1_organizations_{org_id}_crm_research-tasks.yaml
+  /v1/organizations/{org_id}/crm/research-tasks/{task_id}:
+    $ref: paths/v1_organizations_{org_id}_crm_research-tasks_{task_id}.yaml
+  /v1/organizations/{org_id}/crm/research-tasks/{task_id}/cancel:
+    $ref: paths/v1_organizations_{org_id}_crm_research-tasks_{task_id}_cancel.yaml
+  /v1/organizations/{org_id}/crm/context:
+    $ref: paths/v1_organizations_{org_id}_crm_context.yaml
+  /v1/organizations/{org_id}/crm/research-tasks/{task_id}/approve:
+    $ref: paths/v1_organizations_{org_id}_crm_research-tasks_{task_id}_approve.yaml
+  /v1/organizations/{org_id}/crm/artifacts:
+    $ref: paths/v1_organizations_{org_id}_crm_artifacts.yaml
+  /v1/organizations/{org_id}/crm/artifacts/{artifact_id}:
+    $ref: paths/v1_organizations_{org_id}_crm_artifacts_{artifact_id}.yaml
+  /v1/organizations/{org_id}/crm/activities:
+    $ref: paths/v1_organizations_{org_id}_crm_activities.yaml
   /v1/projects/{project_id}/databases:
     $ref: paths/v1_projects_{project_id}_databases.yaml
   /v1/projects/{project_id}/databases/{database_id}:

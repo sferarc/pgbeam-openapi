@@ -69,6 +69,11 @@
       "x-icon": "BookText"
     },
     {
+      "name": "Crm",
+      "description": "Customer relationship management: companies, contacts, deals, and an autonomous research task queue that enriches them.",
+      "x-icon": "Contact"
+    },
+    {
       "name": "Anomalies",
       "description": "Anomalous-behavior alerts surfaced by the gateway",
       "x-icon": "TriangleAlert"
@@ -1404,6 +1409,1098 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateCacheRuleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/companies": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "post": {
+        "operationId": "createCrmCompany",
+        "summary": "Create a company",
+        "description": "Create a company.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Company created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listCrmCompanies",
+        "summary": "List companies",
+        "description": "List companies.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCompaniesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/companies/{company_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmCompanyId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmCompany",
+        "summary": "Get a company",
+        "description": "Get a company.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateCrmCompany",
+        "summary": "Update a company",
+        "description": "Update a company.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteCrmCompany",
+        "summary": "Delete a company",
+        "description": "Delete a company.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "204": {
+            "description": "Company deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/contacts": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "post": {
+        "operationId": "createCrmContact",
+        "summary": "Create a contact",
+        "description": "Create a contact.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listCrmContacts",
+        "summary": "List contacts",
+        "description": "List contacts.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of contacts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListContactsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/contacts/{contact_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmContactId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmContact",
+        "summary": "Get a contact",
+        "description": "Get a contact.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The contact.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateCrmContact",
+        "summary": "Update a contact",
+        "description": "Update a contact.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated contact.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteCrmContact",
+        "summary": "Delete a contact",
+        "description": "Delete a contact.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "204": {
+            "description": "Contact deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/deals": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "post": {
+        "operationId": "createCrmDeal",
+        "summary": "Create a deal",
+        "description": "Create a deal.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Deal created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listCrmDeals",
+        "summary": "List deals",
+        "description": "List deals.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of deals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDealsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/pipeline": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmPipeline",
+        "summary": "Deal pipeline summary",
+        "description": "Returns deal count and total value grouped by pipeline stage.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "Pipeline summary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipelineSummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/deals/{deal_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmDealId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmDeal",
+        "summary": "Get a deal",
+        "description": "Get a deal.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The deal.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateCrmDeal",
+        "summary": "Update a deal",
+        "description": "Update a deal.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated deal.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteCrmDeal",
+        "summary": "Delete a deal",
+        "description": "Delete a deal.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "204": {
+            "description": "Deal deleted."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/research-tasks": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "post": {
+        "operationId": "createCrmResearchTask",
+        "summary": "Enqueue a research task",
+        "description": "Adds a task to the CRM research queue. The autonomous research worker leases pending tasks, enriches the subject entity, and writes results back.\n",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchTaskInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task enqueued.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchTask"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listCrmResearchTasks",
+        "summary": "List research tasks",
+        "description": "List research tasks.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of research tasks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResearchTasksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/research-tasks/{task_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmTaskId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmResearchTask",
+        "summary": "Get a research task",
+        "description": "Get a research task.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The research task.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchTask"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/research-tasks/{task_id}/cancel": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmTaskId"
+        }
+      ],
+      "post": {
+        "operationId": "cancelCrmResearchTask",
+        "summary": "Cancel a research task",
+        "description": "Cancels a pending or leased task. Terminal tasks are unaffected.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The canceled task.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchTask"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/context": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmContext",
+        "summary": "Get the org CRM context",
+        "description": "Returns the shared CRM context document for the organization.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The CRM context.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrmContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateCrmContext",
+        "summary": "Update the org CRM context",
+        "description": "Creates or updates the shared CRM context document.",
+        "tags": [
+          "Crm"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrmContextInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated CRM context.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrmContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/research-tasks/{task_id}/approve": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmTaskId"
+        }
+      ],
+      "post": {
+        "operationId": "approveCrmResearchTask",
+        "summary": "Approve a research task",
+        "description": "Approves a task that is awaiting approval (an irreversible action). The task flips to pending and is then run by the worker.\n",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The approved task.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchTask"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/artifacts": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "get": {
+        "operationId": "listCrmArtifacts",
+        "summary": "List artifacts",
+        "description": "Lists agent-produced artifacts for the organization.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of artifacts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListArtifactsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/artifacts/{artifact_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        },
+        {
+          "$ref": "#/components/parameters/CrmArtifactId"
+        }
+      ],
+      "get": {
+        "operationId": "getCrmArtifact",
+        "summary": "Get an artifact",
+        "description": "Returns a single artifact by ID.",
+        "tags": [
+          "Crm"
+        ],
+        "responses": {
+          "200": {
+            "description": "The artifact.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Artifact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/v1/organizations/{org_id}/crm/activities": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/OrgId"
+        }
+      ],
+      "get": {
+        "operationId": "listCrmActivities",
+        "summary": "List activities",
+        "description": "Lists the organization's most recent CRM activity, newest first.",
+        "tags": [
+          "Crm"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageSize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of activities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListActivitiesResponse"
                 }
               }
             }
@@ -4464,6 +5561,56 @@
           "pattern": "^[a-zA-Z0-9_.-]+$"
         }
       },
+      "CrmCompanyId": {
+        "name": "company_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique CRM company identifier (prefixed, e.g. cmp_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "CrmContactId": {
+        "name": "contact_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique CRM contact identifier (prefixed, e.g. cnt_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "CrmDealId": {
+        "name": "deal_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique CRM deal identifier (prefixed, e.g. dl_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "CrmTaskId": {
+        "name": "task_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique CRM research task identifier (prefixed, e.g. ctk_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "CrmArtifactId": {
+        "name": "artifact_id",
+        "in": "path",
+        "required": true,
+        "description": "Unique CRM artifact identifier (prefixed, e.g. art_xxx).",
+        "schema": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
       "PageSize": {
         "name": "page_size",
         "in": "query",
@@ -6238,6 +7385,877 @@
                 "type": "string",
                 "description": "Human-readable error message."
               }
+            }
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "description": "A company (customer, prospect, or partner) tracked in the CRM.",
+        "required": [
+          "id",
+          "org_id",
+          "name",
+          "description",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique company identifier.",
+            "example": "cmp_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the company belongs to.",
+            "example": "org_abc123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Company name.",
+            "example": "Acme Corp"
+          },
+          "domain": {
+            "type": "string",
+            "nullable": true,
+            "description": "Primary web domain, normalized to lowercase.",
+            "example": "acme.com"
+          },
+          "industry": {
+            "type": "string",
+            "nullable": true,
+            "description": "Industry or sector the company operates in.",
+            "example": "Software"
+          },
+          "location": {
+            "type": "string",
+            "nullable": true,
+            "description": "Primary location (city, region, or country).",
+            "example": "San Francisco, CA"
+          },
+          "logo_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL of the company logo."
+          },
+          "description": {
+            "type": "string",
+            "description": "Free-form description or research notes."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the company was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the company was last updated."
+          }
+        }
+      },
+      "CompanyInput": {
+        "type": "object",
+        "description": "Request body for creating or updating a company.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Company name.",
+            "example": "Acme Corp"
+          },
+          "domain": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Primary web domain.",
+            "example": "acme.com"
+          },
+          "industry": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Industry or sector."
+          },
+          "location": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Primary location."
+          },
+          "logo_url": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 2048,
+            "description": "URL of the company logo."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "description": "Free-form description or research notes."
+          }
+        }
+      },
+      "ListCompaniesResponse": {
+        "type": "object",
+        "description": "Cursor-paginated companies for an organization.",
+        "required": [
+          "companies"
+        ],
+        "properties": {
+          "companies": {
+            "type": "array",
+            "description": "Companies returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/Company"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "description": "A person tracked in the CRM, optionally attached to a company.",
+        "required": [
+          "id",
+          "org_id",
+          "name",
+          "notes",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique contact identifier.",
+            "example": "cnt_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the contact belongs to.",
+            "example": "org_abc123"
+          },
+          "company_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Company this contact belongs to, if any.",
+            "example": "cmp_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "name": {
+            "type": "string",
+            "description": "Contact full name.",
+            "example": "Jane Doe"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "description": "Contact email address.",
+            "example": "jane@acme.com"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "Job title or role.",
+            "example": "VP Engineering"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "description": "Phone number."
+          },
+          "linkedin_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "LinkedIn profile URL."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Free-form notes about the contact."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the contact was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the contact was last updated."
+          }
+        }
+      },
+      "ContactInput": {
+        "type": "object",
+        "description": "Request body for creating or updating a contact.",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Company to attach this contact to, if any."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Contact full name."
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 320,
+            "description": "Contact email address."
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Job title or role."
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 64,
+            "description": "Phone number."
+          },
+          "linkedin_url": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 2048,
+            "description": "LinkedIn profile URL."
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 10000,
+            "description": "Free-form notes about the contact."
+          }
+        }
+      },
+      "ListContactsResponse": {
+        "type": "object",
+        "description": "Cursor-paginated contacts for an organization.",
+        "required": [
+          "contacts"
+        ],
+        "properties": {
+          "contacts": {
+            "type": "array",
+            "description": "Contacts returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
+          }
+        }
+      },
+      "DealStage": {
+        "type": "string",
+        "description": "Pipeline stage of a deal.",
+        "enum": [
+          "lead",
+          "qualified",
+          "proposal",
+          "negotiation",
+          "won",
+          "lost"
+        ]
+      },
+      "Deal": {
+        "type": "object",
+        "description": "A revenue opportunity moving through the sales pipeline.",
+        "required": [
+          "id",
+          "org_id",
+          "title",
+          "stage",
+          "amount_cents",
+          "currency",
+          "owner",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique deal identifier.",
+            "example": "dl_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the deal belongs to.",
+            "example": "org_abc123"
+          },
+          "company_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Company the deal is with, if any."
+          },
+          "primary_contact_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Primary contact on the deal, if any."
+          },
+          "title": {
+            "type": "string",
+            "description": "Deal title.",
+            "example": "Acme - Platform expansion"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/DealStage"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Deal value in the smallest currency unit (e.g. cents).",
+            "example": 5000000
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO 4217 currency code.",
+            "example": "USD"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Deal owner (free-form, e.g. a user name or email)."
+          },
+          "close_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Expected or actual close date."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the deal was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the deal was last updated."
+          }
+        }
+      },
+      "DealInput": {
+        "type": "object",
+        "description": "Request body for creating or updating a deal.",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Company the deal is with, if any."
+          },
+          "primary_contact_id": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Primary contact on the deal, if any."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Deal title."
+          },
+          "stage": {
+            "$ref": "#/components/schemas/DealStage"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "description": "Deal value in the smallest currency unit (e.g. cents)."
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "ISO 4217 currency code.",
+            "example": "USD"
+          },
+          "owner": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Deal owner (free-form, e.g. a user name or email)."
+          },
+          "close_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Expected or actual close date."
+          }
+        }
+      },
+      "ListDealsResponse": {
+        "type": "object",
+        "description": "Cursor-paginated deals for an organization.",
+        "required": [
+          "deals"
+        ],
+        "properties": {
+          "deals": {
+            "type": "array",
+            "description": "Deals returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/Deal"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
+          }
+        }
+      },
+      "PipelineStageSummary": {
+        "type": "object",
+        "description": "Aggregate deal count and value for a single pipeline stage.",
+        "required": [
+          "stage",
+          "deal_count",
+          "total_amount_cents"
+        ],
+        "properties": {
+          "stage": {
+            "$ref": "#/components/schemas/DealStage"
+          },
+          "deal_count": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of deals in this stage."
+          },
+          "total_amount_cents": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total value of deals in this stage, in minor currency units."
+          }
+        }
+      },
+      "PipelineSummaryResponse": {
+        "type": "object",
+        "description": "Deal count and total value per pipeline stage.",
+        "required": [
+          "stages"
+        ],
+        "properties": {
+          "stages": {
+            "type": "array",
+            "description": "One entry per stage that has at least one deal.",
+            "items": {
+              "$ref": "#/components/schemas/PipelineStageSummary"
+            }
+          }
+        }
+      },
+      "ResearchTaskKind": {
+        "type": "string",
+        "description": "What the research agent should do for this task.",
+        "enum": [
+          "enrich_company",
+          "enrich_contact",
+          "research_deal",
+          "draft_outreach",
+          "send_outreach",
+          "custom"
+        ]
+      },
+      "ResearchTaskStatus": {
+        "type": "string",
+        "description": "Lifecycle state of a research task. awaiting_approval means the task is an irreversible action held for a human approval before it runs.\n",
+        "enum": [
+          "pending",
+          "leased",
+          "done",
+          "failed",
+          "canceled",
+          "awaiting_approval"
+        ]
+      },
+      "ResearchTaskSubjectType": {
+        "type": "string",
+        "description": "The kind of entity a research task targets.",
+        "enum": [
+          "company",
+          "contact",
+          "deal"
+        ]
+      },
+      "AgentRole": {
+        "type": "string",
+        "description": "Specialist agent role that owns a task. The researcher is the lead, the enricher fills in graph edges, and outreach writes and sends.\n",
+        "enum": [
+          "researcher",
+          "enricher",
+          "outreach"
+        ]
+      },
+      "ResearchTask": {
+        "type": "object",
+        "description": "A unit of work for the autonomous research agent. Workers lease pending tasks from the queue, do the work (enrichment), and write the result back.\n",
+        "required": [
+          "id",
+          "org_id",
+          "kind",
+          "status",
+          "role",
+          "requires_approval",
+          "subject_type",
+          "subject_id",
+          "priority",
+          "attempts",
+          "max_attempts",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique research task identifier.",
+            "example": "ctk_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the task belongs to.",
+            "example": "org_abc123"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ResearchTaskKind"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ResearchTaskStatus"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AgentRole"
+          },
+          "requires_approval": {
+            "type": "boolean",
+            "description": "Whether this task is held for human approval before it runs."
+          },
+          "approved_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the task was approved, if it required approval."
+          },
+          "subject_type": {
+            "$ref": "#/components/schemas/ResearchTaskSubjectType"
+          },
+          "subject_id": {
+            "type": "string",
+            "description": "ID of the company/contact/deal this task targets."
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Higher runs first."
+          },
+          "error": {
+            "type": "string",
+            "description": "Last error message, if the task has failed attempts."
+          },
+          "attempts": {
+            "type": "integer",
+            "description": "Number of attempts made so far."
+          },
+          "max_attempts": {
+            "type": "integer",
+            "description": "Maximum attempts before the task is terminal."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the task was enqueued."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the task was last updated."
+          }
+        }
+      },
+      "ResearchTaskInput": {
+        "type": "object",
+        "description": "Request body for enqueuing a research task.",
+        "required": [
+          "kind",
+          "subject_type",
+          "subject_id"
+        ],
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/ResearchTaskKind"
+          },
+          "subject_type": {
+            "$ref": "#/components/schemas/ResearchTaskSubjectType"
+          },
+          "subject_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "ID of the company/contact/deal this task targets."
+          },
+          "role": {
+            "$ref": "#/components/schemas/AgentRole"
+          },
+          "priority": {
+            "type": "integer",
+            "default": 0,
+            "description": "Higher runs first."
+          }
+        }
+      },
+      "ListResearchTasksResponse": {
+        "type": "object",
+        "description": "Cursor-paginated research tasks for an organization.",
+        "required": [
+          "tasks"
+        ],
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "description": "Research tasks returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/ResearchTask"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
+          }
+        }
+      },
+      "CrmContext": {
+        "type": "object",
+        "description": "Shared per-org CRM context the research agent reads to ground its work.",
+        "required": [
+          "org_id",
+          "positioning",
+          "icp",
+          "tone",
+          "notes",
+          "updated_at"
+        ],
+        "properties": {
+          "org_id": {
+            "type": "string",
+            "description": "Organization this context belongs to.",
+            "example": "org_abc123"
+          },
+          "positioning": {
+            "type": "string",
+            "description": "How the org positions itself (one-liner or short paragraph)."
+          },
+          "icp": {
+            "type": "string",
+            "description": "Ideal customer profile."
+          },
+          "tone": {
+            "type": "string",
+            "description": "Preferred voice and tone for drafted content."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Any other durable facts the agent should know."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the context was last updated."
+          }
+        }
+      },
+      "CrmContextInput": {
+        "type": "object",
+        "description": "Request body for updating the org CRM context.",
+        "properties": {
+          "positioning": {
+            "type": "string",
+            "maxLength": 10000,
+            "description": "How the org positions itself."
+          },
+          "icp": {
+            "type": "string",
+            "maxLength": 10000,
+            "description": "Ideal customer profile."
+          },
+          "tone": {
+            "type": "string",
+            "maxLength": 10000,
+            "description": "Preferred voice and tone."
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Any other durable facts."
+          }
+        }
+      },
+      "ArtifactStatus": {
+        "type": "string",
+        "description": "Lifecycle state of an artifact.",
+        "enum": [
+          "draft",
+          "approved",
+          "sent",
+          "discarded"
+        ]
+      },
+      "Artifact": {
+        "type": "object",
+        "description": "Long-form agent output (a drafted email, an account brief) for human review.",
+        "required": [
+          "id",
+          "org_id",
+          "subject_type",
+          "subject_id",
+          "kind",
+          "title",
+          "body",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique artifact identifier.",
+            "example": "art_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the artifact belongs to."
+          },
+          "task_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Research task that produced this artifact, if any."
+          },
+          "subject_type": {
+            "$ref": "#/components/schemas/ResearchTaskSubjectType"
+          },
+          "subject_id": {
+            "type": "string",
+            "description": "ID of the company/contact/deal this artifact is about."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Kind of artifact (e.g. outreach_email, account_brief)."
+          },
+          "title": {
+            "type": "string",
+            "description": "Short title."
+          },
+          "body": {
+            "type": "string",
+            "description": "Long-form content."
+          },
+          "status": {
+            "$ref": "#/components/schemas/ArtifactStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the artifact was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the artifact was last updated."
+          }
+        }
+      },
+      "ListArtifactsResponse": {
+        "type": "object",
+        "description": "Cursor-paginated artifacts for an organization.",
+        "required": [
+          "artifacts"
+        ],
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "description": "Artifacts returned for the current page.",
+            "items": {
+              "$ref": "#/components/schemas/Artifact"
+            }
+          },
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination."
+          }
+        }
+      },
+      "Activity": {
+        "type": "object",
+        "description": "A single entry in an entity's activity timeline.",
+        "required": [
+          "id",
+          "org_id",
+          "subject_type",
+          "subject_id",
+          "actor",
+          "verb",
+          "at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique activity identifier.",
+            "example": "act_01j9x8y7z6w5v4u3t2s1r0q9p8"
+          },
+          "org_id": {
+            "type": "string",
+            "description": "Organization the activity belongs to."
+          },
+          "subject_type": {
+            "$ref": "#/components/schemas/ResearchTaskSubjectType"
+          },
+          "subject_id": {
+            "type": "string",
+            "description": "ID of the company/contact/deal this activity is about."
+          },
+          "actor": {
+            "type": "string",
+            "description": "Who performed the action (\"agent\" or a user identifier)."
+          },
+          "verb": {
+            "type": "string",
+            "description": "What happened (created, enriched, drafted, approved, sent)."
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the action happened."
+          }
+        }
+      },
+      "ListActivitiesResponse": {
+        "type": "object",
+        "description": "Most-recent-first activities for an organization.",
+        "required": [
+          "activities"
+        ],
+        "properties": {
+          "activities": {
+            "type": "array",
+            "description": "Activities, newest first.",
+            "items": {
+              "$ref": "#/components/schemas/Activity"
             }
           }
         }

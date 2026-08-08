@@ -1,0 +1,6 @@
+type: string
+description: The kind of entity a research task targets.
+enum:
+  - company
+  - contact
+  - deal

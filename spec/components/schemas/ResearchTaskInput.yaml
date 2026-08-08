@@ -1,0 +1,22 @@
+type: object
+description: Request body for enqueuing a research task.
+required:
+  - kind
+  - subject_type
+  - subject_id
+properties:
+  kind:
+    $ref: ./ResearchTaskKind.yaml
+  subject_type:
+    $ref: ./ResearchTaskSubjectType.yaml
+  subject_id:
+    type: string
+    minLength: 1
+    maxLength: 255
+    description: ID of the company/contact/deal this task targets.
+  role:
+    $ref: ./AgentRole.yaml
+  priority:
+    type: integer
+    default: 0
+    description: Higher runs first.

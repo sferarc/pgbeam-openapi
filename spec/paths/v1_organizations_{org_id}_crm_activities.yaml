@@ -1,0 +1,27 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+get:
+  operationId: listCrmActivities
+  summary: List activities
+  description: Lists the organization's most recent CRM activity, newest first.
+  tags:
+    - Crm
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: List of activities.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListActivitiesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

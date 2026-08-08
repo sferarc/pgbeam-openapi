@@ -1,0 +1,57 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+post:
+  operationId: createCrmContact
+  summary: Create a contact
+  description: Create a contact.
+  tags:
+    - Crm
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ContactInput.yaml
+  responses:
+    '201':
+      description: Contact created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Contact.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listCrmContacts
+  summary: List contacts
+  description: List contacts.
+  tags:
+    - Crm
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of contacts.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListContactsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

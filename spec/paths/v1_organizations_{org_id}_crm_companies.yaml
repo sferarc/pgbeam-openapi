@@ -1,0 +1,57 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+post:
+  operationId: createCrmCompany
+  summary: Create a company
+  description: Create a company.
+  tags:
+    - Crm
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CompanyInput.yaml
+  responses:
+    '201':
+      description: Company created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Company.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listCrmCompanies
+  summary: List companies
+  description: List companies.
+  tags:
+    - Crm
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of companies.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListCompaniesResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

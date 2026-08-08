@@ -1,0 +1,49 @@
+type: object
+description: Long-form agent output (a drafted email, an account brief) for human review.
+required:
+  - id
+  - org_id
+  - subject_type
+  - subject_id
+  - kind
+  - title
+  - body
+  - status
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique artifact identifier.
+    example: art_01j9x8y7z6w5v4u3t2s1r0q9p8
+  org_id:
+    type: string
+    description: Organization the artifact belongs to.
+  task_id:
+    type: string
+    nullable: true
+    description: Research task that produced this artifact, if any.
+  subject_type:
+    $ref: ./ResearchTaskSubjectType.yaml
+  subject_id:
+    type: string
+    description: ID of the company/contact/deal this artifact is about.
+  kind:
+    type: string
+    description: Kind of artifact (e.g. outreach_email, account_brief).
+  title:
+    type: string
+    description: Short title.
+  body:
+    type: string
+    description: Long-form content.
+  status:
+    $ref: ./ArtifactStatus.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: When the artifact was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the artifact was last updated.

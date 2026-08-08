@@ -1,0 +1,66 @@
+type: object
+description: >
+  A unit of work for the autonomous research agent. Workers lease pending tasks
+  from the queue, do the work (enrichment), and write the result back.
+required:
+  - id
+  - org_id
+  - kind
+  - status
+  - role
+  - requires_approval
+  - subject_type
+  - subject_id
+  - priority
+  - attempts
+  - max_attempts
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique research task identifier.
+    example: ctk_01j9x8y7z6w5v4u3t2s1r0q9p8
+  org_id:
+    type: string
+    description: Organization the task belongs to.
+    example: org_abc123
+  kind:
+    $ref: ./ResearchTaskKind.yaml
+  status:
+    $ref: ./ResearchTaskStatus.yaml
+  role:
+    $ref: ./AgentRole.yaml
+  requires_approval:
+    type: boolean
+    description: Whether this task is held for human approval before it runs.
+  approved_at:
+    type: string
+    format: date-time
+    nullable: true
+    description: When the task was approved, if it required approval.
+  subject_type:
+    $ref: ./ResearchTaskSubjectType.yaml
+  subject_id:
+    type: string
+    description: ID of the company/contact/deal this task targets.
+  priority:
+    type: integer
+    description: Higher runs first.
+  error:
+    type: string
+    description: Last error message, if the task has failed attempts.
+  attempts:
+    type: integer
+    description: Number of attempts made so far.
+  max_attempts:
+    type: integer
+    description: Maximum attempts before the task is terminal.
+  created_at:
+    type: string
+    format: date-time
+    description: When the task was enqueued.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the task was last updated.

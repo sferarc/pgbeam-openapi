@@ -1,0 +1,30 @@
+type: object
+description: Shared per-org CRM context the research agent reads to ground its work.
+required:
+  - org_id
+  - positioning
+  - icp
+  - tone
+  - notes
+  - updated_at
+properties:
+  org_id:
+    type: string
+    description: Organization this context belongs to.
+    example: org_abc123
+  positioning:
+    type: string
+    description: How the org positions itself (one-liner or short paragraph).
+  icp:
+    type: string
+    description: Ideal customer profile.
+  tone:
+    type: string
+    description: Preferred voice and tone for drafted content.
+  notes:
+    type: string
+    description: Any other durable facts the agent should know.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the context was last updated.

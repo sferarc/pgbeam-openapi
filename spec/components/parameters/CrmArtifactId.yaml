@@ -1,0 +1,7 @@
+name: artifact_id
+in: path
+required: true
+description: Unique CRM artifact identifier (prefixed, e.g. art_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

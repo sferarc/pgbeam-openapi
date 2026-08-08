@@ -1,0 +1,57 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+post:
+  operationId: createCrmDeal
+  summary: Create a deal
+  description: Create a deal.
+  tags:
+    - Crm
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/DealInput.yaml
+  responses:
+    '201':
+      description: Deal created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Deal.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listCrmDeals
+  summary: List deals
+  description: List deals.
+  tags:
+    - Crm
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of deals.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListDealsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

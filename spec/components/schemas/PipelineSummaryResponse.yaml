@@ -1,0 +1,10 @@
+type: object
+description: Deal count and total value per pipeline stage.
+required:
+  - stages
+properties:
+  stages:
+    type: array
+    description: One entry per stage that has at least one deal.
+    items:
+      $ref: ./PipelineStageSummary.yaml

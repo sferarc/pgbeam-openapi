@@ -1,0 +1,23 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+get:
+  operationId: getCrmPipeline
+  summary: Deal pipeline summary
+  description: Returns deal count and total value grouped by pipeline stage.
+  tags:
+    - Crm
+  responses:
+    '200':
+      description: Pipeline summary.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PipelineSummaryResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

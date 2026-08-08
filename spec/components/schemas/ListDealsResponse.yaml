@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated deals for an organization.
+required:
+  - deals
+properties:
+  deals:
+    type: array
+    description: Deals returned for the current page.
+    items:
+      $ref: ./Deal.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

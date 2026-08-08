@@ -1,0 +1,59 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+post:
+  operationId: createCrmResearchTask
+  summary: Enqueue a research task
+  description: >
+    Adds a task to the CRM research queue. The autonomous research worker leases
+    pending tasks, enriches the subject entity, and writes results back.
+  tags:
+    - Crm
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ResearchTaskInput.yaml
+  responses:
+    '201':
+      description: Task enqueued.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ResearchTask.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+get:
+  operationId: listCrmResearchTasks
+  summary: List research tasks
+  description: List research tasks.
+  tags:
+    - Crm
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: List of research tasks.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListResearchTasksResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

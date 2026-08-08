@@ -1,0 +1,9 @@
+type: string
+description: Pipeline stage of a deal.
+enum:
+  - lead
+  - qualified
+  - proposal
+  - negotiation
+  - won
+  - lost

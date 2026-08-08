@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated contacts for an organization.
+required:
+  - contacts
+properties:
+  contacts:
+    type: array
+    description: Contacts returned for the current page.
+    items:
+      $ref: ./Contact.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

@@ -1,0 +1,26 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/CrmTaskId.yaml
+post:
+  operationId: approveCrmResearchTask
+  summary: Approve a research task
+  description: >
+    Approves a task that is awaiting approval (an irreversible action). The task
+    flips to pending and is then run by the worker.
+  tags:
+    - Crm
+  responses:
+    '200':
+      description: The approved task.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ResearchTask.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

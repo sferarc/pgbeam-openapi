@@ -1,0 +1,17 @@
+type: object
+description: Aggregate deal count and value for a single pipeline stage.
+required:
+  - stage
+  - deal_count
+  - total_amount_cents
+properties:
+  stage:
+    $ref: ./DealStage.yaml
+  deal_count:
+    type: integer
+    format: int64
+    description: Number of deals in this stage.
+  total_amount_cents:
+    type: integer
+    format: int64
+    description: Total value of deals in this stage, in minor currency units.

@@ -1,0 +1,8 @@
+type: string
+description: >
+  Specialist agent role that owns a task. The researcher is the lead, the
+  enricher fills in graph edges, and outreach writes and sends.
+enum:
+  - researcher
+  - enricher
+  - outreach

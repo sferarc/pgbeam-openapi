@@ -1,0 +1,36 @@
+type: object
+description: Request body for creating or updating a company.
+required:
+  - name
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 255
+    description: Company name.
+    example: Acme Corp
+  domain:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: Primary web domain.
+    example: acme.com
+  industry:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: Industry or sector.
+  location:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: Primary location.
+  logo_url:
+    type: string
+    nullable: true
+    maxLength: 2048
+    description: URL of the company logo.
+  description:
+    type: string
+    maxLength: 10000
+    description: Free-form description or research notes.

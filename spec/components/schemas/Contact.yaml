@@ -1,0 +1,56 @@
+type: object
+description: A person tracked in the CRM, optionally attached to a company.
+required:
+  - id
+  - org_id
+  - name
+  - notes
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique contact identifier.
+    example: cnt_01j9x8y7z6w5v4u3t2s1r0q9p8
+  org_id:
+    type: string
+    description: Organization the contact belongs to.
+    example: org_abc123
+  company_id:
+    type: string
+    nullable: true
+    description: Company this contact belongs to, if any.
+    example: cmp_01j9x8y7z6w5v4u3t2s1r0q9p8
+  name:
+    type: string
+    description: Contact full name.
+    example: Jane Doe
+  email:
+    type: string
+    nullable: true
+    description: Contact email address.
+    example: jane@acme.com
+  title:
+    type: string
+    nullable: true
+    description: Job title or role.
+    example: VP Engineering
+  phone:
+    type: string
+    nullable: true
+    description: Phone number.
+  linkedin_url:
+    type: string
+    nullable: true
+    description: LinkedIn profile URL.
+  notes:
+    type: string
+    description: Free-form notes about the contact.
+  created_at:
+    type: string
+    format: date-time
+    description: When the contact was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the contact was last updated.

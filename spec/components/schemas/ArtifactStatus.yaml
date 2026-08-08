@@ -1,0 +1,7 @@
+type: string
+description: Lifecycle state of an artifact.
+enum:
+  - draft
+  - approved
+  - sent
+  - discarded

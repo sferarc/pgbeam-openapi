@@ -1,0 +1,24 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/CrmTaskId.yaml
+get:
+  operationId: getCrmResearchTask
+  summary: Get a research task
+  description: Get a research task.
+  tags:
+    - Crm
+  responses:
+    '200':
+      description: The research task.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ResearchTask.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
