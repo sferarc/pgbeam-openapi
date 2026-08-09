@@ -1,9 +1,0 @@
-type: string
-description: What the research agent should do for this task.
-enum:
-  - enrich_company
-  - enrich_contact
-  - research_deal
-  - draft_outreach
-  - send_outreach
-  - custom

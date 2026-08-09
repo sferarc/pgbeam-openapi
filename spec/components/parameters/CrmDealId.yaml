@@ -1,7 +1,0 @@
-name: deal_id
-in: path
-required: true
-description: Unique CRM deal identifier (prefixed, e.g. dl_xxx).
-schema:
-  type: string
-  pattern: ^[a-zA-Z0-9_.-]+$

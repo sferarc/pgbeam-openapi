@@ -1,7 +1,0 @@
-name: contact_id
-in: path
-required: true
-description: Unique CRM contact identifier (prefixed, e.g. cnt_xxx).
-schema:
-  type: string
-  pattern: ^[a-zA-Z0-9_.-]+$

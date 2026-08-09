@@ -1,7 +1,0 @@
-name: task_id
-in: path
-required: true
-description: Unique CRM research task identifier (prefixed, e.g. ctk_xxx).
-schema:
-  type: string
-  pattern: ^[a-zA-Z0-9_.-]+$
