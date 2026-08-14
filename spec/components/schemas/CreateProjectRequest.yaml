@@ -1,5 +1,7 @@
 type: object
-description: Request body for creating a project and its primary database.
+description: >-
+  Request body for creating a project and its primary database, which are
+  created atomically.
 required:
   - name
   - org_id
@@ -49,4 +51,3 @@ properties:
     default: false
   database:
     $ref: ./CreateDatabaseRequest.yaml
-    description: Primary database. Created atomically with the project.
