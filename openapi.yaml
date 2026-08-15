@@ -5345,13 +5345,18 @@ components:
           $ref: '#/components/schemas/StatementRules'
         table_allowlist:
           type: array
-          description: If non-empty, only these relations are reachable. Schema-qualified or bare names.
+          description: >-
+            If non-empty, only these relations are reachable. Entries are schema-qualified (billing.orders) or bare
+            (orders); a bare entry grants the public schema only, so the same table name in another schema must be
+            listed in full.
           items:
             type: string
             description: A relation name.
         table_denylist:
           type: array
-          description: Relations explicitly blocked (takes precedence over the allowlist).
+          description: >-
+            Relations explicitly blocked (takes precedence over the allowlist). A bare entry blocks that relation in
+            every schema.
           items:
             type: string
             description: A relation name.
@@ -5460,13 +5465,15 @@ components:
           $ref: '#/components/schemas/StatementRules'
         table_allowlist:
           type: array
-          description: If non-empty, only these relations are reachable.
+          description: >-
+            If non-empty, only these relations are reachable. A bare entry grants the public schema only; list another
+            schema in full, as in billing.orders.
           items:
             type: string
             description: A relation name.
         table_denylist:
           type: array
-          description: Relations explicitly blocked.
+          description: Relations explicitly blocked. A bare entry blocks that relation in every schema.
           items:
             type: string
             description: A relation name.
