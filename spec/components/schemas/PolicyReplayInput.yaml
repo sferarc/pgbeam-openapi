@@ -14,6 +14,16 @@ properties:
     type: string
     description: Restrict the replay to traffic recorded for one agent credential.
     example: cred_01h455vb4pex5vsknk084sn02q
+  bound_policy_id:
+    type: string
+    description: >-
+      Restrict the replay to traffic recorded for the agent credentials
+      currently bound to this policy profile. Use it to preview a change to a
+      live policy against the traffic that policy actually governs: without it
+      the replay covers every credential in the project, including credentials
+      bound to other profiles, whose behaviour saving this candidate cannot
+      change. Mutually exclusive with credential_id.
+    example: pol_01h455vb4pex5vsknk084sn02q
   start_ts:
     type: string
     format: date-time

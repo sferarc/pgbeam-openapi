@@ -7905,6 +7905,11 @@
             "description": "Restrict the replay to traffic recorded for one agent credential.",
             "example": "cred_01h455vb4pex5vsknk084sn02q"
           },
+          "bound_policy_id": {
+            "type": "string",
+            "description": "Restrict the replay to traffic recorded for the agent credentials currently bound to this policy profile. Use it to preview a change to a live policy against the traffic that policy actually governs: without it the replay covers every credential in the project, including credentials bound to other profiles, whose behaviour saving this candidate cannot change. Mutually exclusive with credential_id.",
+            "example": "pol_01h455vb4pex5vsknk084sn02q"
+          },
           "start_ts": {
             "type": "string",
             "format": "date-time",
@@ -7938,9 +7943,22 @@
           "newly_blocked",
           "newly_allowed",
           "skipped_unparseable",
-          "truncated"
+          "truncated",
+          "traffic_scope"
         ],
         "properties": {
+          "traffic_scope": {
+            "type": "string",
+            "enum": [
+              "project",
+              "bound_credentials"
+            ],
+            "description": "Which recorded traffic the replay covered. \"project\" is every credential in the project, so some replayed queries may belong to credentials this candidate policy does not govern. \"bound_credentials\" is only the credentials bound to bound_policy_id, which is what actually changes when that policy is saved."
+          },
+          "bound_credentials": {
+            "type": "integer",
+            "description": "How many agent credentials are bound to bound_policy_id. Set only when traffic_scope is bound_credentials. Zero means the policy governs no credential today, so an empty replay is a statement about bindings and not evidence that the change is safe."
+          },
           "entries_scanned": {
             "type": "integer",
             "format": "int64",
@@ -9908,6 +9926,16 @@
           "description": "One-time enrollment token (pbh_...) for the self-hosted proxy's GRPC_AUTH_TOKEN (shown once).",
           "sensitive": true
         }
+      }
+    },
+    "Honeytoken": {
+      "description": "Manages a honeytoken: a decoy (canary) relation that no legitimate query should ever touch. Any agent statement referencing it is blocked and recorded as a canary_tripped audit event; the kill action additionally disables the tripping credential via the kill-switch. The relation does not have to exist in the upstream database: enforcement is by name, in the wire protocol, before the statement reaches Postgres.",
+      "operations": {
+        "create": "createHoneytoken",
+        "read": "getHoneytoken",
+        "update": "updateHoneytoken",
+        "delete": "deleteHoneytoken",
+        "list": "listHoneytokens"
       }
     }
   }

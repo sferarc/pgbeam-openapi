@@ -12,7 +12,26 @@ required:
   - newly_allowed
   - skipped_unparseable
   - truncated
+  - traffic_scope
 properties:
+  traffic_scope:
+    type: string
+    enum:
+      - project
+      - bound_credentials
+    description: >-
+      Which recorded traffic the replay covered. "project" is every credential
+      in the project, so some replayed queries may belong to credentials this
+      candidate policy does not govern. "bound_credentials" is only the
+      credentials bound to bound_policy_id, which is what actually changes when
+      that policy is saved.
+  bound_credentials:
+    type: integer
+    description: >-
+      How many agent credentials are bound to bound_policy_id. Set only when
+      traffic_scope is bound_credentials. Zero means the policy governs no
+      credential today, so an empty replay is a statement about bindings and not
+      evidence that the change is safe.
   entries_scanned:
     type: integer
     format: int64
