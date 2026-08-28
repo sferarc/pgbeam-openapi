@@ -1,0 +1,37 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AuditSessionId.yaml
+get:
+  operationId: getAuditSessionSummary
+  x-feature-flag: agent-gateway
+  summary: Summarize one agent session
+  description: >-
+    Groups a session's audit entries into one deterministic summary: the
+    credentials and origins involved, the window it spans, how many statements
+    were allowed, blocked, masked and truncated, the rows and bytes it moved,
+    and the tables it read, wrote and was refused. No model is involved, so the
+    same entries always summarize the same way. Returns metadata only (table
+    names and counts), never row values, and requires the same audit:read
+    permission the list and export endpoints do.
+  tags:
+    - Agents
+  parameters:
+    - $ref: ../components/parameters/AuditStart.yaml
+    - $ref: ../components/parameters/AuditEnd.yaml
+  responses:
+    '200':
+      description: Session summary.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuditSessionSummary.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -98,6 +98,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_audit-logs.yaml
   /v1/projects/{project_id}/audit-logs/export:
     $ref: paths/v1_projects_{project_id}_audit-logs_export.yaml
+  /v1/projects/{project_id}/audit-logs/sessions/{session_id}:
+    $ref: paths/v1_projects_{project_id}_audit-logs_sessions_{session_id}.yaml
   /v1/projects/{project_id}/audit-logs/verify:
     $ref: paths/v1_projects_{project_id}_audit-logs_verify.yaml
   /v1/plans:

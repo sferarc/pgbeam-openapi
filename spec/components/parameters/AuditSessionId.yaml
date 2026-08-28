@@ -1,0 +1,9 @@
+name: session_id
+in: path
+required: true
+description: >-
+  Session identifier from an audit entry's session_id field. Unique per
+  connection within a proxy instance, not over time.
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$
