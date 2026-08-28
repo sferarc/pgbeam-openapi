@@ -5478,7 +5478,7 @@
       },
       "AuditDecision": {
         "type": "string",
-        "description": "Coarse outcome filter that groups audit events. `allow` = query; `block` = blocked, budget_exhausted, auth_failed, credential_expired; `mask` = masked; `truncate` = truncated.",
+        "description": "Coarse outcome filter that groups audit events. `allow` = query; `block` = blocked, budget_exhausted, auth_failed, credential_expired, canary_tripped, rejected, approval_expired; `mask` = masked; `truncate` = truncated. The progress events approval_requested, approved and migration_flagged group under no decision: each belongs to a statement that goes on to record its own outcome, so grouping them would count that statement twice.",
         "enum": [
           "allow",
           "block",
@@ -5526,7 +5526,7 @@
           },
           "event": {
             "type": "string",
-            "description": "Event type (query, blocked, masked, budget_exhausted, truncated, auth_failed, credential_expired)."
+            "description": "Event type (query, blocked, masked, truncated, budget_exhausted, canary_tripped, rejected, approval_expired, auth_failed, credential_expired, approval_requested, approved, migration_flagged)."
           },
           "sql": {
             "type": "string",
