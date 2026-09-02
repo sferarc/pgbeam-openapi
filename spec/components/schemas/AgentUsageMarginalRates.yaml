@@ -1,0 +1,44 @@
+type: object
+description: >-
+  The organization's plan limits and marginal overage rates, resolved for both
+  of the zero meanings a limit carries. Supplied as context for a caller that
+  wants to price usage itself; this endpoint deliberately prices nothing.
+required:
+  - plan
+  - queries_per_day
+  - bytes_per_month
+  - overage_per_1k_queries
+  - overage_per_gb
+  - query_overage_billable
+  - bytes_overage_billable
+properties:
+  plan:
+    type: string
+    description: Plan name the rates come from.
+  queries_per_day:
+    type: integer
+    format: int64
+    description: Daily query limit. Zero means no limit at all, not a limit of zero.
+  bytes_per_month:
+    type: integer
+    format: int64
+    description: Monthly transfer limit in bytes. Zero means no limit at all.
+  overage_per_1k_queries:
+    type: number
+    format: double
+    description: >-
+      Rate per 1000 queries past the limit. Zero means the plan is a hard cap
+      with no overage purchased, which is a different thing from no limit.
+  overage_per_gb:
+    type: number
+    format: double
+    description: Rate per GB past the limit. Zero means a hard cap with no overage.
+  query_overage_billable:
+    type: boolean
+    description: >-
+      True only when a query limit exists and overage past it was purchased.
+      Both gates resolved, so a caller cannot reproduce the bug where an
+      organization with unlimited queries had its whole usage metered.
+  bytes_overage_billable:
+    type: boolean
+    description: True only when a bytes limit exists and overage past it was purchased.

@@ -1,0 +1,67 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+get:
+  operationId: getAgentUsageBreakdown
+  x-feature-flag: agent-gateway
+  summary: Break down project usage by agent credential
+  description: >-
+    Aggregates the audit trail into per-agent usage for a window: statements by
+    decision, rows and bytes returned, the cache outcome breakdown, and latency
+    percentiles. Read-only, derived entirely from entries the gateway already
+    records.
+
+
+    Grouped by credential, not by session. `session_id` is 32 bits of randomness
+    minted per connection, so it identifies a connection rather than an agent or
+    a run, and at scale it collides; the credential is the only stable identity
+    in the trail.
+
+
+    This endpoint reports usage and deliberately attributes no dollar figure to
+    an agent. Overage is computed on the organization's total against a plan
+    limit, so no single agent causes it independently of the others, and any
+    per-agent split of that bill is a policy choice rather than a measurement.
+    The organization's limits and marginal rates are returned alongside the
+    usage so a caller can apply its own policy, with both meanings of a zero
+    limit already resolved.
+
+
+    Three things are reported rather than assumed. Usage recorded against no
+    credential is its own line, so agents plus unattributed equals totals
+    exactly. Latency covers only entries that ran and carried a finite value:
+    every refusal writes a literal zero because there was nothing to time, and
+    counting those would drag an agent's percentiles toward zero in proportion
+    to how often it was refused, so the heavily blocked agent would report the
+    fastest queries. And gap markers left by undelivered entries set `complete`
+    to false, since a total over a trail with holes in it is a floor, not a
+    measurement.
+
+
+    Both `start` and `end` are optional. Omitting `end` means now; omitting
+    `start` means 30 days before the end. The window is half-open and is capped
+    at 92 days, because this aggregate reads every row in the window on the
+    request path and an unbounded one would sort a year of latencies per group.
+    `requested_start` and `requested_end` echo the window that was actually
+    used, so a caller that pinned neither still knows what the totals cover.
+  tags:
+    - Agents
+  parameters:
+    - $ref: ../components/parameters/AuditStart.yaml
+    - $ref: ../components/parameters/AuditEnd.yaml
+  responses:
+    '200':
+      description: Per-agent usage for the window.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AgentUsageReport.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,38 @@
+type: object
+description: >-
+  Evidence that the trail lost entries in this window. Nothing about the
+  surviving rows looks wrong when this happens, so it is reported explicitly.
+required:
+  - markers
+  - truncated
+  - entries_dropped
+  - markers_unparsed
+  - reasons
+properties:
+  markers:
+    type: integer
+    description: Number of gap markers read, capped at 1000.
+  truncated:
+    type: boolean
+    description: >-
+      True when the window held more gap markers than the cap, so
+      entries_dropped accounts for only the ones read and the real gap is
+      larger. Reported rather than left to look like an exact count.
+  entries_dropped:
+    type: integer
+    format: int64
+    description: >-
+      Entries the markers account for. A floor: it counts only markers whose
+      count could be read.
+  markers_unparsed:
+    type: integer
+    description: >-
+      Markers whose count could not be read, so their entries are missing from
+      entries_dropped. Reported rather than assumed zero.
+  reasons:
+    type: array
+    description: >-
+      Distinct marker reasons, sorted, so an operator can tell the two buffers
+      apart.
+    items:
+      type: string

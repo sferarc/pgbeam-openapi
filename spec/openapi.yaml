@@ -195,6 +195,8 @@ paths:
     $ref: paths/v1_organizations_{org_id}_usage.yaml
   /v1/projects/{project_id}/usage:
     $ref: paths/v1_projects_{project_id}_usage.yaml
+  /v1/projects/{project_id}/usage/agents:
+    $ref: paths/v1_projects_{project_id}_usage_agents.yaml
   /v1/projects/{project_id}/webhooks:
     $ref: paths/v1_projects_{project_id}_webhooks.yaml
   /v1/projects/{project_id}/webhooks/{webhook_id}:
