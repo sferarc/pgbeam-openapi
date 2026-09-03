@@ -6,6 +6,22 @@ info:
 
     Manages projects, database connections, cache/pool configuration, and
     regions.
+
+
+    The API is versioned in the URL path (`/v1/...`). What a version guarantees,
+
+    how long a deprecated endpoint keeps answering, and how a deprecation is
+
+    announced are documented in the API lifecycle policy:
+
+    https://pgbeam.com/docs/api-lifecycle
+
+
+    A deprecated operation is marked `deprecated: true` here and its responses
+
+    carry the `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers, plus a
+
+    `Link` to the policy and, when there is one, to its replacement.
   version: 1.0.0
   license:
     name: Proprietary
@@ -13,6 +29,7 @@ info:
   contact:
     name: PgBeam
     url: https://pgbeam.com
+  x-lifecycle-policy: https://pgbeam.com/docs/api-lifecycle
 servers:
   - url: https://api.pgbeam.com
     description: Production
