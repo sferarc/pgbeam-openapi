@@ -13,8 +13,13 @@ properties:
   ok:
     type: boolean
     description: >-
-      True when every chained entry in the range links correctly and no
-      tampering or deletion was detected.
+      True when no tampering or deletion was detected: every chained entry in
+      the range recomputes to its stored hash, and every link that could be
+      checked matched. Two links may be uncheckable rather than wrong, and both
+      leave ok true and say so on their own field: the one below the first
+      checked entry when retention has deleted what it follows (link_status),
+      and a signed checkpoint whose range retention has deleted (anchor_status).
+      Read them alongside ok to know how much a pass covers.
   verified_count:
     type: integer
     format: int64
@@ -72,7 +77,33 @@ properties:
       opens into a range that does not mean anything; reported rather than
       skipped because an unverifiable claim is not an absent one). Null when ok.
       Retention having removed the entries a checkpoint covers is not a failure
-      and is reported on anchor_status.
+      and is reported on anchor_status, and retention having removed the entry
+      the first checked one follows is not a failure either and is reported on
+      link_status.
+  link_status:
+    type: string
+    nullable: true
+    description: >-
+      What could be established about the link below the first checked entry, or
+      null when there were no chained entries to check. verified: its prev_hash
+      was compared against something still stored, either the genesis value at
+      the bottom of a chain or the entry immediately below the window.
+      predecessor_expired: the entry it follows is outside the retained window,
+      so that one link could not be checked; ok stays true, because retention
+      deleting the oldest rows it was configured to delete is not evidence of
+      tampering. Only the first checked entry can report this, and only when its
+      predecessor is absent rather than stored: a predecessor that is stored and
+      disagrees is still broken_link, as is any mismatch further up the chain.
+  link_verified_from_seq:
+    type: integer
+    format: int64
+    nullable: true
+    description: >-
+      First sequence number whose prev_hash was actually checked against a known
+      predecessor. Equal to chain_start_seq on a chain whose floor is verified,
+      and one above it when link_status is predecessor_expired, so a caller can
+      tell what was checked from what was assumed. Links are checked from here
+      through chain_end_seq. Null when none could be.
   anchor_status:
     type: string
     nullable: true
