@@ -1,5 +1,17 @@
 # @pgbeam/openapi
 
+## 0.3.0
+
+### Minor Changes
+
+- 16803b8: Release the current API contract. The published 0.2.4 was cut in #1180 and has since fallen fifteen commits behind the specification in this repository without the version moving, because the changeset generator could not name this package. The accumulated change is additive: eleven new operations (honeytokens, schema annotations, per-agent usage, audit session summaries, policy recommendations), thirteen new schemas, and no removed path, operation, schema, property or enum value. The two response schemas that gained a required field (`AuditChainVerification.keyed_count`, `PolicyReplaySummary.traffic_scope`) are read-only, so a client sees more than before and never less.
+
+## 0.2.5
+
+### Patch Changes
+
+- 6bf2e14: Update the published package description from the pre-pivot pooling-and-caching pitch to the current agent-gateway positioning.
+
 ## 0.2.4
 
 ### Patch Changes
