@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.1
+
+### Patch Changes
+
+- dd2e970: chore(format): reflow prose to one line per paragraph, and let CI see it
+
 ## 0.3.0
 
 ### Minor Changes
