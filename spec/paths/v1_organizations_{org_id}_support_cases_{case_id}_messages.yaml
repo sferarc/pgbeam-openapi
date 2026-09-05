@@ -7,6 +7,8 @@ post:
   description: Adds a new message to an existing support case thread.
   tags:
     - Support
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
@@ -28,3 +30,5 @@ post:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml

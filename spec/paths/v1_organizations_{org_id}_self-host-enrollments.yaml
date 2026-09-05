@@ -9,6 +9,8 @@ post:
     and cannot be retrieved again. Requires the Scale or enterprise plan.
   tags:
     - Platform
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: false
     content:
@@ -32,6 +34,8 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/Error.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
 get:

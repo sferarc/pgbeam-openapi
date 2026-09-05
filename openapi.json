@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "PgBeam Control Plane API",
-    "description": "REST API for the PgBeam multi-tenant PostgreSQL proxy platform.\nManages projects, database connections, cache/pool configuration, and regions.\n\nThe API is versioned in the URL path (`/v1/...`). What a version guarantees,\nhow long a deprecated endpoint keeps answering, and how a deprecation is\nannounced are documented in the API lifecycle policy:\nhttps://pgbeam.com/docs/api-lifecycle\n\nA deprecated operation is marked `deprecated: true` here and its responses\ncarry the `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers, plus a\n`Link` to the policy and, when there is one, to its replacement.\n",
+    "description": "REST API for the PgBeam multi-tenant PostgreSQL proxy platform.\nManages projects, database connections, cache/pool configuration, and regions.\n\nThe API is versioned in the URL path (`/v1/...`). What a version guarantees,\nhow long a deprecated endpoint keeps answering, and how a deprecation is\nannounced are documented in the API lifecycle policy:\nhttps://pgbeam.com/docs/api-lifecycle\n\nA deprecated operation is marked `deprecated: true` here and its responses\ncarry the `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers, plus a\n`Link` to the policy and, when there is one, to its replacement.\n\nOperations that create a resource or mint a secret accept an\n`Idempotency-Key` request header, so a retry after a lost response replays\nthe original result instead of creating a second record. The operations that\ntake one declare the header as a parameter. Retries, caching rules and the\n409 a reused key with a changed body returns are documented at\nhttps://pgbeam.com/docs/api/response-conventions#idempotency\n",
     "version": "1.0.0",
     "license": {
       "name": "Proprietary",
@@ -162,6 +162,11 @@
         "description": "Issues a scoped Postgres login and hosted MCP token for an AI agent. The connection string and MCP token are returned once and cannot be retrieved again.",
         "tags": [
           "Agents"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "requestBody": {
           "required": true,
@@ -384,6 +389,11 @@
         "description": "Generates a new Postgres password and MCP token for the credential in place, keeping the same id, username, name, and policy. Live connections using the old password are dropped within seconds. The new secrets are returned once and cannot be retrieved again.",
         "tags": [
           "Agents"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "responses": {
           "200": {
@@ -1494,6 +1504,11 @@
         "tags": [
           "Databases"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1526,6 +1541,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
@@ -1845,6 +1863,11 @@
         "tags": [
           "Projects"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2069,6 +2092,11 @@
         "tags": [
           "Honeytokens"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2101,6 +2129,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
@@ -2593,6 +2624,11 @@
         "tags": [
           "Policies"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2917,6 +2953,11 @@
         "description": "Creates a new project within the specified organization.",
         "tags": [
           "Projects"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "requestBody": {
           "required": true,
@@ -3284,6 +3325,11 @@
         "tags": [
           "Projects"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3316,6 +3362,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
@@ -3527,6 +3576,11 @@
         "tags": [
           "Platform"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": false,
           "content": {
@@ -3563,6 +3617,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
@@ -3665,6 +3722,11 @@
         "description": "Mints a new enrollment token in place, keeping the same enrollment id, metadata, and expiry. The swap is atomic: the old token stops authenticating new proxy connections the moment this call returns. An already-connected proxy keeps its existing gRPC streams until it disconnects, then must present the new token to reconnect. The new token is returned once and cannot be retrieved again.",
         "tags": [
           "Platform"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
         ],
         "responses": {
           "200": {
@@ -3787,6 +3849,11 @@
         "tags": [
           "Support"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3816,6 +3883,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           }
         }
       }
@@ -3920,6 +3990,11 @@
         "tags": [
           "Support"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3952,6 +4027,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           }
         }
       }
@@ -4198,6 +4276,11 @@
         "tags": [
           "Webhooks"
         ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4230,6 +4313,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
@@ -4658,6 +4744,18 @@
         "schema": {
           "type": "string",
           "format": "date-time"
+        }
+      },
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "description": "Client-generated key that makes a retry of this request safe. The first request carrying a given key executes normally and its response (status, content type and body) is stored for 24 hours; a later request with the same key returns that stored response without running the operation again, so a retry after a lost or timed-out response cannot create a second resource.\n\nReusing a key with a different request body returns `409 Conflict`: a key is a promise about one specific request, so a changed body is a client bug rather than a retry. Keys are scoped to the calling organization (or to the user, for account-scoped tokens), so one tenant can never read another's stored response.\n\nA `5xx`, `408` or `429` is never stored, because those describe a request that produced no settled answer and the next attempt with the same key must run for real. A `4xx` is stored: it is the server's settled answer about this exact request.\n\nUse a fresh UUID per logical operation. The PgBeam SDKs generate one per call and reuse it across their own automatic retries.",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "example": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
         }
       }
     },

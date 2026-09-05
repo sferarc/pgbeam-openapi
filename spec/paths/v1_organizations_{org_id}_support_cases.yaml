@@ -57,6 +57,8 @@ post:
   description: Creates a new support case with an initial message.
   tags:
     - Support
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
@@ -76,3 +78,5 @@ post:
       $ref: ../components/responses/Unauthorized.yaml
     '403':
       $ref: ../components/responses/Forbidden.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml

@@ -20,6 +20,8 @@ post:
     cannot be retrieved again.
   tags:
     - Platform
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   responses:
     '200':
       description: Token rotated. New token shown once.

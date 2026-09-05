@@ -7,6 +7,8 @@ post:
   description: Creates a webhook endpoint that receives project event deliveries.
   tags:
     - Webhooks
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
@@ -28,6 +30,8 @@ post:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
 get:

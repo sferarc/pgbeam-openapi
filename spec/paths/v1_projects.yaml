@@ -4,6 +4,8 @@ post:
   description: Creates a new project within the specified organization.
   tags:
     - Projects
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:

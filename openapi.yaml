@@ -13,6 +13,13 @@ info:
     A deprecated operation is marked `deprecated: true` here and its responses
     carry the `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers, plus a
     `Link` to the policy and, when there is one, to its replacement.
+
+    Operations that create a resource or mint a secret accept an
+    `Idempotency-Key` request header, so a retry after a lost response replays
+    the original result instead of creating a second record. The operations that
+    take one declare the header as a parameter. Retries, caching rules and the
+    409 a reused key with a changed body returns are documented at
+    https://pgbeam.com/docs/api/response-conventions#idempotency
   version: 1.0.0
   license:
     name: Proprietary
@@ -115,6 +122,8 @@ paths:
         returned once and cannot be retrieved again.
       tags:
         - Agents
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -257,6 +266,8 @@ paths:
         returned once and cannot be retrieved again.
       tags:
         - Agents
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       responses:
         '200':
           description: Secrets rotated. New secrets shown once.
@@ -945,6 +956,8 @@ paths:
       description: Registers a new upstream PostgreSQL database for the project.
       tags:
         - Databases
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -966,6 +979,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
     get:
@@ -1171,6 +1186,8 @@ paths:
         Enterprise plan.
       tags:
         - Projects
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -1313,6 +1330,8 @@ paths:
         that references it is blocked and recorded as a canary_tripped audit event.
       tags:
         - Honeytokens
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -1334,6 +1353,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
     get:
@@ -1666,6 +1687,8 @@ paths:
       description: Creates a policy profile that can be attached to agent credentials.
       tags:
         - Policies
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -1885,6 +1908,8 @@ paths:
       description: Creates a new project within the specified organization.
       tags:
         - Projects
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -2119,6 +2144,8 @@ paths:
       description: Adds a read replica to a database.
       tags:
         - Projects
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -2140,6 +2167,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /v1/databases/{database_id}/replicas/{replica_id}:
@@ -2280,6 +2309,8 @@ paths:
         gRPC stream. The token is returned once and cannot be retrieved again. Requires the Scale or enterprise plan.
       tags:
         - Platform
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: false
         content:
@@ -2303,6 +2334,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
     get:
@@ -2375,6 +2408,8 @@ paths:
         new token is returned once and cannot be retrieved again.
       tags:
         - Platform
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       responses:
         '200':
           description: Token rotated. New token shown once.
@@ -2454,6 +2489,8 @@ paths:
       description: Creates a new support case with an initial message.
       tags:
         - Support
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -2473,6 +2510,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
   /v1/organizations/{org_id}/support/cases/{case_id}:
     parameters:
       - $ref: '#/components/parameters/OrgId'
@@ -2535,6 +2574,8 @@ paths:
       description: Adds a new message to an existing support case thread.
       tags:
         - Support
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -2556,6 +2597,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
   /v1/internal/support/slack-event:
     post:
       operationId: handleSlackSupportEvent
@@ -2736,6 +2779,8 @@ paths:
       description: Creates a webhook endpoint that receives project event deliveries.
       tags:
         - Webhooks
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -2757,6 +2802,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '429':
           $ref: '#/components/responses/TooManyRequests'
     get:
@@ -3068,6 +3115,34 @@ components:
       schema:
         type: string
         format: date-time
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: >-
+        Client-generated key that makes a retry of this request safe. The first request carrying a given key executes
+        normally and its response (status, content type and body) is stored for 24 hours; a later request with the same
+        key returns that stored response without running the operation again, so a retry after a lost or timed-out
+        response cannot create a second resource.
+
+
+        Reusing a key with a different request body returns `409 Conflict`: a key is a promise about one specific
+        request, so a changed body is a client bug rather than a retry. Keys are scoped to the calling organization (or
+        to the user, for account-scoped tokens), so one tenant can never read another's stored response.
+
+
+        A `5xx`, `408` or `429` is never stored, because those describe a request that produced no settled answer and
+        the next attempt with the same key must run for real. A `4xx` is stored: it is the server's settled answer about
+        this exact request.
+
+
+        Use a fresh UUID per logical operation. The PgBeam SDKs generate one per call and reuse it across their own
+        automatic retries.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+        example: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
   responses:
     BadRequest:
       description: Invalid request parameters.

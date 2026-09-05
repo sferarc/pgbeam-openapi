@@ -12,6 +12,8 @@ post:
     and cannot be retrieved again.
   tags:
     - Agents
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   responses:
     '200':
       description: Secrets rotated. New secrets shown once.

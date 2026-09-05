@@ -29,6 +29,8 @@ post:
   description: Adds a read replica to a database.
   tags:
     - Projects
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
@@ -50,5 +52,7 @@ post:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml

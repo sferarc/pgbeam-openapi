@@ -9,6 +9,8 @@ post:
     instructions. Requires a Scale or Enterprise plan.
   tags:
     - Projects
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
