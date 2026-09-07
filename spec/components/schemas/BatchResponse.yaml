@@ -1,0 +1,33 @@
+type: object
+description: >
+  The outcome of a batch. `results` carries one entry per requested operation in
+  the order they were sent, and `summary` is the same information counted so a
+  caller can branch on one field instead of scanning. Results deliberately do
+  not carry the mutated resources: a batch reports what happened to each item,
+  and a caller that needs the resource reads it, which keeps the response size a
+  function of the item count alone and keeps one response shape for every
+  operation kind.
+required:
+  - mode
+  - applied
+  - summary
+  - results
+properties:
+  mode:
+    type: string
+    enum:
+      - atomic
+      - independent
+    description: The failure semantics this batch ran under, echoed back.
+  applied:
+    type: boolean
+    description: >
+      Whether any of the batch's writes are in effect. False only for an atomic
+      batch that rolled back, which is also answered with 409.
+  summary:
+    $ref: ./BatchSummary.yaml
+  results:
+    type: array
+    description: One result per requested operation, in request order.
+    items:
+      $ref: ./BatchOperationResult.yaml

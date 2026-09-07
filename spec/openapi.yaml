@@ -100,6 +100,9 @@ tags:
   - name: Support
     description: Support case management
     x-icon: LifeBuoy
+  - name: Batch
+    description: Apply many project-scoped operations in one request
+    x-icon: Layers
   - name: Internal
     description: Internal service-to-service endpoints
   - name: MCP
@@ -137,6 +140,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_audit-logs_sessions_{session_id}.yaml
   /v1/projects/{project_id}/audit-logs/verify:
     $ref: paths/v1_projects_{project_id}_audit-logs_verify.yaml
+  /v1/projects/{project_id}/batch:
+    $ref: paths/v1_projects_{project_id}_batch.yaml
   /v1/plans:
     $ref: paths/v1_plans.yaml
   /v1/organizations/{org_id}/plan:

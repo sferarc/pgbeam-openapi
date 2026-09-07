@@ -1,0 +1,75 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: executeBatch
+  summary: Apply many project operations in one request
+  description: >-
+    Applies up to 100 project-scoped operations in a single request, so an agent
+    acting on many resources does not have to loop one call at a time. The loops
+    this exists for are the ones the single-resource endpoints leave an operator
+    running by hand: revoking or disabling every agent credential during an
+    incident, triaging a burst of anomaly alerts, and importing the column
+    descriptions for a whole schema.
+
+
+    The operation set is closed. A batch is not a tunnel for arbitrary requests;
+    each kind it can perform is named in the contract, carries its own
+    permission, and is authorized independently against the caller's scope
+    before any of them runs, so a batch can never act outside the scope the
+    caller already had. Every operation targets the project in the path, and an
+    id belonging to another project is reported exactly as a nonexistent one is,
+    so this cannot be used to probe for resources the caller cannot see.
+
+
+    `mode` is required and decides what a failure means. `atomic` runs the whole
+    batch in one transaction: the first runtime failure rolls it back, the
+    response is 409, and every operation that did not itself fail is reported
+    `not_applied`. `independent` applies each operation on its own and answers
+    200 with a per-operation status, so a caller can retry exactly the failures.
+    Structural problems (an unknown operation kind, a missing field, a duplicate
+    target) are all found before any work happens and are answered with a single
+    400.
+
+
+    A batch costs the rate limiter one unit per operation, not one per HTTP
+    request, so it is exactly as expensive as the loop it replaces and cannot be
+    used to sidestep the quota. When the remaining quota cannot cover the whole
+    batch the response is 429 and nothing runs, which is a better answer than a
+    loop that discovers the same thing halfway through. A batch refused this way
+    still costs the one unit any request costs, so an oversized batch is not a
+    free way to probe the quota.
+  tags:
+    - Batch
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/BatchRequest.yaml
+  responses:
+    '200':
+      description: >-
+        The batch ran. In `independent` mode some operations may have failed;
+        read `summary` and the per-operation `status`.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/BatchResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      description: >-
+        An atomic batch was rolled back. Nothing applied. The failing operations
+        carry their error and every other one is `not_applied`.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/BatchResponse.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

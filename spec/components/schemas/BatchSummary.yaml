@@ -1,0 +1,27 @@
+type: object
+description: Counts of the per-operation outcomes in a batch.
+required:
+  - requested
+  - succeeded
+  - failed
+  - not_applied
+properties:
+  requested:
+    type: integer
+    description: How many operations the request carried.
+    example: 50
+  succeeded:
+    type: integer
+    description: How many operations applied. Always 0 for a rolled-back atomic batch.
+    example: 47
+  failed:
+    type: integer
+    description: How many operations failed. Retry exactly these.
+    example: 3
+  not_applied:
+    type: integer
+    description: >
+      How many operations were rolled back or never ran. Non-zero only for a
+      rolled-back atomic batch, where every operation that did not itself fail
+      is reported this way.
+    example: 0

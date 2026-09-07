@@ -1,0 +1,27 @@
+type: object
+description: The outcome of one operation in a batch.
+required:
+  - id
+  - op
+  - status
+properties:
+  id:
+    type: string
+    description: The `id` the caller assigned to this operation.
+    example: revoke-7
+  op:
+    type: string
+    description: The operation kind that was requested, echoed back.
+    example: revoke_agent_credential
+  status:
+    type: string
+    enum:
+      - succeeded
+      - failed
+      - not_applied
+    description: >
+      Whether this operation applied. `not_applied` means the batch was atomic
+      and rolled back, so this operation left no trace whether or not it had run
+      by the time the batch failed.
+  error:
+    $ref: ./BatchOperationError.yaml
