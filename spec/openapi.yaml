@@ -83,6 +83,11 @@ tags:
   - name: Migrations
     description: Migration safety linting for schema changes
     x-icon: FileCog
+  - name: Payments
+    description: >-
+      Machine Payments Protocol (HTTP 402): priced resources an agent can buy on
+      its own, with no human in the loop.
+    x-icon: CreditCard
   - name: Analytics
     description: Usage metrics, billing data, and query insights
     x-icon: ChartLine
@@ -209,6 +214,10 @@ paths:
     $ref: paths/v1_organizations_{org_id}_onboarding.yaml
   /v1/organizations:
     $ref: paths/v1_organizations.yaml
+  /v1/payments/resources:
+    $ref: paths/v1_payments_resources.yaml
+  /v1/payments/budget-topups:
+    $ref: paths/v1_payments_budget-topups.yaml
   /v1/projects/{project_id}/policies:
     $ref: paths/v1_projects_{project_id}_policies.yaml
   /v1/projects/{project_id}/policies/{policy_id}:

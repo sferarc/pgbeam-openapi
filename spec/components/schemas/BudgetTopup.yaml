@@ -1,0 +1,45 @@
+type: object
+description: Purchased query headroom, already granted and streamed to the data planes.
+required:
+  - grant_id
+  - credential_id
+  - queries
+  - expires_at
+  - amount
+  - currency
+properties:
+  grant_id:
+    type: string
+    description: Identifier of the budget grant this payment created.
+    example: bgt_9f2c1d4e6a8b
+  credential_id:
+    type: string
+    description: Agent credential the queries were granted to.
+    example: agt_01hxyz
+  queries:
+    type: integer
+    format: int64
+    description: Queries granted.
+    example: 1000
+  expires_at:
+    type: string
+    format: date-time
+    description: When the unspent remainder stops being spendable.
+  amount:
+    type: integer
+    format: int64
+    description: Amount charged, in the smallest unit of the currency.
+    example: 200
+  currency:
+    type: string
+    description: ISO 4217 code, lowercase.
+    example: usd
+  payment_reference:
+    type: string
+    description: Processor reference for the charge (a Stripe PaymentIntent id).
+    example: pi_3PabcDEF0123456789
+  receipt:
+    type: string
+    description: |
+      The `Payment-Receipt` header value, repeated in the body for clients that
+      cannot read response headers.

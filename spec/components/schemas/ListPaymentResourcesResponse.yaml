@@ -1,0 +1,10 @@
+type: object
+description: Everything this deployment sells over the Machine Payments Protocol.
+required:
+  - resources
+properties:
+  resources:
+    type: array
+    description: The priced resources, in catalog order.
+    items:
+      $ref: ./PaymentResource.yaml

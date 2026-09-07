@@ -1,0 +1,14 @@
+type: object
+description: |
+  How much query budget to buy for the agent credential the request is
+  authenticated as.
+properties:
+  packs:
+    type: integer
+    format: int64
+    default: 1
+    minimum: 1
+    description: |
+      Packs of query budget to buy. One pack is `units_per_pack` queries at
+      `amount_per_pack`, both readable from `GET /v1/payments/resources`.
+    example: 1

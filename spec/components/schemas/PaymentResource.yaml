@@ -1,0 +1,55 @@
+type: object
+description: One thing an agent can buy over the Machine Payments Protocol.
+required:
+  - id
+  - title
+  - unit
+  - units_per_pack
+  - currency
+  - amount_per_pack
+  - min_packs
+  - max_packs
+properties:
+  id:
+    type: string
+    description: Stable resource identifier, carried in the payment challenge.
+    example: query_budget_topup
+  title:
+    type: string
+    description: Short human-readable name for the resource.
+    example: Query budget top-up
+  description:
+    type: string
+    description: What buying this resource gets you, and how it is spent.
+  unit:
+    type: string
+    description: What one unit is.
+    example: queries
+  units_per_pack:
+    type: integer
+    format: int64
+    description: Units contained in one purchasable pack.
+    example: 1000
+  currency:
+    type: string
+    description: ISO 4217 code, lowercase.
+    example: usd
+  amount_per_pack:
+    type: integer
+    format: int64
+    description: Price of one pack in the smallest unit of the currency.
+    example: 200
+  min_packs:
+    type: integer
+    format: int64
+    description: Fewest packs one payment may buy.
+    example: 1
+  max_packs:
+    type: integer
+    format: int64
+    description: Most packs one payment may buy.
+    example: 25
+  operation_id:
+    type: string
+    description: OpenAPI operation that sells this resource.
+    example: createBudgetTopup

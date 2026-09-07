@@ -1,0 +1,25 @@
+get:
+  operationId: listPaymentResources
+  summary: List priced resources
+  description: |
+    Lists what an agent can buy over the Machine Payments Protocol, with the
+    unit, the pack size, and the price of one pack. Discovery only: the
+    `WWW-Authenticate: Payment` challenge returned by a priced operation is
+    always authoritative.
+
+    This endpoint takes no authentication so an agent can read the price
+    before it holds a credential.
+  tags:
+    - Payments
+  security: []
+  responses:
+    '200':
+      description: The priced resource catalog.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListPaymentResourcesResponse.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '503':
+      $ref: ../components/responses/ServiceUnavailable.yaml

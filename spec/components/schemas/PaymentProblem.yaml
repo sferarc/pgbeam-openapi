@@ -1,0 +1,29 @@
+type: object
+description: |
+  RFC 9457 Problem Details for a payment failure. MPP puts the reason in the
+  body and the challenge in the `WWW-Authenticate` header, so a 402 carries
+  both.
+required:
+  - type
+  - title
+  - status
+properties:
+  type:
+    type: string
+    format: uri
+    description: Problem type URI, from the MPP problem registry.
+    example: https://paymentauth.org/problems/payment-required
+  title:
+    type: string
+    description: Short human-readable summary of the problem type.
+    example: Payment Required
+  status:
+    type: integer
+    description: HTTP status code, repeated for clients that read only the body.
+    example: 402
+  detail:
+    type: string
+    description: Human-readable explanation of this particular occurrence.
+  challengeId:
+    type: string
+    description: Identifier of the challenge this problem refers to.

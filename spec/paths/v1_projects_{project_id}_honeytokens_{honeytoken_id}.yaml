@@ -58,6 +58,8 @@ put:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
     '412':
       $ref: ../components/responses/PreconditionFailed.yaml
 delete:

@@ -1,0 +1,108 @@
+post:
+  operationId: createBudgetTopup
+  summary: Buy query budget for an agent credential
+  description: |
+    Buys additional queries for the agent credential this request is
+    authenticated as, using the Machine Payments Protocol (HTTP 402 with the
+    `Payment` authentication scheme).
+
+    Authenticate with the credential's hosted MCP token (`pba_...`) as a
+    bearer token. The credential identifies itself, so no human and no
+    dashboard session is involved.
+
+    Without a payment credential the response is `402` carrying a complete
+    `WWW-Authenticate: Payment` challenge. Fulfil it, then repeat the request
+    with the credential in the `Payment-Authorization` header (the challenge
+    selects that field so the bearer token can stay in `Authorization`). On
+    success the queries are granted, streamed to the data planes, and the
+    response carries a `Payment-Receipt` header.
+
+    Purchased queries do not raise the credential's policy budget. They are a
+    separate pool the proxy spends only once the policy's hourly and daily
+    windows have refused a statement, and they expire.
+  tags:
+    - Payments
+  x-payment-info:
+    offers:
+      - intent: charge
+        method: stripe
+        amount: '200'
+        currency: usd
+        description: 1000 queries per pack; buy 1 to 25 packs per payment.
+  parameters:
+    - name: Payment-Authorization
+      in: header
+      required: false
+      description: |
+        The MPP payment credential, `Payment <base64url>`, echoing the
+        challenge from the `402` and carrying the method-specific proof. For
+        the `stripe` method the payload is `{"spt": "spt_..."}`, a single-use
+        Shared Payment Token.
+      schema:
+        type: string
+    - name: Accept-Payment
+      in: header
+      required: false
+      description: |
+        Payment method and intent preferences, for example `stripe/charge`.
+        Ignored when it matches nothing this endpoint offers.
+      schema:
+        type: string
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/BudgetTopupInput.yaml
+  responses:
+    '201':
+      description: |
+        Payment settled and queries granted. The `Payment-Receipt` header
+        carries the base64url receipt.
+      headers:
+        Payment-Receipt:
+          description: Base64url-encoded settlement receipt.
+          schema:
+            type: string
+        Cache-Control:
+          description: Always `private`, so no shared cache stores the receipt.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/BudgetTopup.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '402':
+      description: |
+        Payment required. The `WWW-Authenticate` header carries a complete
+        `Payment` challenge and the body carries RFC 9457 problem details
+        explaining why. A failed or replayed credential also answers `402`
+        with a fresh challenge, never `401`.
+      headers:
+        WWW-Authenticate:
+          description: |
+            The `Payment` challenge: `id`, `realm`, `method`, `intent`,
+            `header`, `expires`, `description` and `opaque` auth-params plus
+            the base64url `request`.
+          schema:
+            type: string
+        Cache-Control:
+          description: Always `no-store`, so no cache reuses a challenge.
+          schema:
+            type: string
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../components/schemas/PaymentProblem.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '503':
+      $ref: ../components/responses/ServiceUnavailable.yaml
