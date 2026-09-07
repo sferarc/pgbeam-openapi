@@ -1,0 +1,13 @@
+type: object
+description: A page of pending invitations.
+required:
+  - invitations
+properties:
+  invitations:
+    type: array
+    description: The organization's invitations.
+    items:
+      $ref: ./OrgInvitation.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

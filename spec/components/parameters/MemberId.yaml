@@ -1,0 +1,11 @@
+name: member_id
+in: path
+required: true
+description: >-
+  Unique organization membership identifier. Unlike the resources PgBeam mints
+  itself, memberships carry no type prefix: the id is opaque and is assigned
+  when the membership row is created. Read it from `listOrgMembers` rather than
+  constructing it.
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

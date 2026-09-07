@@ -1,0 +1,22 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/InvitationId.yaml
+delete:
+  operationId: revokeOrgInvitation
+  summary: Revoke an invitation
+  description: Cancels a pending invitation so it can no longer be accepted.
+  tags:
+    - Account
+  responses:
+    '204':
+      description: The invitation was revoked.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

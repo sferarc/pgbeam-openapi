@@ -1,0 +1,41 @@
+type: object
+description: A pending invitation to join an organization.
+required:
+  - id
+  - email
+  - role
+  - status
+  - expires_at
+  - created_at
+properties:
+  id:
+    type: string
+    description: >-
+      Unique invitation identifier. Opaque, with no type prefix. Pass it back as
+      `invitation_id`.
+    example: 9f3c1a7b2e4d6058b1c9d3f5a7e02468
+  email:
+    type: string
+    description: Address the invitation was sent to.
+    example: engineer@example.com
+  role:
+    $ref: ./OrgRole.yaml
+  status:
+    type: string
+    description: Where the invitation has got to.
+    enum:
+      - pending
+      - accepted
+      - rejected
+      - canceled
+    example: pending
+  expires_at:
+    type: string
+    format: date-time
+    description: After this the invitation can no longer be accepted.
+    example: '2026-01-22T09:30:00Z'
+  created_at:
+    type: string
+    format: date-time
+    description: When the invitation was created.
+    example: '2026-01-15T09:30:00Z'

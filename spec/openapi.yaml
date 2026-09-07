@@ -178,6 +178,14 @@ paths:
     $ref: paths/v1_projects_{project_id}_insights.yaml
   /v1/mcp:
     $ref: paths/v1_mcp.yaml
+  /v1/organizations/{org_id}/members:
+    $ref: paths/v1_organizations_{org_id}_members.yaml
+  /v1/organizations/{org_id}/members/{member_id}:
+    $ref: paths/v1_organizations_{org_id}_members_{member_id}.yaml
+  /v1/organizations/{org_id}/invitations:
+    $ref: paths/v1_organizations_{org_id}_invitations.yaml
+  /v1/organizations/{org_id}/invitations/{invitation_id}:
+    $ref: paths/v1_organizations_{org_id}_invitations_{invitation_id}.yaml
   /v1/projects/{project_id}/migrations:lint:
     $ref: paths/v1_projects_{project_id}_migrations:lint.yaml
   /v1/organizations/{org_id}/onboarding:

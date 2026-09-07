@@ -1,0 +1,40 @@
+type: object
+description: A user's membership of an organization.
+required:
+  - id
+  - user_id
+  - email
+  - name
+  - role
+  - created_at
+properties:
+  id:
+    type: string
+    description: >-
+      Unique membership identifier. Opaque, with no type prefix. Pass it back as
+      `member_id`.
+  user_id:
+    type: string
+    description: >-
+      The user this membership belongs to. Opaque, with no type prefix. One user
+      has one membership per organization, so this is stable across role changes
+      while the membership lasts.
+  email:
+    type: string
+    description: The member's email address.
+    example: engineer@example.com
+  name:
+    type: string
+    description: The member's display name.
+    example: Alex Rivera
+  image:
+    type: string
+    description: URL of the member's avatar, when they have one.
+    example: https://example.com/avatars/alex.png
+  role:
+    $ref: ./OrgRole.yaml
+  created_at:
+    type: string
+    format: date-time
+    description: When the member joined the organization.
+    example: '2026-01-15T09:30:00Z'

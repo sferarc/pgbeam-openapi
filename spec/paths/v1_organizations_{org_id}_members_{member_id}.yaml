@@ -1,0 +1,61 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+  - $ref: ../components/parameters/MemberId.yaml
+patch:
+  operationId: updateOrgMemberRole
+  summary: Change a member's role
+  description: >-
+    Changes what a member is allowed to do. An organization must keep at least
+    one owner, so the last owner cannot be demoted, and `owner` cannot be
+    assigned here: ownership transfer is a separate, higher-privilege flow.
+  tags:
+    - Account
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/UpdateOrgMemberRoleRequest.yaml
+  responses:
+    '200':
+      description: The updated membership.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OrgMember.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+delete:
+  operationId: removeOrgMember
+  summary: Remove a member
+  description: >-
+    Removes someone from the organization. An organization must keep at least
+    one owner, so the last remaining owner cannot be removed and cannot be
+    demoted either: transfer ownership first.
+  tags:
+    - Account
+  responses:
+    '204':
+      description: The member was removed.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,12 @@
+name: invitation_id
+in: path
+required: true
+description: >-
+  Unique organization invitation identifier. Opaque, with no type prefix.
+  Invitations created through this API are 32 lowercase hex characters;
+  invitations created in the dashboard carry an id of a different shape, so
+  treat it as opaque and read it from `listOrgInvitations`.
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$
+  example: 9f3c1a7b2e4d6058b1c9d3f5a7e02468

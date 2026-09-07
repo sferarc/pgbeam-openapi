@@ -1,0 +1,28 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+get:
+  operationId: listOrgMembers
+  summary: List organization members
+  description: Lists the people who belong to the organization, and their roles.
+  tags:
+    - Account
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: A page of members.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListOrgMembersResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

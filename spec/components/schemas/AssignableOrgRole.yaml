@@ -1,0 +1,14 @@
+type: string
+description: >-
+  A role that can be assigned through the member API. This is `OrgRole` without
+  `owner`: ownership is transferred through a separate flow, so requesting it
+  here is rejected with a 400.
+enum:
+  - admin
+  - member
+  - security_admin
+  - billing_admin
+  - auditor
+  - policy-author
+  - approver
+example: admin

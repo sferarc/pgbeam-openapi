@@ -1,0 +1,13 @@
+type: object
+description: >-
+  Invites someone to join the organization. Omitting `role` invites them as a
+  `member`.
+required:
+  - email
+properties:
+  email:
+    type: string
+    description: Address to invite.
+    example: engineer@example.com
+  role:
+    $ref: ./AssignableOrgRole.yaml

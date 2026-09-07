@@ -1,0 +1,74 @@
+parameters:
+  - $ref: ../components/parameters/OrgId.yaml
+get:
+  operationId: listOrgInvitations
+  summary: List invitations
+  description: Lists invitations to join the organization and where each has got to.
+  tags:
+    - Account
+  parameters:
+    - name: status
+      in: query
+      required: false
+      description: Filter to a single status. Omit to list every invitation.
+      schema:
+        type: string
+        enum:
+          - pending
+          - accepted
+          - rejected
+          - canceled
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+  responses:
+    '200':
+      description: A page of invitations.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListOrgInvitationsResponse.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+post:
+  operationId: createOrgInvitation
+  summary: Invite someone to the organization
+  description: >-
+    Creates an invitation and emails it. Inviting an address that already has a
+    pending invitation returns a conflict rather than a second invitation.
+    `owner` cannot be invited: ownership transfer is a separate,
+    higher-privilege flow.
+  tags:
+    - Account
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateOrgInvitationRequest.yaml
+  responses:
+    '201':
+      description: The invitation was created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OrgInvitation.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,7 @@
+type: object
+description: Changes a member's role.
+required:
+  - role
+properties:
+  role:
+    $ref: ./AssignableOrgRole.yaml

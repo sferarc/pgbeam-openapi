@@ -1,0 +1,15 @@
+type: string
+description: >-
+  A member's role within the organization. Roles are additive bundles of
+  permissions; `owner` has every permission including organization deletion and
+  billing.
+enum:
+  - owner
+  - admin
+  - member
+  - security_admin
+  - billing_admin
+  - auditor
+  - policy-author
+  - approver
+example: admin
