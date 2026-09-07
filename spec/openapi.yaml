@@ -110,6 +110,7 @@ tags:
     x-sdk-exclude:
       - go
       - ts
+      - python
 paths:
   /v1/account/export:
     $ref: paths/v1_account_export.yaml

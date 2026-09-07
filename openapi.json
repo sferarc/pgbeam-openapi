@@ -123,7 +123,8 @@
       "description": "Model Context Protocol (MCP) remote server endpoint",
       "x-sdk-exclude": [
         "go",
-        "ts"
+        "ts",
+        "python"
       ]
     }
   ],
