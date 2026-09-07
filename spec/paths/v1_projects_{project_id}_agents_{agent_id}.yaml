@@ -27,7 +27,12 @@ patch:
   operationId: updateAgentCredentialStatus
   x-feature-flag: agent-gateway
   summary: Enable or disable an agent credential
-  description: Toggles the kill-switch. Disabling drops live connections within seconds.
+  description: >-
+    Toggles the kill-switch between active and disabled. Disabling drops live
+    connections within seconds. Revocation is terminal and cannot be undone
+    here: a revoked credential answers 409, because revoking does not change its
+    secrets, so putting it back to active would make the revoked password and
+    MCP token work again. Issue a new credential instead.
   tags:
     - Agents
   requestBody:
@@ -51,6 +56,8 @@ patch:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
 delete:
   operationId: revokeAgentCredential
   x-feature-flag: agent-gateway
