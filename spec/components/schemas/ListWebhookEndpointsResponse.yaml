@@ -10,4 +10,5 @@ properties:
       $ref: ./WebhookEndpoint.yaml
   next_page_token:
     type: string
+    example: eyJpZCI6InByal8wMWo5eDh5N3o2In0
     description: Token for the next page. Empty if no more results.

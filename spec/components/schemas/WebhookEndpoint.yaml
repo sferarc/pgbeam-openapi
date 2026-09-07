@@ -15,6 +15,7 @@ properties:
     example: whk_01h455vb4pex5vsknk084sn02q
   project_id:
     type: string
+    example: prj_01j9x8y7z6w5v4u3t2s1r0q9p8
     description: Owning project ID.
   url:
     type: string
@@ -22,6 +23,7 @@ properties:
     example: https://example.com/hooks/pgbeam
   format:
     type: string
+    example: json
     enum:
       - json
       - splunk_hec
@@ -31,20 +33,26 @@ properties:
   event_types:
     type: array
     description: Event types to deliver. Empty means all events.
+    example:
+      - query_blocked
+      - canary_tripped
     items:
-      type: string
-      description: An event type (e.g. blocked, anomaly, approval).
+      $ref: ./WebhookEventType.yaml
   enabled:
     type: boolean
+    example: true
     description: Whether deliveries are active for this endpoint.
   description:
     type: string
+    example: Read-only access for the reporting agent
     description: Human-readable label for the endpoint.
   created_at:
     type: string
+    example: '2026-01-15T09:30:00Z'
     format: date-time
     description: When the endpoint was created.
   updated_at:
     type: string
+    example: '2026-01-15T09:30:00Z'
     format: date-time
     description: When the endpoint was last updated.

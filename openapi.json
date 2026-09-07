@@ -4819,6 +4819,95 @@
       }
     }
   },
+  "x-webhooks": {
+    "webhookDelivery": {
+      "post": {
+        "operationId": "webhookDelivery",
+        "summary": "Event delivery",
+        "description": "Sent to the `url` of each webhook endpoint subscribed to the event type.\n\nVerify `X-PgBeam-Signature-V2` before trusting the body: it is\n`sha256=<hex>` of `<timestamp>.<raw body>` using the endpoint's signing\nsecret, and binding the timestamp is what stops a captured delivery being\nreplayed later. `X-PgBeam-Signature` is the older form over the body\nalone and is kept only for endpoints that have not moved yet.\n\nBoth signature headers are only sent when the endpoint has a secret, so\nset one. The `splunk_hec` and `datadog` formats authenticate with that\ndestination's own token header instead and carry neither signature.\n\nDeduplicate on `X-PgBeam-Event-Id`: a delivery may be retried, and the\nsame event will arrive with the same id.\n\nRespond `2xx` to acknowledge. Anything else is treated as a failure and\nretried.\n",
+        "tags": [
+          "Webhooks"
+        ],
+        "parameters": [
+          {
+            "name": "X-PgBeam-Event",
+            "in": "header",
+            "required": true,
+            "description": "The event type, the same value as `type` in the body. See WebhookEventType for the set.",
+            "schema": {
+              "type": "string",
+              "example": "query_blocked"
+            }
+          },
+          {
+            "name": "X-PgBeam-Event-Id",
+            "in": "header",
+            "required": true,
+            "description": "Event id. Stable across retries, so deduplicate on it.",
+            "schema": {
+              "type": "string",
+              "example": "evt_01j9x8y7z6w5v4u3t2s1r0q9p8"
+            }
+          },
+          {
+            "name": "X-PgBeam-Delivery",
+            "in": "header",
+            "required": true,
+            "description": "Identifier for this delivery attempt.",
+            "schema": {
+              "type": "string",
+              "example": "dlv_01j9x8y7z6w5v4u3t2s1r0q9p8"
+            }
+          },
+          {
+            "name": "X-PgBeam-Timestamp",
+            "in": "header",
+            "required": true,
+            "description": "Unix seconds at send time. Covered by the v2 signature.",
+            "schema": {
+              "type": "string",
+              "example": "1768469400"
+            }
+          },
+          {
+            "name": "X-PgBeam-Signature-V2",
+            "in": "header",
+            "required": false,
+            "description": "`sha256=<hex>` HMAC over `<X-PgBeam-Timestamp>.<raw body>`, keyed with the endpoint's signing secret. Verify this one. Absent when the endpoint has no secret, and on the `splunk_hec` and `datadog` formats.",
+            "schema": {
+              "type": "string",
+              "example": "sha256=1f8ac10f23c5b5bc1167bda84b833e5c057a77d2"
+            }
+          },
+          {
+            "name": "X-PgBeam-Signature",
+            "in": "header",
+            "required": false,
+            "description": "Legacy `sha256=<hex>` HMAC over the raw body alone, with no timestamp binding. Retained for compatibility; prefer the v2 header. Sent under the same conditions as the v2 header.",
+            "schema": {
+              "type": "string",
+              "example": "sha256=b7e23ec29af22b0b4e41da31e868d57226121c84"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookDelivery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The delivery was accepted. Any 2xx will do; the body is ignored."
+          }
+        }
+      }
+    }
+  },
   "components": {
     "parameters": {
       "OrgId": {
@@ -10793,6 +10882,23 @@
           }
         }
       },
+      "WebhookEventType": {
+        "type": "string",
+        "description": "The kind of thing that happened. This is the set `event_types` on a webhook endpoint is chosen from, and the value delivered in the `X-PgBeam-Event` header. Subscribing to a value outside this set is rejected. New types are added over time, so a receiver should ignore a delivered type it does not recognise rather than failing the delivery.",
+        "enum": [
+          "query_blocked",
+          "budget_exhausted",
+          "kill_switch",
+          "masked",
+          "migration_flagged",
+          "approval_requested",
+          "anomaly_alert",
+          "canary_tripped",
+          "audit_checkpoint",
+          "webhook.test"
+        ],
+        "example": "query_blocked"
+      },
       "WebhookEndpoint": {
         "type": "object",
         "description": "A delivery target for project audit/event notifications.",
@@ -10813,6 +10919,7 @@
           },
           "project_id": {
             "type": "string",
+            "example": "prj_01j9x8y7z6w5v4u3t2s1r0q9p8",
             "description": "Owning project ID."
           },
           "url": {
@@ -10822,6 +10929,7 @@
           },
           "format": {
             "type": "string",
+            "example": "json",
             "enum": [
               "json",
               "splunk_hec",
@@ -10833,26 +10941,33 @@
           "event_types": {
             "type": "array",
             "description": "Event types to deliver. Empty means all events.",
+            "example": [
+              "query_blocked",
+              "canary_tripped"
+            ],
             "items": {
-              "type": "string",
-              "description": "An event type (e.g. blocked, anomaly, approval)."
+              "$ref": "#/components/schemas/WebhookEventType"
             }
           },
           "enabled": {
             "type": "boolean",
+            "example": true,
             "description": "Whether deliveries are active for this endpoint."
           },
           "description": {
             "type": "string",
+            "example": "Read-only access for the reporting agent",
             "description": "Human-readable label for the endpoint."
           },
           "created_at": {
             "type": "string",
+            "example": "2026-01-15T09:30:00Z",
             "format": "date-time",
             "description": "When the endpoint was created."
           },
           "updated_at": {
             "type": "string",
+            "example": "2026-01-15T09:30:00Z",
             "format": "date-time",
             "description": "When the endpoint was last updated."
           }
@@ -10874,12 +10989,14 @@
           },
           "secret": {
             "type": "string",
+            "example": "whsec_do-not-log-this",
             "maxLength": 256,
             "writeOnly": true,
             "description": "Shared secret used to sign delivery payloads. Write-only."
           },
           "format": {
             "type": "string",
+            "example": "json",
             "enum": [
               "json",
               "splunk_hec",
@@ -10892,18 +11009,23 @@
           "event_types": {
             "type": "array",
             "description": "Event types to deliver. Empty means all events.",
+            "example": [
+              "query_blocked",
+              "canary_tripped"
+            ],
             "items": {
-              "type": "string",
-              "description": "An event type."
+              "$ref": "#/components/schemas/WebhookEventType"
             }
           },
           "enabled": {
             "type": "boolean",
+            "example": true,
             "default": true,
             "description": "Whether deliveries are active for this endpoint."
           },
           "description": {
             "type": "string",
+            "example": "Read-only access for the reporting agent",
             "maxLength": 256,
             "description": "Human-readable label for the endpoint."
           }
@@ -10919,6 +11041,7 @@
         "properties": {
           "delivery_id": {
             "type": "string",
+            "example": "id_01j9x8y7z6w5v4u3t2s1r0q9p8",
             "description": "Identifier of the test delivery."
           },
           "status": {
@@ -10927,6 +11050,7 @@
           },
           "status_code": {
             "type": "integer",
+            "example": 10,
             "description": "HTTP status code returned by the endpoint, if a response was received."
           },
           "error": {
@@ -10951,6 +11075,7 @@
           },
           "next_page_token": {
             "type": "string",
+            "example": "eyJpZCI6InByal8wMWo5eDh5N3o2In0",
             "description": "Token for the next page. Empty if no more results."
           }
         }

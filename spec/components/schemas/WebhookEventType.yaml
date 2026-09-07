@@ -1,0 +1,19 @@
+type: string
+description: >-
+  The kind of thing that happened. This is the set `event_types` on a webhook
+  endpoint is chosen from, and the value delivered in the `X-PgBeam-Event`
+  header. Subscribing to a value outside this set is rejected. New types are
+  added over time, so a receiver should ignore a delivered type it does not
+  recognise rather than failing the delivery.
+enum:
+  - query_blocked
+  - budget_exhausted
+  - kill_switch
+  - masked
+  - migration_flagged
+  - approval_requested
+  - anomaly_alert
+  - canary_tripped
+  - audit_checkpoint
+  - webhook.test
+example: query_blocked

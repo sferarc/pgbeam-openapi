@@ -1,0 +1,83 @@
+post:
+  operationId: webhookDelivery
+  summary: Event delivery
+  description: |
+    Sent to the `url` of each webhook endpoint subscribed to the event type.
+
+    Verify `X-PgBeam-Signature-V2` before trusting the body: it is
+    `sha256=<hex>` of `<timestamp>.<raw body>` using the endpoint's signing
+    secret, and binding the timestamp is what stops a captured delivery being
+    replayed later. `X-PgBeam-Signature` is the older form over the body
+    alone and is kept only for endpoints that have not moved yet.
+
+    Both signature headers are only sent when the endpoint has a secret, so
+    set one. The `splunk_hec` and `datadog` formats authenticate with that
+    destination's own token header instead and carry neither signature.
+
+    Deduplicate on `X-PgBeam-Event-Id`: a delivery may be retried, and the
+    same event will arrive with the same id.
+
+    Respond `2xx` to acknowledge. Anything else is treated as a failure and
+    retried.
+  tags:
+    - Webhooks
+  parameters:
+    - name: X-PgBeam-Event
+      in: header
+      required: true
+      description: >-
+        The event type, the same value as `type` in the body. See
+        WebhookEventType for the set.
+      schema:
+        type: string
+        example: query_blocked
+    - name: X-PgBeam-Event-Id
+      in: header
+      required: true
+      description: Event id. Stable across retries, so deduplicate on it.
+      schema:
+        type: string
+        example: evt_01j9x8y7z6w5v4u3t2s1r0q9p8
+    - name: X-PgBeam-Delivery
+      in: header
+      required: true
+      description: Identifier for this delivery attempt.
+      schema:
+        type: string
+        example: dlv_01j9x8y7z6w5v4u3t2s1r0q9p8
+    - name: X-PgBeam-Timestamp
+      in: header
+      required: true
+      description: Unix seconds at send time. Covered by the v2 signature.
+      schema:
+        type: string
+        example: '1768469400'
+    - name: X-PgBeam-Signature-V2
+      in: header
+      required: false
+      description: >-
+        `sha256=<hex>` HMAC over `<X-PgBeam-Timestamp>.<raw body>`, keyed with
+        the endpoint's signing secret. Verify this one. Absent when the endpoint
+        has no secret, and on the `splunk_hec` and `datadog` formats.
+      schema:
+        type: string
+        example: sha256=1f8ac10f23c5b5bc1167bda84b833e5c057a77d2
+    - name: X-PgBeam-Signature
+      in: header
+      required: false
+      description: >-
+        Legacy `sha256=<hex>` HMAC over the raw body alone, with no timestamp
+        binding. Retained for compatibility; prefer the v2 header. Sent under
+        the same conditions as the v2 header.
+      schema:
+        type: string
+        example: sha256=b7e23ec29af22b0b4e41da31e868d57226121c84
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/WebhookDelivery'
+  responses:
+    '200':
+      description: The delivery was accepted. Any 2xx will do; the body is ignored.

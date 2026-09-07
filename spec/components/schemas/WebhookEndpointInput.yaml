@@ -11,11 +11,13 @@ properties:
     example: https://example.com/hooks/pgbeam
   secret:
     type: string
+    example: whsec_do-not-log-this
     maxLength: 256
     writeOnly: true
     description: Shared secret used to sign delivery payloads. Write-only.
   format:
     type: string
+    example: json
     enum:
       - json
       - splunk_hec
@@ -26,14 +28,18 @@ properties:
   event_types:
     type: array
     description: Event types to deliver. Empty means all events.
+    example:
+      - query_blocked
+      - canary_tripped
     items:
-      type: string
-      description: An event type.
+      $ref: ./WebhookEventType.yaml
   enabled:
     type: boolean
+    example: true
     default: true
     description: Whether deliveries are active for this endpoint.
   description:
     type: string
+    example: Read-only access for the reporting agent
     maxLength: 256
     description: Human-readable label for the endpoint.

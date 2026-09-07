@@ -241,6 +241,9 @@ paths:
     $ref: paths/v1_projects_{project_id}_webhooks_{webhook_id}.yaml
   /v1/projects/{project_id}/webhooks/{webhook_id}/test:
     $ref: paths/v1_projects_{project_id}_webhooks_{webhook_id}_test.yaml
+x-webhooks:
+  webhookDelivery:
+    $ref: webhooks/webhookDelivery.yaml
 components:
   securitySchemes:
     BearerAuth:

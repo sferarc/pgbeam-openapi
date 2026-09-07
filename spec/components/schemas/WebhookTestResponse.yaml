@@ -6,12 +6,14 @@ required:
 properties:
   delivery_id:
     type: string
+    example: id_01j9x8y7z6w5v4u3t2s1r0q9p8
     description: Identifier of the test delivery.
   status:
     type: string
     description: Outcome of the test delivery (delivered or failed).
   status_code:
     type: integer
+    example: 10
     description: HTTP status code returned by the endpoint, if a response was received.
   error:
     type: string
