@@ -4,6 +4,10 @@ required:
   - cases
   - total
 properties:
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.
+    example: '20'
   cases:
     type: array
     description: Support cases for the current page.

@@ -26,6 +26,7 @@ get:
         type: string
         format: date-time
     - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
     - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':

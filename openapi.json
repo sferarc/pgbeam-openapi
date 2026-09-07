@@ -916,6 +916,9 @@
             "$ref": "#/components/parameters/PageSize"
           },
           {
+            "$ref": "#/components/parameters/PageToken"
+          },
+          {
             "$ref": "#/components/parameters/IfNoneMatch"
           }
         ],
@@ -4789,6 +4792,9 @@
               "maximum": 100,
               "default": 20
             }
+          },
+          {
+            "$ref": "#/components/parameters/PageToken"
           },
           {
             "name": "page",
@@ -11917,6 +11923,11 @@
           "total"
         ],
         "properties": {
+          "next_page_token": {
+            "type": "string",
+            "description": "Opaque token for cursor-based pagination.",
+            "example": "20"
+          },
           "cases": {
             "type": "array",
             "description": "Support cases for the current page.",
