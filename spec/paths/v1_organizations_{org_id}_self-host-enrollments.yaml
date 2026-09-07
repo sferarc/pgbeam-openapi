@@ -45,6 +45,8 @@ get:
   tags:
     - Platform
   parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
     - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':

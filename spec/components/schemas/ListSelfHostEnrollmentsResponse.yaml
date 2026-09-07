@@ -8,3 +8,6 @@ properties:
     description: The organization's self-host enrollments, newest first.
     items:
       $ref: ./SelfHostEnrollment.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

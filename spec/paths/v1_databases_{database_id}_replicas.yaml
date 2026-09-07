@@ -3,10 +3,12 @@ parameters:
 get:
   operationId: listReplicas
   summary: List replicas
-  description: Lists all read replicas for a database.
+  description: Lists a database's read replicas.
   tags:
     - Projects
   parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
     - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
