@@ -4,13 +4,22 @@ get:
   description: Returns the health status of the API server.
   tags:
     - Platform
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   security: []
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Service is healthy.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/HealthResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml

@@ -1,0 +1,14 @@
+description: >-
+  The `If-Match` entity tag does not match the current representation, so the
+  resource changed after the read this write was based on. Nothing was modified.
+  `code` is `PRECONDITION_FAILED`. Re-read the resource, re-apply the change,
+  and retry with the new tag.
+headers:
+  ETag:
+    description: Entity tag of the current representation.
+    schema:
+      type: string
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml

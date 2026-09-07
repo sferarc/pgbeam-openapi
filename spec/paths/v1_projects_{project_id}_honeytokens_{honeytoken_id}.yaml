@@ -7,13 +7,20 @@ get:
   description: Returns a single honeytoken by ID.
   tags:
     - Honeytokens
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: The honeytoken.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/Honeytoken.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':
@@ -28,6 +35,8 @@ put:
   description: Updates a honeytoken's relation or action.
   tags:
     - Honeytokens
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
   requestBody:
     required: true
     content:
@@ -49,6 +58,8 @@ put:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
 delete:
   operationId: deleteHoneytoken
   summary: Delete a honeytoken

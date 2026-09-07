@@ -8,13 +8,20 @@ get:
   description: Returns a single policy profile by ID.
   tags:
     - Policies
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: The policy profile.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/PolicyProfile.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':
@@ -30,6 +37,8 @@ put:
   description: Updates a policy profile. Changes hot-reload to active agent sessions.
   tags:
     - Policies
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
   requestBody:
     required: true
     content:
@@ -51,6 +60,8 @@ put:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
 delete:

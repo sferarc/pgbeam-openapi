@@ -4,16 +4,25 @@ get:
   description: Returns all available plan tiers with their limits and pricing.
   tags:
     - Analytics
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   security:
     - BearerAuth: []
     - ApiKeyAuth: []
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: List of available plans.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ListPlansResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
     '401':
       $ref: ../components/responses/Unauthorized.yaml
     '429':

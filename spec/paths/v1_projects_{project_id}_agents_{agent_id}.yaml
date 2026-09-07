@@ -8,13 +8,20 @@ get:
   description: Returns a single agent credential. Secrets are never included.
   tags:
     - Agents
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: The agent credential (no secrets).
       content:
         application/json:
           schema:
             $ref: ../components/schemas/AgentCredential.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':
@@ -35,6 +42,8 @@ patch:
     MCP token work again. Issue a new credential instead.
   tags:
     - Agents
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
   requestBody:
     required: true
     content:
@@ -58,6 +67,8 @@ patch:
       $ref: ../components/responses/NotFound.yaml
     '409':
       $ref: ../components/responses/Conflict.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
 delete:
   operationId: revokeAgentCredential
   x-feature-flag: agent-gateway

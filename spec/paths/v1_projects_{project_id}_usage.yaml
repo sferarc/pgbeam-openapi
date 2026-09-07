@@ -25,13 +25,19 @@ get:
         format: date
         example: '2024-01-31'
       description: End date (inclusive, YYYY-MM-DD).
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Daily usage data by region.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ProjectUsageResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':

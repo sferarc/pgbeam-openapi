@@ -16,13 +16,19 @@ get:
   parameters:
     - $ref: ../components/parameters/AuditStart.yaml
     - $ref: ../components/parameters/AuditEnd.yaml
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Chain verification result.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/AuditChainVerification.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':

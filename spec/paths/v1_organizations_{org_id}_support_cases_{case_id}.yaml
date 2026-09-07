@@ -7,13 +7,20 @@ get:
   description: Returns a support case with all its messages.
   tags:
     - Support
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Support case with messages.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/GetSupportCaseResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':

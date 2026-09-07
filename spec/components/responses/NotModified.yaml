@@ -1,0 +1,8 @@
+description: >-
+  The representation has not changed since the entity tag in `If-None-Match`. No
+  body is sent.
+headers:
+  ETag:
+    description: Entity tag of the unchanged representation.
+    schema:
+      type: string

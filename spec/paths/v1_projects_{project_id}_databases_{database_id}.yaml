@@ -7,13 +7,20 @@ get:
   description: Returns a single database by ID.
   tags:
     - Databases
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Database found.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/Database.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':
@@ -30,6 +37,8 @@ patch:
   description: Partially updates a database connection. Only provided fields are modified.
   tags:
     - Databases
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
   requestBody:
     required: true
     content:
@@ -51,6 +60,8 @@ patch:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
 delete:

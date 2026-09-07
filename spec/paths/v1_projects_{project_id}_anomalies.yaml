@@ -22,13 +22,19 @@ get:
           - resolved
     - $ref: ../components/parameters/PageSize.yaml
     - $ref: ../components/parameters/PageToken.yaml
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Page of anomaly alerts.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ListAnomalyAlertsResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
     '400':
       $ref: ../components/responses/BadRequest.yaml
     '401':

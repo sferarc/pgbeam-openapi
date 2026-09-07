@@ -4,13 +4,22 @@ get:
   description: Returns all active data plane regions.
   tags:
     - Platform
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: List of regions.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/ListRegionsResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
     '401':
       $ref: ../components/responses/Unauthorized.yaml
     '429':

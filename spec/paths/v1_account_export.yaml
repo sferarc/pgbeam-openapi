@@ -7,13 +7,22 @@ get:
     know. Audit logs are limited to the most recent 1000 entries.
   tags:
     - Account
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
   responses:
     '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
       description: Account data export.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/AccountExport.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
     '401':
       $ref: ../components/responses/Unauthorized.yaml
     '404':

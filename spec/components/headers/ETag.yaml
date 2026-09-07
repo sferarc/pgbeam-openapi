@@ -1,0 +1,8 @@
+description: >-
+  Entity tag for the representation in this response. Send it back in
+  `If-None-Match` on a later read to be told `304 Not Modified` when nothing has
+  changed, or in `If-Match` on a write to have that write refused if the
+  resource changed in the meantime.
+schema:
+  type: string
+  example: '"9f8a1c2b3d4e5f60a1b2c3d4e5f60718"'
