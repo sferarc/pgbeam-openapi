@@ -1,0 +1,75 @@
+post:
+  operationId: scanText
+  summary: Scan untrusted text for prompt injection
+  description: >-
+    Inspects one piece of untrusted text for the techniques used to smuggle
+    instructions into a model's context, and returns a verdict, a recommended
+    action, and the evidence behind it.
+
+
+    Two detector families run. The structural layer reads codepoints and
+    scripts: invisible-codepoint runs, Unicode Tag smuggling, unterminated
+    bidirectional overrides, and mixed-script words. None of those has a
+    legitimate reason to appear in ordinary text, so a structural finding is a
+    fact worth acting on. The lexical layer is exact-phrase matching with
+    Unicode normalization, which is worth what exact-phrase matching is worth:
+    it is a reason to look, and a support ticket quoting an attack contains the
+    attack. Neither layer is a semantic classifier, and this endpoint does not
+    pretend to catch prose that is hostile only in its meaning. The measured
+    confusion matrix and the list of evasions that are known to work are
+    published at https://pgbeam.com/docs/prompt-scan.
+
+
+    Authentication is optional. Anonymous callers get a free daily allowance
+    keyed on their source address; an API key moves the allowance onto the
+    organization. Past the allowance the endpoint answers 402 with a payment
+    challenge.
+
+
+    The submitted text is held in memory for the duration of the request and is
+    never logged, stored, or used to train anything. An `Idempotency-Key` is
+    refused on this operation rather than honoured, because honouring it would
+    persist the response, and the response quotes the submitted text back. The
+    operation has no side effects beyond metering, so a retry is safe without
+    one.
+  tags:
+    - Platform
+  security:
+    - {}
+    - BearerAuth: []
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ScanTextRequest.yaml
+  responses:
+    '200':
+      description: The verdict on the submitted text.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ScanTextResult.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '402':
+      description: >-
+        The free allowance is spent and no payment was presented. The
+        `WWW-Authenticate` header carries the payment challenge; the body says
+        the same thing in prose a model can act on.
+      headers:
+        WWW-Authenticate:
+          description: >-
+            The payment challenge, in the `Payment` scheme. Its parameters are
+            set by the platform payment layer, not by this operation.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '503':
+      $ref: ../components/responses/ServiceUnavailable.yaml

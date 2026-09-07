@@ -246,6 +246,8 @@ paths:
     $ref: paths/v1_organizations_{org_id}_support_cases_{case_id}_messages.yaml
   /v1/internal/support/slack-event:
     $ref: paths/v1_internal_support_slack-event.yaml
+  /v1/scan/text:
+    $ref: paths/v1_scan_text.yaml
   /v1/organizations/{org_id}/usage:
     $ref: paths/v1_organizations_{org_id}_usage.yaml
   /v1/projects/{project_id}/usage:

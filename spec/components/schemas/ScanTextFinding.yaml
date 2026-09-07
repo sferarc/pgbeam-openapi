@@ -1,0 +1,58 @@
+type: object
+description: >-
+  One detection, naming the technique and the bytes that caused it. Findings are
+  evidence, not a score: there is no arithmetic over them and no threshold to
+  tune.
+required:
+  - layer
+  - technique
+  - confidence
+  - offset
+  - detail
+properties:
+  layer:
+    type: string
+    enum:
+      - structural
+      - lexical
+    description: >-
+      Which detector family produced the finding. A structural finding is a
+      byte-level fact with no ordinary explanation. A lexical finding is
+      exact-phrase matching, which is a reason to look rather than proof.
+  technique:
+    type: string
+    enum:
+      - invisible_run
+      - tag_smuggling
+      - bidi_override
+      - mixed_script
+      - instruction_phrase
+      - invalid_encoding
+      - truncated
+    description: What was found.
+  confidence:
+    type: string
+    enum:
+      - low
+      - medium
+      - high
+    description: >-
+      How well the finding is explained by an attack rather than by ordinary
+      content. An ordered label, deliberately not a score.
+  offset:
+    type: integer
+    description: >-
+      Byte offset into the submitted text where the evidence starts, or -1 when
+      the finding is about the value as a whole.
+    example: 42
+  evidence:
+    type: string
+    description: >-
+      The offending substring with invisible codepoints rendered visible and the
+      result truncated. Absent when include_evidence was false. This is your own
+      submitted text handed back to you; PgBeam does not retain it.
+    example: ignore all previous instructions
+  detail:
+    type: string
+    description: One line explaining the finding, written to be read by a model.
+    example: 31 Unicode Tag codepoints decoding to "ignore all previous instructions"
