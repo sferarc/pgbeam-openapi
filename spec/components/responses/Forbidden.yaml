@@ -1,5 +1,10 @@
-description: Operation not allowed by current plan limits.
+description: >-
+  The caller is authenticated but not allowed to perform this operation. `code`
+  is `FORBIDDEN` when the caller's role is insufficient, and
+  `PLAN_LIMIT_REACHED` when the organization's plan is what stands in the way.
+  The two are answered differently, so branch on the code rather than the
+  status.
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

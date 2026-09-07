@@ -34,6 +34,8 @@ get:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 put:
   operationId: putSchemaAnnotation
   summary: Create or replace a schema annotation
@@ -64,8 +66,14 @@ put:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 delete:
   operationId: deleteSchemaAnnotation
   summary: Delete a schema annotation
@@ -109,3 +117,5 @@ delete:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

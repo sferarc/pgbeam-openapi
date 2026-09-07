@@ -1,0 +1,5 @@
+description: The request body exceeds the 2 MB limit. `code` is `PAYLOAD_TOO_LARGE`.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Error.yaml

@@ -1,0 +1,33 @@
+type: string
+description: >-
+  Machine-readable identity of the error condition. This is the value to branch
+  on: it is stable across wording changes, and it distinguishes conditions that
+  share a status code (a permissions denial from a plan limit, a duplicate name
+  from a state conflict). New codes are added for new conditions, so treat the
+  set as open and fall back on the status.
+enum:
+  - INVALID_INPUT
+  - UNSUPPORTED_MEDIA_TYPE
+  - PAYLOAD_TOO_LARGE
+  - METHOD_NOT_ALLOWED
+  - UNAUTHORIZED
+  - PAYMENT_REQUIRED
+  - FORBIDDEN
+  - PLAN_LIMIT_REACHED
+  - NOT_FOUND
+  - PRECONDITION_FAILED
+  - CONFLICT
+  - RESOURCE_EXISTS
+  - INVALID_STATE
+  - IDEMPOTENCY_KEY_REUSED
+  - RATE_LIMITED
+  - INTERNAL_ERROR
+  - BAD_GATEWAY
+  - SERVICE_UNAVAILABLE
+  - TIMEOUT
+  - DEMO_NOT_CONFIGURED
+  - DEMO_PAUSED
+  - DEMO_CAPACITY_FULL
+  - DEMO_BUSY
+  - DEMO_TIER_NOT_PURCHASABLE
+example: PLAN_LIMIT_REACHED

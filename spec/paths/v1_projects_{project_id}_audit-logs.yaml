@@ -50,3 +50,5 @@ get:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

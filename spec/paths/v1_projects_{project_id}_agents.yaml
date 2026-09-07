@@ -32,15 +32,21 @@ post:
     '403':
       description: Agent credential quota reached for the organization plan.
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: ../components/schemas/Error.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
     '409':
       $ref: ../components/responses/Conflict.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 get:
   operationId: listAgentCredentials
   x-feature-flag: agent-gateway
@@ -74,3 +80,5 @@ get:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

@@ -1,18 +1,51 @@
 type: object
-description: Standard error response envelope for PgBeam API requests.
+description: >-
+  An RFC 9457 problem detail, served as `application/problem+json`. Every error
+  the API returns has this shape.
 required:
-  - error
+  - type
+  - title
+  - status
+  - code
 properties:
-  error:
-    type: object
-    description: Error metadata for the failed request.
-    required:
-      - code
-      - message
-    properties:
-      code:
-        type: string
-        description: Machine-readable error code.
-      message:
-        type: string
-        description: Human-readable error message.
+  type:
+    type: string
+    format: uri
+    description: >-
+      URI identifying the error condition. It resolves to that condition's entry
+      in the published error catalog. This is the RFC 9457 identifier; `code` is
+      the same identity as a short token.
+    example: https://pgbeam.com/docs/api/errors/plan-limit-reached
+  title:
+    type: string
+    description: Short human-readable summary of the error condition.
+    example: Plan limit reached
+  status:
+    type: integer
+    description: HTTP status code, repeated here so the document is self-contained.
+    example: 403
+  detail:
+    type: string
+    description: >-
+      Human-readable explanation specific to this occurrence. Written for a
+      person; branch on `code` or `type` rather than on this string.
+    example: 'project limit reached: your plan allows 3 projects'
+  instance:
+    type: string
+    description: Path of the request that produced the error.
+    example: /v1/projects
+  code:
+    $ref: ./ErrorCode.yaml
+  request_id:
+    type: string
+    description: >-
+      Correlation id for this request, also returned in the `X-Request-Id`
+      header. Quote it when reporting a problem.
+    example: 9f8a1c2b3d4e5f60
+  errors:
+    type: array
+    description: >-
+      Field-level detail, present when the request failed validation. Each entry
+      names the part of the request that was rejected.
+    items:
+      $ref: ./FieldError.yaml

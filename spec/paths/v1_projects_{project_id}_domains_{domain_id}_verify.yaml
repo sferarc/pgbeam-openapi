@@ -24,10 +24,12 @@ post:
     '403':
       description: Custom domains require a Scale or Enterprise plan.
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: ../components/schemas/Error.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

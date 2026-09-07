@@ -31,6 +31,8 @@ get:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 patch:
   operationId: updateDatabase
   summary: Update a database
@@ -62,8 +64,14 @@ patch:
       $ref: ../components/responses/NotFound.yaml
     '412':
       $ref: ../components/responses/PreconditionFailed.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 delete:
   operationId: deleteDatabase
   summary: Delete a database
@@ -83,3 +91,5 @@ delete:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

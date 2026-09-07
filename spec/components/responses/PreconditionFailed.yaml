@@ -9,6 +9,6 @@ headers:
     schema:
       type: string
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

@@ -40,6 +40,8 @@ post:
     '409':
       description: The enrollment is revoked and cannot be rotated.
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: ../components/schemas/Error.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

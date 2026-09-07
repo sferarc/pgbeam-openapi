@@ -1,5 +1,7 @@
-description: Resource not found.
+description: >-
+  The resource does not exist, or the caller is not entitled to know that it
+  does. `code` is `NOT_FOUND`.
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

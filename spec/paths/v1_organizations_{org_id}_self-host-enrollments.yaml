@@ -31,13 +31,19 @@ post:
     '403':
       description: The organization's plan is not entitled to self-host.
       content:
-        application/json:
+        application/problem+json:
           schema:
             $ref: ../components/schemas/Error.yaml
     '409':
       $ref: ../components/responses/Conflict.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 get:
   operationId: listSelfHostEnrollments
   summary: List self-host enrollments
@@ -66,3 +72,5 @@ get:
       $ref: ../components/responses/Unauthorized.yaml
     '403':
       $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

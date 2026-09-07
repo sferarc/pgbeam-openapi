@@ -1,4 +1,4 @@
-description: Rate limited. Try again later.
+description: Rate limited. `code` is `RATE_LIMITED`.
 headers:
   Retry-After:
     description: Seconds to wait before retrying.
@@ -6,6 +6,6 @@ headers:
       type: integer
       example: 60
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

@@ -1,5 +1,7 @@
-description: Invalid request parameters.
+description: >-
+  The request was rejected. `code` is `INVALID_INPUT`, and `errors` names the
+  offending fields when the failure was a validation one.
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

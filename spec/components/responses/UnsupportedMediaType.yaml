@@ -1,0 +1,7 @@
+description: >-
+  The request body is not JSON, or carries a body without declaring a
+  Content-Type. `code` is `UNSUPPORTED_MEDIA_TYPE`.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Error.yaml

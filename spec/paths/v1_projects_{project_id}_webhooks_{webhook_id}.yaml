@@ -30,6 +30,8 @@ get:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 put:
   operationId: updateWebhookEndpoint
   x-feature-flag: agent-gateway
@@ -62,6 +64,12 @@ put:
       $ref: ../components/responses/NotFound.yaml
     '412':
       $ref: ../components/responses/PreconditionFailed.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 delete:
   operationId: deleteWebhookEndpoint
   x-feature-flag: agent-gateway
@@ -80,3 +88,5 @@ delete:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

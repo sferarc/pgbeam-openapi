@@ -30,6 +30,8 @@ get:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 patch:
   operationId: updateProject
   summary: Update a project
@@ -63,8 +65,14 @@ patch:
       $ref: ../components/responses/Conflict.yaml
     '412':
       $ref: ../components/responses/PreconditionFailed.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
 delete:
   operationId: deleteProject
   summary: Delete a project
@@ -84,3 +92,5 @@ delete:
       $ref: ../components/responses/NotFound.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

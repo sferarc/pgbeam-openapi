@@ -1,5 +1,10 @@
-description: Resource already exists or conflicts with current state.
+description: >-
+  The request conflicts with the current state. `code` distinguishes the cases:
+  `RESOURCE_EXISTS` for a name or value already in use, `INVALID_STATE` for a
+  resource that is no longer in a state that allows the operation, and
+  `IDEMPOTENCY_KEY_REUSED` for a retry whose body does not match the request the
+  key was first used for.
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

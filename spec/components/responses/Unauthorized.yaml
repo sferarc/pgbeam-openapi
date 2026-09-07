@@ -1,5 +1,5 @@
-description: Missing or invalid authentication.
+description: Missing or invalid authentication. `code` is `UNAUTHORIZED`.
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

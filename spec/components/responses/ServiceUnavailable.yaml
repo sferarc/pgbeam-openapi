@@ -1,5 +1,13 @@
-description: Service temporarily unavailable.
+description: >-
+  The service is temporarily unable to answer. `code` is `SERVICE_UNAVAILABLE`.
+  Safe to retry after the delay in `Retry-After`.
+headers:
+  Retry-After:
+    description: Seconds to wait before retrying.
+    schema:
+      type: integer
+      example: 5
 content:
-  application/json:
+  application/problem+json:
     schema:
       $ref: ../schemas/Error.yaml

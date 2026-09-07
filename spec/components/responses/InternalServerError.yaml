@@ -1,0 +1,7 @@
+description: >-
+  The request failed for a reason on our side. `code` is `INTERNAL_ERROR`. Quote
+  `request_id` when reporting it.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Error.yaml
