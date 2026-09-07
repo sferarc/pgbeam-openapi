@@ -1,0 +1,25 @@
+type: object
+description: >-
+  The 402 body for a paid demo tier: what is being sold, and how to pay for it.
+  Settle it and replay the request with payment_proof set.
+required:
+  - resource
+  - tier
+  - reason
+  - accepts
+properties:
+  resource:
+    type: string
+    description: Payment catalog resource id being charged for.
+    example: pgbeam.demo.credential.extended
+  tier:
+    type: string
+    description: The demo tier this challenge would issue.
+  reason:
+    type: string
+    description: Why payment is required, in one sentence.
+  accepts:
+    type: array
+    description: Payment methods that will settle this challenge.
+    items:
+      $ref: ./DemoPaymentMethod.yaml

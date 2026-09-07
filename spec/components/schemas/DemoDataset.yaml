@@ -1,0 +1,18 @@
+type: object
+description: >-
+  The fictional dataset a demo credential reads. It is owned by PgBeam, shared
+  by every concurrent demo, and read-only, so no session can change what another
+  session sees.
+required:
+  - schema
+  - tables
+properties:
+  schema:
+    type: string
+    description: PostgreSQL schema holding the demo tables.
+    example: demo
+  tables:
+    type: array
+    description: Tables in the dataset.
+    items:
+      $ref: ./DemoTable.yaml

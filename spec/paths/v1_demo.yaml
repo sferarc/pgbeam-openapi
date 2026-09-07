@@ -1,0 +1,21 @@
+get:
+  operationId: getDemo
+  summary: Describe the demo sandbox
+  description: >-
+    Returns everything an unauthenticated caller needs before asking for a demo
+    credential: whether the demo is up, how much of the global ceiling is left,
+    what each tier costs, the dataset schema with the treatment the demo policy
+    applies to every column, and the walkthrough of statements that demonstrate
+    each guardrail. Requires no account and no key.
+  tags:
+    - Demo
+  security: []
+  responses:
+    '200':
+      description: The demo sandbox description.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/DemoInfo.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml

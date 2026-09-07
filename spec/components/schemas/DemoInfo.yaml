@@ -1,0 +1,56 @@
+type: object
+description: >-
+  Everything an unauthenticated caller needs to decide whether to ask for a demo
+  credential: whether the demo is up, how much capacity is left, what the tiers
+  cost, what the dataset holds, and the walkthrough to run.
+required:
+  - available
+  - tiers
+  - dataset
+  - walkthrough
+  - live_sessions
+  - max_live_sessions
+  - max_sessions_per_hour_per_client
+  - upgrade
+properties:
+  available:
+    type: boolean
+    description: >-
+      Whether a credential can be issued right now. False when the deployment
+      has no demo database configured or the global ceiling is full.
+  unavailable_reason:
+    type: string
+    description: Why no credential can be issued. Present only when available is false.
+    example: not_configured
+  retry_after_seconds:
+    type: integer
+    description: >-
+      Seconds until the oldest live session expires and capacity frees up.
+      Present only when the ceiling is full.
+  tiers:
+    type: array
+    description: Grades of demo credential this deployment offers.
+    items:
+      $ref: ./DemoTier.yaml
+  dataset:
+    $ref: ./DemoDataset.yaml
+  walkthrough:
+    type: array
+    description: Statements to run, in order, to observe each guardrail.
+    items:
+      $ref: ./DemoWalkthroughStep.yaml
+  live_sessions:
+    type: integer
+    description: Demo credentials currently issued and unexpired.
+  max_live_sessions:
+    type: integer
+    description: >-
+      Hard ceiling on concurrent live demo credentials across the whole
+      deployment. Vending stops at this number.
+  max_sessions_per_hour_per_client:
+    type: integer
+    description: >-
+      Credentials one client address may be issued per rolling hour. Counted
+      against a keyed hash of the address, never the address itself.
+  upgrade:
+    $ref: ./DemoUpgrade.yaml

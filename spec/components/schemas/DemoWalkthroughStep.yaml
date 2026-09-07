@@ -1,0 +1,47 @@
+type: object
+description: >-
+  One statement an agent can run to observe a specific enforcement decision,
+  with the outcome it must produce. Running all of them, in order, is the
+  machine-checkable proof that the policy engine is live.
+required:
+  - step
+  - title
+  - sql
+  - expect
+  - why
+properties:
+  step:
+    type: integer
+    description: Position in the walkthrough, starting at 1.
+  title:
+    type: string
+    description: Short name for what this step demonstrates.
+  sql:
+    type: string
+    description: The exact statement to run. Relations are schema-qualified on purpose.
+  expect:
+    type: string
+    enum:
+      - allow
+      - masked
+      - blocked
+    description: >-
+      The outcome the statement must produce. allow returns rows unchanged;
+      masked returns rows with the listed columns replaced; blocked returns a
+      PostgreSQL error rather than rows.
+  expect_rule:
+    type: string
+    description: >-
+      The decision rule named in the error, for a blocked step. Present only
+      when expect is blocked.
+    example: table_not_allowed
+  expect_columns:
+    type: array
+    description: >-
+      Output columns that come back masked, for a masked step. Present only when
+      expect is masked.
+    items:
+      $ref: ./DemoColumn.yaml
+  why:
+    type: string
+    description: The policy rule that produces this outcome, in one sentence.

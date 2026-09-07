@@ -1,0 +1,23 @@
+type: object
+description: One column of a demo table, and how the demo policy treats it.
+required:
+  - name
+  - type
+  - treatment
+properties:
+  name:
+    type: string
+    description: Column name.
+  type:
+    type: string
+    description: PostgreSQL type.
+  treatment:
+    type: string
+    enum:
+      - visible
+      - redacted
+      - hashed
+      - nulled
+    description: >-
+      What a demo credential sees. visible is the raw value; redacted returns a
+      fixed token; hashed returns a SHA-256 hex digest; nulled returns NULL.

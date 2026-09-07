@@ -1,0 +1,25 @@
+type: object
+description: One table in the demo dataset, and whether the demo policy reaches it.
+required:
+  - name
+  - reachable
+  - description
+  - columns
+properties:
+  name:
+    type: string
+    description: Schema-qualified relation name.
+    example: demo.customers
+  reachable:
+    type: boolean
+    description: >-
+      False for a table that exists in the database but is deliberately left off
+      the credential's allowlist, so every statement naming it is blocked.
+  description:
+    type: string
+    description: What the table holds and which guardrail it demonstrates.
+  columns:
+    type: array
+    description: Columns of the table, with the treatment the demo policy applies.
+    items:
+      $ref: ./DemoColumn.yaml

@@ -1,0 +1,36 @@
+type: object
+description: One payment method the 402 challenge will accept for a paid tier.
+required:
+  - scheme
+  - network
+  - amount
+  - currency
+  - pay_to
+properties:
+  scheme:
+    type: string
+    description: Payment scheme identifier.
+    example: exact
+  network:
+    type: string
+    description: Settlement network the payment must land on.
+    example: base
+  asset:
+    type: string
+    description: Asset contract or symbol the amount is denominated in.
+  amount:
+    type: string
+    description: >-
+      Amount owed, as a decimal string in the asset's smallest unit, so no
+      precision is lost in JSON.
+    example: '1000000'
+  currency:
+    type: string
+    description: Human-facing currency code for the amount.
+    example: USDC
+  pay_to:
+    type: string
+    description: Address or account the payment must be made to.
+  max_timeout_seconds:
+    type: integer
+    description: How long the challenge stays settleable.

@@ -1,0 +1,5 @@
+description: Service temporarily unavailable.
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml

@@ -92,6 +92,11 @@ tags:
   - name: Account
     description: Account data, privacy controls, and onboarding
     x-icon: CircleUser
+  - name: Demo
+    description: >-
+      Unauthenticated demo credentials against PgBeam's own read-only dataset,
+      so an agent can run the policy engine before it has an account.
+    x-icon: FlaskConical
   - name: Support
     description: Support case management
     x-icon: LifeBuoy
@@ -162,6 +167,12 @@ paths:
     $ref: paths/v1_projects_{project_id}_databases_{database_id}_scan-pii.yaml
   /v1/projects/{project_id}/databases/{database_id}/schema-catalog:
     $ref: paths/v1_projects_{project_id}_databases_{database_id}_schema-catalog.yaml
+  /v1/demo:
+    $ref: paths/v1_demo.yaml
+  /v1/demo/credentials:
+    $ref: paths/v1_demo_credentials.yaml
+  /v1/demo/credentials/{session_id}/release:
+    $ref: paths/v1_demo_credentials_{session_id}_release.yaml
   /v1/projects/{project_id}/domains:
     $ref: paths/v1_projects_{project_id}_domains.yaml
   /v1/projects/{project_id}/domains/{domain_id}:

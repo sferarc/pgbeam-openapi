@@ -1,0 +1,45 @@
+type: object
+description: >-
+  One purchasable (or free) grade of demo credential. The free tier is always
+  listed; a paid tier is listed with purchasable=false until a payment method is
+  wired into the deployment.
+required:
+  - name
+  - ttl_seconds
+  - query_budget
+  - max_rows
+  - price_usd_cents
+  - purchasable
+properties:
+  name:
+    type: string
+    enum:
+      - free
+      - extended
+    description: Tier identifier, used as the tier field of a vend request.
+  ttl_seconds:
+    type: integer
+    description: How long a credential of this tier stays usable after it is issued.
+  query_budget:
+    type: integer
+    description: >-
+      Statements the credential may run before the data plane refuses it. The
+      unit charged is the statement, not the protocol message.
+  max_rows:
+    type: integer
+    description: Rows a single statement may return before the result is truncated.
+  price_usd_cents:
+    type: integer
+    description: Price of one credential of this tier, in US cents. 0 for the free tier.
+  purchasable:
+    type: boolean
+    description: >-
+      Whether this tier can be bought right now. False means the deployment has
+      no payment method wired, so a request for the tier is refused with 503
+      rather than a 402 challenge nobody can settle.
+  resource:
+    type: string
+    description: >-
+      Payment catalog resource id for this tier, quoted back in the 402
+      challenge. Absent on the free tier.
+    example: pgbeam.demo.credential.extended

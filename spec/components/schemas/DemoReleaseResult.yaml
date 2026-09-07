@@ -1,0 +1,18 @@
+type: object
+description: Outcome of releasing a demo credential.
+required:
+  - session_id
+  - released
+  - live_sessions
+properties:
+  session_id:
+    type: string
+    description: The session that was released.
+  released:
+    type: boolean
+    description: >-
+      True when this call released the session. False when it had already
+      expired or been released, which is not an error.
+  live_sessions:
+    type: integer
+    description: Demo credentials still live after this release.

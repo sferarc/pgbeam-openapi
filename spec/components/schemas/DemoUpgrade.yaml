@@ -1,0 +1,28 @@
+type: object
+description: >-
+  What to do with the demo once it has proved the point. The policy that
+  governed the demo is handed back as a document that can be posted verbatim to
+  the real policy endpoint, so the evaluation carries into the account.
+required:
+  - signup_url
+  - docs_url
+  - policy_endpoint
+  - description
+properties:
+  signup_url:
+    type: string
+    description: >-
+      Dashboard signup, carrying the demo session id so the resulting
+      organization can be attributed to this evaluation.
+  docs_url:
+    type: string
+    description: Documentation for this endpoint and the walkthrough.
+  policy_endpoint:
+    type: string
+    description: >-
+      The authenticated endpoint that accepts policy_template as its request
+      body once the caller has a project.
+    example: POST /v1/projects/{project_id}/policies
+  description:
+    type: string
+    description: How to carry the demo policy into a real project, in one sentence.
