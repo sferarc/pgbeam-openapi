@@ -1,5 +1,15 @@
 # @pgbeam/openapi
 
+## 0.3.4
+
+### Patch Changes
+
+- 3f33063: feat(api): split errors into RFC 9457 problem documents
+- 022577d: feat(api): the audit log handed out a cursor with nowhere to put it, so a generated client could not page it at all
+- eca3f27: feat(payments): an agent whose query budget runs out can buy more over HTTP 402
+- c1fa878: feat(scan): the hostile-text detector was a library nobody could call without running Postgres through us
+- 9818ecf: fix(api): a caller could tell whether a project existed in someone else's tenant, and two collections had no bound at all
+
 ## 0.3.3
 
 ### Patch Changes
