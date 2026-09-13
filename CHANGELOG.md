@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.7
+
+### Patch Changes
+
+- 631f106: feat(contentscan): a flagged result records a content_flagged audit entry
+
 ## 0.3.6
 
 ### Patch Changes
