@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.6
+
+### Patch Changes
+
+- a5fbfca: feat(proxy): scan result content on the wire for agent-directed text
+
 ## 0.3.5
 
 ### Patch Changes
