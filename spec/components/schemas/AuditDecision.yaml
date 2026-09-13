@@ -4,11 +4,11 @@ description: >-
   auto_approved; `block` = blocked, budget_exhausted, auth_failed,
   credential_expired, canary_tripped, rejected, approval_expired; `mask` =
   masked; `truncate` = truncated. The progress events approval_requested,
-  approved and migration_flagged group under no decision: each belongs to a
-  statement that goes on to record its own outcome, so grouping them would count
-  that statement twice. auto_approved is not one of those: it is the only row an
-  auto-approved write produces, so it groups under `allow` like any other
-  completed statement.
+  approved and migration_flagged group under no decision, and so does
+  content_flagged: each belongs to a statement that records its own outcome as
+  well, so grouping them would count that statement twice. auto_approved is not
+  one of those: it is the only row an auto-approved write produces, so it groups
+  under `allow` like any other completed statement.
 enum:
   - allow
   - block
