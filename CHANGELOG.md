@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.8
+
+### Patch Changes
+
+- 40af2fb: feat(proxy,api): raise an anomaly alert for a high-confidence content-scan finding
+
 ## 0.3.7
 
 ### Patch Changes
