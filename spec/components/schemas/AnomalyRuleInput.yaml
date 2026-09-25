@@ -1,0 +1,51 @@
+type: object
+description: >
+  Request body for creating or updating an anomaly rule. One rule exists per
+  (project, credential, metric); creating a second for the same scope is a
+  conflict.
+required:
+  - metric
+properties:
+  credential_id:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: >
+      Agent credential to scope the rule to. Null or omitted applies it to every
+      credential in the project. The credential must belong to this project.
+    example: agt_01j9x8y7z6w5v4u3t2s1r0q9p8
+  metric:
+    $ref: ./AnomalyMetric.yaml
+  sigma_threshold:
+    type: number
+    format: double
+    nullable: true
+    exclusiveMinimum: true
+    minimum: 0
+    description: >
+      N in the "mean + N * dispersion" spike rule. Must be greater than zero;
+      the detector reads any value at or below zero as "use the default", so a
+      stored zero could never mean what setting it would suggest. Rejected for
+      distinct_shapes and active_hours, which have no rate for sigma to put a
+      threshold on. Null or omitted leaves the deployment default in place.
+    example: 4.5
+  floor:
+    type: number
+    format: double
+    nullable: true
+    exclusiveMinimum: true
+    minimum: 0
+    description: >
+      Absolute floor below which the metric never alerts. Must be greater than
+      zero, for the same reason as sigma_threshold. Rejected for distinct_shapes
+      and active_hours, which have no rate for a floor to bound. Null or omitted
+      leaves the deployment default in place.
+    example: 100
+  enabled:
+    type: boolean
+    default: true
+    description: >
+      False silences this metric for this scope. The baseline keeps advancing
+      while it is silenced, so re-enabling resumes from the existing history
+      rather than a cold warm-up.
+    example: true

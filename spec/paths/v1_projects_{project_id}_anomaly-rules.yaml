@@ -1,0 +1,82 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createAnomalyRule
+  summary: Create an anomaly rule
+  description: |
+    Retunes one detection metric for this project, or for one agent credential
+    in it. Without a rule every metric resolves to the deployment default.
+
+    A rule adds no detection algorithm and no alert kind: it changes how
+    sensitive one of the five existing metrics is. enabled=false silences that
+    metric for that scope; the baseline keeps advancing, so re-enabling
+    resumes from the existing history rather than a cold warm-up.
+  tags:
+    - Anomalies
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AnomalyRuleInput.yaml
+  responses:
+    '201':
+      description: Anomaly rule created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnomalyRule.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+get:
+  operationId: listAnomalyRules
+  summary: List anomaly rules
+  description: Lists the project's anomaly rules, including silenced ones.
+  tags:
+    - Anomalies
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+    - $ref: ../components/parameters/IfNoneMatch.yaml
+  responses:
+    '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+      description: Page of anomaly rules.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListAnomalyRulesResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

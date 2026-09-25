@@ -1,0 +1,11 @@
+type: string
+description: >
+  One of the five detection metrics. A rule retunes how sensitive one of them
+  is; it adds no detection algorithm and no alert kind.
+enum:
+  - queries_per_hour
+  - bytes_per_hour
+  - distinct_shapes
+  - errors_per_hour
+  - active_hours
+example: bytes_per_hour

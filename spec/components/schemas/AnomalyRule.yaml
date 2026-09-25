@@ -1,0 +1,63 @@
+type: object
+description: >
+  Per-project (and optionally per-credential) sensitivity for one detection
+  metric. Without a rule every metric resolves to the deployment default, so a
+  noisy credential cannot be loosened, a sensitive one cannot be tightened, and
+  off-hours cannot be silenced for a credential that legitimately runs at 3am.
+required:
+  - id
+  - project_id
+  - metric
+  - enabled
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique anomaly rule identifier.
+    example: anr_01j9x8y7z6w5v4u3t2s1r0q9p8
+  project_id:
+    type: string
+    description: Project the rule belongs to.
+    example: prj_01j9x8y7z6w5v4u3t2s1r0q9p8
+  credential_id:
+    type: string
+    nullable: true
+    description: >
+      Agent credential the rule applies to. Null applies it to every credential
+      in the project.
+    example: agt_01j9x8y7z6w5v4u3t2s1r0q9p8
+  metric:
+    $ref: ./AnomalyMetric.yaml
+  sigma_threshold:
+    type: number
+    format: double
+    nullable: true
+    description: >
+      N in the "mean + N * dispersion" spike rule. Null leaves the deployment
+      default in place.
+    example: 4.5
+  floor:
+    type: number
+    format: double
+    nullable: true
+    description: >
+      Absolute floor below which the metric never alerts. Null leaves the
+      deployment default in place. Only queries_per_hour, bytes_per_hour and
+      errors_per_hour have a floor.
+    example: 100
+  enabled:
+    type: boolean
+    description: >
+      False silences this metric for this scope. Note the polarity is the
+      opposite of honeytokens.enabled: the rule IS the switch, so disabling it
+      disables the metric rather than deactivating the rule.
+    example: true
+  created_at:
+    type: string
+    format: date-time
+    description: When the rule was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the rule was last updated.

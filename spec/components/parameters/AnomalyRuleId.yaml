@@ -1,0 +1,7 @@
+name: anomaly_rule_id
+in: path
+required: true
+description: Unique anomaly rule identifier (prefixed, e.g. anr_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

@@ -132,6 +132,10 @@ paths:
     $ref: paths/v1_projects_{project_id}_anomalies.yaml
   /v1/projects/{project_id}/anomalies/{anomaly_id}:
     $ref: paths/v1_projects_{project_id}_anomalies_{anomaly_id}.yaml
+  /v1/projects/{project_id}/anomaly-rules:
+    $ref: paths/v1_projects_{project_id}_anomaly-rules.yaml
+  /v1/projects/{project_id}/anomaly-rules/{anomaly_rule_id}:
+    $ref: paths/v1_projects_{project_id}_anomaly-rules_{anomaly_rule_id}.yaml
   /v1/projects/{project_id}/approvals:
     $ref: paths/v1_projects_{project_id}_approvals.yaml
   /v1/projects/{project_id}/approvals/{approval_id}/approve:

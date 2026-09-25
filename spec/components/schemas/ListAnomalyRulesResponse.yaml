@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated anomaly rules for a project.
+required:
+  - anomaly_rules
+properties:
+  anomaly_rules:
+    type: array
+    description: Anomaly rules on the current page.
+    items:
+      $ref: ./AnomalyRule.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

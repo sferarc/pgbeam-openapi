@@ -1,0 +1,97 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/AnomalyRuleId.yaml
+get:
+  operationId: getAnomalyRule
+  summary: Get an anomaly rule
+  description: Returns a single anomaly rule by ID.
+  tags:
+    - Anomalies
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
+  responses:
+    '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+      description: The anomaly rule.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnomalyRule.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+put:
+  operationId: updateAnomalyRule
+  summary: Update an anomaly rule
+  description: |
+    Replaces the rule's scope, metric and sensitivity. A rule whose enabled
+    flag is turned off silences its metric for its scope rather than being
+    deactivated.
+  tags:
+    - Anomalies
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AnomalyRuleInput.yaml
+  responses:
+    '200':
+      description: Updated anomaly rule.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AnomalyRule.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+delete:
+  operationId: deleteAnomalyRule
+  summary: Delete an anomaly rule
+  description: |
+    Removes the rule, so its metric returns to the deployment default for that
+    scope. Deleting a rule that was silencing a metric turns that metric's
+    alerts back on.
+  tags:
+    - Anomalies
+  responses:
+    '204':
+      description: Anomaly rule deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
