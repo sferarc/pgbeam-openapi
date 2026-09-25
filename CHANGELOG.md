@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.9
+
+### Patch Changes
+
+- a9c235e: feat(api): anomaly rules, the authoring surface (roadmap item 4, slice 3)
+
 ## 0.3.8
 
 ### Patch Changes
