@@ -1,0 +1,13 @@
+type: string
+description: >
+  Every kind of anomaly alert the platform raises: the five detector kinds, a
+  honeytoken trip, and a high-confidence result-content scan finding.
+enum:
+  - volume_spike
+  - egress_spike
+  - new_query_shape
+  - off_hours
+  - error_spike
+  - canary_tripped
+  - content_flagged
+example: egress_spike

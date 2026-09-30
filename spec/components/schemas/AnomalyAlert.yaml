@@ -22,7 +22,10 @@ properties:
     description: Agent credential implicated, if any.
   kind:
     type: string
-    description: Machine-readable anomaly kind (e.g. egress_spike, novel_query_shape).
+    description: >-
+      Machine-readable anomaly kind, one of the AnomalyKind values (e.g.
+      egress_spike, new_query_shape). A string rather than the enum so a client
+      built before a new kind ships still reads the alert.
   severity:
     type: string
     enum:

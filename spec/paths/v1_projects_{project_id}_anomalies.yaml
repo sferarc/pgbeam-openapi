@@ -6,7 +6,7 @@ get:
   summary: List anomaly alerts
   description: >-
     Lists anomaly alerts for the project, newest first, optionally filtered by
-    status.
+    status and kind.
   tags:
     - Anomalies
   parameters:
@@ -20,6 +20,12 @@ get:
           - open
           - acknowledged
           - resolved
+    - name: kind
+      in: query
+      required: false
+      description: Filter to a single anomaly kind.
+      schema:
+        $ref: ../components/schemas/AnomalyKind.yaml
     - $ref: ../components/parameters/PageSize.yaml
     - $ref: ../components/parameters/PageToken.yaml
     - $ref: ../components/parameters/IfNoneMatch.yaml

@@ -606,7 +606,7 @@
         "operationId": "listAnomalyAlerts",
         "x-feature-flag": "agent-gateway",
         "summary": "List anomaly alerts",
-        "description": "Lists anomaly alerts for the project, newest first, optionally filtered by status.",
+        "description": "Lists anomaly alerts for the project, newest first, optionally filtered by status and kind.",
         "tags": [
           "Anomalies"
         ],
@@ -623,6 +623,15 @@
                 "acknowledged",
                 "resolved"
               ]
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "description": "Filter to a single anomaly kind.",
+            "schema": {
+              "$ref": "#/components/schemas/AnomalyKind"
             }
           },
           {
@@ -7672,7 +7681,7 @@
           },
           "kind": {
             "type": "string",
-            "description": "Machine-readable anomaly kind (e.g. egress_spike, novel_query_shape)."
+            "description": "Machine-readable anomaly kind, one of the AnomalyKind values (e.g. egress_spike, new_query_shape). A string rather than the enum so a client built before a new kind ships still reads the alert."
           },
           "severity": {
             "type": "string",
@@ -7767,6 +7776,20 @@
             "description": "Token for the next page. Empty if no more results."
           }
         }
+      },
+      "AnomalyKind": {
+        "type": "string",
+        "description": "Every kind of anomaly alert the platform raises: the five detector kinds, a honeytoken trip, and a high-confidence result-content scan finding.\n",
+        "enum": [
+          "volume_spike",
+          "egress_spike",
+          "new_query_shape",
+          "off_hours",
+          "error_spike",
+          "canary_tripped",
+          "content_flagged"
+        ],
+        "example": "egress_spike"
       },
       "AnomalyMetric": {
         "type": "string",
