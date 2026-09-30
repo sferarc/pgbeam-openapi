@@ -1,5 +1,12 @@
 # @pgbeam/openapi
 
+## 0.3.11
+
+### Patch Changes
+
+- b821f90: Approval requests carry `approval_rule_name`, the approval rule that held the statement.
+- 90cc526: feat(iac): an anomaly rule could be authored from the CLI but not declared as code
+
 ## 0.3.10
 
 ### Patch Changes
