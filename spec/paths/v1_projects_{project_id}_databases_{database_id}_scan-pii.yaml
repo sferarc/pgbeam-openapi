@@ -8,8 +8,8 @@ post:
   description: >-
     Connects to the upstream database read-only, inspects information_schema and
     samples column values against PII heuristics, and returns ranked masking
-    suggestions. Suggestions are advisory — the operator reviews them and
-    applies the ones they want into a policy profile's masking rules. Nothing is
+    suggestions. Suggestions are advisory: the operator reviews them and applies
+    the ones they want into a policy profile's masking rules. Nothing is
     auto-applied.
   tags:
     - Databases

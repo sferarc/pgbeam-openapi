@@ -16,8 +16,8 @@ properties:
       - mask
       - row-filter
     description: >-
-      allow — permitted unchanged; block — rejected; mask — permitted but listed
-      result columns are masked; row-filter — permitted but a WHERE predicate is
+      allow: permitted unchanged; block: rejected; mask: permitted but listed
+      result columns are masked; row-filter: permitted but a WHERE predicate is
       injected (and any listed columns are also masked).
   rule:
     type: string

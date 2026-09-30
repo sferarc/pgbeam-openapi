@@ -1,7 +1,7 @@
 type: object
 description: >-
   A single likely-PII column detected by the scanner, with a recommended masking
-  rule. Suggestions are advisory only — nothing is applied until the operator
+  rule. Suggestions are advisory only: nothing is applied until the operator
   reviews and adds it to a policy profile.
 required:
   - schema
