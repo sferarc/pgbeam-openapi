@@ -150,3 +150,5 @@ properties:
       True when the session has more entries than one summary reads. The counts
       and tables then cover the oldest entries in the window only; narrow it
       with start/end.
+  anomalies:
+    $ref: ./AuditSessionAnomalies.yaml
