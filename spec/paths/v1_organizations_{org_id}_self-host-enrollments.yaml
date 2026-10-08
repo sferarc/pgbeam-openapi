@@ -7,6 +7,11 @@ post:
     Issues an enrollment token a self-hosted (BYOC) proxy uses to authenticate
     to the control plane's config/audit gRPC stream. The token is returned once
     and cannot be retrieved again. Requires the Scale or enterprise plan.
+
+    Returns 409 while any project in the organization has an enabled approval
+    rule, because PgBeam cannot yet confirm that a self-hosted proxy runs a
+    build that enforces approval rules. Disable those rules first; they can be
+    saved with enabled set to false.
   tags:
     - Platform
   parameters:

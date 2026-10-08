@@ -1,0 +1,7 @@
+name: approval_rule_id
+in: path
+required: true
+description: Unique approval rule identifier (prefixed, e.g. apl_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

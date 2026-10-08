@@ -1,0 +1,67 @@
+type: object
+description: >
+  A named, project-scoped rule that sends the agent statements it matches to a
+  human for approval, whatever the policy profile's approval_mode says. A rule
+  can only add approval: approval_mode stays the coarse switch and no rule can
+  exempt a statement from it.
+required:
+  - id
+  - project_id
+  - name
+  - statement_kinds
+  - enabled
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    description: Unique approval rule identifier.
+    example: apl_01j9x8y7z6w5v4u3t2s1r0q9p8
+  project_id:
+    type: string
+    description: Project the rule belongs to.
+    example: prj_01j9x8y7z6w5v4u3t2s1r0q9p8
+  name:
+    type: string
+    description: >
+      Label shown to the reviewer on every approval request this rule holds.
+      Unique within the project.
+    example: payments deletes
+  statement_kinds:
+    type: array
+    description: Statement kinds the rule holds. Empty holds every kind.
+    items:
+      $ref: ./ApprovalRuleStatementKind.yaml
+  schema_name:
+    type: string
+    nullable: true
+    description: Schema the rule is scoped to. Null matches every schema.
+    example: public
+  relation_name:
+    type: string
+    nullable: true
+    description: >
+      Relation the rule is scoped to. Null matches every relation. Without a
+      schema it matches that name in every schema.
+    example: payments
+  min_affected_rows:
+    type: integer
+    format: int32
+    nullable: true
+    description: >
+      Hold only statements affecting at least this many rows. Null holds every
+      matching statement. A statement whose affected rows cannot be counted
+      (DDL, a batch, a data-modifying CTE) is held regardless.
+    example: 1000
+  enabled:
+    type: boolean
+    description: False switches the rule off, so it holds nothing.
+    example: true
+  created_at:
+    type: string
+    format: date-time
+    description: When the rule was created.
+  updated_at:
+    type: string
+    format: date-time
+    description: When the rule was last updated.

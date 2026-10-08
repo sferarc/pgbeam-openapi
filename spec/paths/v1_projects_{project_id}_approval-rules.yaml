@@ -1,0 +1,86 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createApprovalRule
+  summary: Create an approval rule
+  description: |
+    Sends the agent statements the rule matches to a human for approval,
+    whatever the policy profile's approval_mode says. A rule can only add
+    approval; nothing here can exempt a statement from approval_mode.
+
+    The rule is pushed to connected data planes when it is written. A
+    reviewer sees its name on every approval request it holds.
+
+    Returns 409 for an enabled rule while the organization has a live
+    self-hosted data plane enrollment, because PgBeam cannot yet confirm
+    that a self-hosted proxy runs a build that enforces approval rules. A
+    rule with enabled set to false is still accepted.
+  tags:
+    - Approvals
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/ApprovalRuleInput.yaml
+  responses:
+    '201':
+      description: Approval rule created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ApprovalRule.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+get:
+  operationId: listApprovalRules
+  summary: List approval rules
+  description: Lists the project's approval rules, including disabled ones.
+  tags:
+    - Approvals
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+    - $ref: ../components/parameters/IfNoneMatch.yaml
+  responses:
+    '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+      description: Page of approval rules.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListApprovalRulesResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

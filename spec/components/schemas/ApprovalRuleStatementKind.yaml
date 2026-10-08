@@ -1,0 +1,9 @@
+type: string
+enum:
+  - insert
+  - update
+  - delete
+  - ddl
+description: >
+  A statement kind an approval rule can hold. COPY and reads are not in the
+  vocabulary: approval reasons about the same kinds approval_mode does.

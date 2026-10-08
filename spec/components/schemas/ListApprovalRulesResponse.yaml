@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated approval rules for a project.
+required:
+  - approval_rules
+properties:
+  approval_rules:
+    type: array
+    description: Approval rules on the current page.
+    items:
+      $ref: ./ApprovalRule.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.

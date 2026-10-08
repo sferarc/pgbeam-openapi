@@ -1,0 +1,48 @@
+type: object
+description: Request body for creating or updating an approval rule.
+required:
+  - name
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 255
+    description: >
+      Label shown to the reviewer on every approval request this rule holds.
+      Must be unique within the project and not blank.
+    example: payments deletes
+  statement_kinds:
+    type: array
+    description: Statement kinds the rule holds. Empty or omitted holds every kind.
+    items:
+      $ref: ./ApprovalRuleStatementKind.yaml
+  schema_name:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: Schema to scope the rule to. Null, empty or omitted matches every schema.
+    example: public
+  relation_name:
+    type: string
+    nullable: true
+    maxLength: 255
+    description: >
+      Relation to scope the rule to. Null, empty or omitted matches every
+      relation. Without a schema it matches that name in every schema.
+    example: payments
+  min_affected_rows:
+    type: integer
+    format: int32
+    nullable: true
+    minimum: 1
+    description: >
+      Hold only statements affecting at least this many rows. Must be at least
+      1. Null or omitted holds every matching statement. The count is taken in a
+      rolled-back trial run; a statement that reports no count (DDL, a batch, a
+      data-modifying CTE) is held regardless.
+    example: 1000
+  enabled:
+    type: boolean
+    default: true
+    description: False switches the rule off, so it holds nothing.
+    example: true
