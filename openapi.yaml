@@ -11449,3 +11449,16 @@ x-iac-resources:
       update: updateAnomalyRule
       delete: deleteAnomalyRule
       list: listAnomalyRules
+  ApprovalRule:
+    description: >-
+      Manages an approval rule: a named, project-scoped rule that sends the agent statements it matches to a human for
+      approval, whatever the policy profile's approval_mode says. A rule can only add approval; no rule can exempt a
+      statement from approval_mode. Match on statement kinds, a schema, a relation, and optionally a minimum
+      affected-row count. The name is shown to the reviewer on every approval request the rule holds and must be unique
+      within the project. enabled=false switches the rule off. A write is pushed to connected data planes immediately.
+    operations:
+      create: createApprovalRule
+      read: getApprovalRule
+      update: updateApprovalRule
+      delete: deleteApprovalRule
+      list: listApprovalRules

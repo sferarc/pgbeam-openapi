@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.3.14
+
+### Patch Changes
+
+- d33585d: Approval rules can be declared as code: `pgbeam_approval_rule`, the Crossplane `ApprovalRule` and the Pulumi `ApprovalRule`.
+
 ## 0.3.13
 
 ### Patch Changes
