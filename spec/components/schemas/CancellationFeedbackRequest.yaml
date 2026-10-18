@@ -3,9 +3,11 @@ description: Request body for capturing cancellation feedback from a user.
 properties:
   reason:
     type: string
+    maxLength: 200
     description: Predefined cancellation reason.
     example: too-expensive
   feedback:
     type: string
+    maxLength: 5000
     description: Free-text feedback from the user.
     example: Switching to a self-hosted solution.

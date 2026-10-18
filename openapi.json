@@ -3667,7 +3667,7 @@
       "post": {
         "operationId": "mcpTransport",
         "summary": "MCP server (Streamable HTTP)",
-        "description": "Model Context Protocol endpoint using the Streamable HTTP transport. Accepts JSON-RPC 2.0 requests and exposes every public API operation as an MCP tool. Use this with any MCP-compatible client (Claude Code, Cursor, Windsurf, custom agents) to let AI assistants manage PgBeam resources.\n\n**Transport:** Streamable HTTP (MCP spec 2025-03-26)\n**Protocol:** JSON-RPC 2.0\n**Methods:** `initialize`, `tools/list`, `tools/call`, `ping`\n\nPrefer the CLI (`pgbeam mcp`) for local stdio transport. Use this endpoint for remote or server-to-server MCP integration.",
+        "description": "Model Context Protocol endpoint using the Streamable HTTP transport. Accepts JSON-RPC 2.0 requests and lets any MCP-compatible client (Claude Code, Cursor, Windsurf, custom agents) manage PgBeam resources.\n\nThe server registers six tools, however large the API grows. Three of them wrap the public management API and are used in order: search, describe, call.\n- `search_endpoints({query})` finds operations by intent and returns their operation ids, methods and paths.\n- `describe_endpoint({operation_id})` returns one operation's path and query parameters, request body and success response.\n- `call_endpoint({operation_id, path_params, query_params, body})` invokes it with the caller's bearer token.\nThe other three are read-only agent-skill tools: `list_skills()`, `get_skill({name})` and `install_skill({name})`.\n\nAPI operations are not tools themselves: pass the operation id that `search_endpoints` returns, such as `ListProjects`, to `call_endpoint`. Calling an operation id as a tool name returns an unknown-tool error.\n\n**Transport:** Streamable HTTP, stateless (no session id)\n**Protocol:** JSON-RPC 2.0; the MCP version is negotiated at `initialize`\n**Methods:** `initialize`, `notifications/initialized`, `tools/list`, `tools/call`, `ping`\n\nPrefer the CLI (`pgbeam mcp`) for local stdio transport. Use this endpoint for remote or server-to-server MCP integration.",
         "tags": [
           "MCP"
         ],
@@ -3686,7 +3686,7 @@
                     "id": "1",
                     "method": "initialize",
                     "params": {
-                      "protocolVersion": "2025-03-26",
+                      "protocolVersion": "2025-11-25",
                       "capabilities": {},
                       "clientInfo": {
                         "name": "my-agent",
@@ -3704,15 +3704,18 @@
                   }
                 },
                 "tools_call": {
-                  "summary": "Call a tool",
+                  "summary": "Call an API operation through call_endpoint",
                   "value": {
                     "jsonrpc": "2.0",
                     "id": "3",
                     "method": "tools/call",
                     "params": {
-                      "name": "listProjects",
+                      "name": "call_endpoint",
                       "arguments": {
-                        "org_id": "org_abc123"
+                        "operation_id": "ListProjects",
+                        "query_params": {
+                          "org_id": "org_abc123"
+                        }
                       }
                     }
                   }
@@ -6237,6 +6240,7 @@
         "tags": [
           "Platform"
         ],
+        "x-idempotency-key": "refused",
         "security": [
           {},
           {
@@ -9364,7 +9368,9 @@
             "type": "number",
             "format": "double",
             "nullable": true,
-            "description": "Monthly spend limit in dollars. Null to remove the limit.",
+            "minimum": 0.01,
+            "maximum": 99999999.99,
+            "description": "Monthly spend limit in dollars. Null to remove the limit. An active spend cap lifts only when the limit is removed or raised.",
             "example": 500
           }
         }
@@ -9375,11 +9381,13 @@
         "properties": {
           "reason": {
             "type": "string",
+            "maxLength": 200,
             "description": "Predefined cancellation reason.",
             "example": "too-expensive"
           },
           "feedback": {
             "type": "string",
+            "maxLength": 5000,
             "description": "Free-text feedback from the user.",
             "example": "Switching to a self-hosted solution."
           }
@@ -11149,7 +11157,7 @@
           },
           "params": {
             "type": "object",
-            "description": "Method-specific parameters."
+            "description": "Method-specific parameters. For `tools/call`, `name` is one of the six registered tools (`search_endpoints`, `describe_endpoint`, `call_endpoint`, `list_skills`, `get_skill`, `install_skill`) and `arguments` holds its input; API operations are reached through `call_endpoint`, not called by name."
           }
         }
       },

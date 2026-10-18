@@ -3,16 +3,38 @@ post:
   summary: MCP server (Streamable HTTP)
   description: >-
     Model Context Protocol endpoint using the Streamable HTTP transport. Accepts
-    JSON-RPC 2.0 requests and exposes every public API operation as an MCP tool.
-    Use this with any MCP-compatible client (Claude Code, Cursor, Windsurf,
-    custom agents) to let AI assistants manage PgBeam resources.
+    JSON-RPC 2.0 requests and lets any MCP-compatible client (Claude Code,
+    Cursor, Windsurf, custom agents) manage PgBeam resources.
 
 
-    **Transport:** Streamable HTTP (MCP spec 2025-03-26)
+    The server registers six tools, however large the API grows. Three of them
+    wrap the public management API and are used in order: search, describe,
+    call.
 
-    **Protocol:** JSON-RPC 2.0
+    - `search_endpoints({query})` finds operations by intent and returns their
+    operation ids, methods and paths.
 
-    **Methods:** `initialize`, `tools/list`, `tools/call`, `ping`
+    - `describe_endpoint({operation_id})` returns one operation's path and query
+    parameters, request body and success response.
+
+    - `call_endpoint({operation_id, path_params, query_params, body})` invokes
+    it with the caller's bearer token.
+
+    The other three are read-only agent-skill tools: `list_skills()`,
+    `get_skill({name})` and `install_skill({name})`.
+
+
+    API operations are not tools themselves: pass the operation id that
+    `search_endpoints` returns, such as `ListProjects`, to `call_endpoint`.
+    Calling an operation id as a tool name returns an unknown-tool error.
+
+
+    **Transport:** Streamable HTTP, stateless (no session id)
+
+    **Protocol:** JSON-RPC 2.0; the MCP version is negotiated at `initialize`
+
+    **Methods:** `initialize`, `notifications/initialized`, `tools/list`,
+    `tools/call`, `ping`
 
 
     Prefer the CLI (`pgbeam mcp`) for local stdio transport. Use this endpoint
@@ -33,7 +55,7 @@ post:
               id: '1'
               method: initialize
               params:
-                protocolVersion: '2025-03-26'
+                protocolVersion: '2025-11-25'
                 capabilities: {}
                 clientInfo:
                   name: my-agent
@@ -45,15 +67,17 @@ post:
               id: '2'
               method: tools/list
           tools_call:
-            summary: Call a tool
+            summary: Call an API operation through call_endpoint
             value:
               jsonrpc: '2.0'
               id: '3'
               method: tools/call
               params:
-                name: listProjects
+                name: call_endpoint
                 arguments:
-                  org_id: org_abc123
+                  operation_id: ListProjects
+                  query_params:
+                    org_id: org_abc123
   responses:
     '200':
       description: JSON-RPC 2.0 response.

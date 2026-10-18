@@ -43,6 +43,7 @@
   "homepage": "https://pgbeam.com",
   "scripts": {
     "build": "bunchee",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "typecheck": "tsc --noEmit"
   }
 }

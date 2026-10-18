@@ -34,6 +34,7 @@ post:
     one.
   tags:
     - Platform
+  x-idempotency-key: refused
   security:
     - {}
     - BearerAuth: []
