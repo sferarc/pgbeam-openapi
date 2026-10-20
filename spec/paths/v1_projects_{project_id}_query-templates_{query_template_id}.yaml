@@ -1,0 +1,104 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/QueryTemplateId.yaml
+get:
+  operationId: getQueryTemplate
+  summary: Get a query template
+  description: Returns a single query template by ID.
+  tags:
+    - Policies
+  parameters:
+    - $ref: ../components/parameters/IfNoneMatch.yaml
+  responses:
+    '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+      description: The query template.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/QueryTemplate.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+put:
+  operationId: updateQueryTemplate
+  summary: Update a query template
+  description: |
+    Replaces the template's name, description, SQL, parameters, include_sql
+    and enabled flag. The SQL is checked as on create. A statement already
+    admitted under the old template is not affected; the next one is
+    matched against the new text.
+
+    Returns 409 on a rename to a name the project already uses, and when
+    the update leaves the template enabled while the organization has a
+    live self-hosted data plane enrollment, for the same reason as create.
+    Setting enabled to false is still accepted.
+  tags:
+    - Policies
+  parameters:
+    - $ref: ../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/QueryTemplateInput.yaml
+  responses:
+    '200':
+      description: Updated query template.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/QueryTemplate.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '412':
+      $ref: ../components/responses/PreconditionFailed.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+delete:
+  operationId: deleteQueryTemplate
+  summary: Delete a query template
+  description: |
+    Removes the template, so a profile that runs templates only stops
+    admitting its statement. Deleting the last template is allowed: such a
+    profile then admits nothing, which is the intended way to withdraw
+    access in an incident.
+  tags:
+    - Policies
+  responses:
+    '204':
+      description: Query template deleted.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

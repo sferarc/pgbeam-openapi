@@ -1,0 +1,49 @@
+type: object
+description: Request body for creating or updating a query template.
+required:
+  - name
+  - sql
+properties:
+  name:
+    type: string
+    pattern: ^[a-z][a-z0-9_]{0,62}$
+    description: >
+      Name an agent invokes the template by. A lower-case identifier starting
+      with a letter, at most 63 characters, unique within the project.
+    example: open_orders_for_customer
+  description:
+    type: string
+    maxLength: 1000
+    description: What the template is for, shown to an agent that lists the templates.
+    example: Open orders for one customer, newest first.
+  sql:
+    type: string
+    minLength: 1
+    maxLength: 16384
+    description: >
+      The statement, with its parameters as $1, $2 and so on. Exactly one
+      SELECT, INSERT, UPDATE or DELETE, at most 16384 bytes. Every placeholder
+      must be declared in params and every declared parameter must be used.
+    example: >-
+      SELECT id, total FROM orders WHERE customer_id = $1 AND status = 'open'
+      ORDER BY created_at DESC
+  params:
+    type: array
+    maxItems: 32
+    description: Declared parameters, in placeholder order. Omitted means none.
+    items:
+      $ref: ./QueryTemplateParam.yaml
+  include_sql:
+    type: boolean
+    default: false
+    description: >
+      True shows the SQL text to an agent that lists the templates. Defaults to
+      false, since a WHERE clause can itself be sensitive.
+    example: false
+  enabled:
+    type: boolean
+    default: true
+    description: >
+      Defaults to true, so a template is admitted as soon as it is written.
+      False saves it withdrawn.
+    example: true

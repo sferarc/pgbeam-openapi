@@ -240,6 +240,10 @@ paths:
     $ref: paths/v1_projects_{project_id}.yaml
   /v1/projects/{project_id}/metrics:
     $ref: paths/v1_projects_{project_id}_metrics.yaml
+  /v1/projects/{project_id}/query-templates:
+    $ref: paths/v1_projects_{project_id}_query-templates.yaml
+  /v1/projects/{project_id}/query-templates/{query_template_id}:
+    $ref: paths/v1_projects_{project_id}_query-templates_{query_template_id}.yaml
   /v1/regions:
     $ref: paths/v1_regions.yaml
   /v1/databases/{database_id}/replicas:

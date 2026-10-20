@@ -1,0 +1,92 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+post:
+  operationId: createQueryTemplate
+  summary: Create a query template
+  description: |
+    Adds a named, parameterized statement to the project. A template admits
+    a statement for a policy profile that runs templates only; it never
+    grants access, and the statement still meets the credential's whole
+    policy.
+
+    The SQL is parsed and checked when it is written: exactly one SELECT,
+    INSERT, UPDATE or DELETE, placeholders $1 to $n, one declared parameter
+    for each. A template that fails is refused with 400 and a message
+    naming the problem. Returns 409 when the project already has a template
+    of that name.
+
+    The template is pushed to connected data planes when it is written.
+
+    Returns 409 for an enabled template while the organization has a live
+    self-hosted data plane enrollment, because PgBeam cannot yet confirm
+    that a self-hosted proxy runs a build that enforces templates. A
+    template with enabled set to false is still accepted.
+  tags:
+    - Policies
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/QueryTemplateInput.yaml
+  responses:
+    '201':
+      description: Query template created.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/QueryTemplate.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '413':
+      $ref: ../components/responses/PayloadTooLarge.yaml
+    '415':
+      $ref: ../components/responses/UnsupportedMediaType.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+get:
+  operationId: listQueryTemplates
+  summary: List query templates
+  description: Lists the project's query templates, including disabled ones.
+  tags:
+    - Policies
+  parameters:
+    - $ref: ../components/parameters/PageSize.yaml
+    - $ref: ../components/parameters/PageToken.yaml
+    - $ref: ../components/parameters/IfNoneMatch.yaml
+  responses:
+    '200':
+      headers:
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+      description: Page of query templates.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ListQueryTemplatesResponse.yaml
+    '304':
+      $ref: ../components/responses/NotModified.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

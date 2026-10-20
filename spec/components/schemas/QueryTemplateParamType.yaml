@@ -1,0 +1,15 @@
+type: string
+enum:
+  - text
+  - integer
+  - bigint
+  - double precision
+  - numeric
+  - boolean
+  - uuid
+  - date
+  - timestamptz
+  - jsonb
+description: >
+  The Postgres type a template parameter is declared as. An argument is checked
+  against it and bound as a value of that type, never as SQL.

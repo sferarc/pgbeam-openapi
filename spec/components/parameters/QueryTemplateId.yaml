@@ -1,0 +1,7 @@
+name: query_template_id
+in: path
+required: true
+description: Unique query template identifier (prefixed, e.g. qtp_xxx).
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9_.-]+$

@@ -1,0 +1,9 @@
+type: string
+enum:
+  - select
+  - insert
+  - update
+  - delete
+description: >
+  The statement kind a template compiles to. Absent on a stored template that no
+  longer compiles, which a data plane skips rather than admits.

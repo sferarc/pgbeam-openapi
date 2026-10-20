@@ -1,0 +1,13 @@
+type: object
+description: Cursor-paginated query templates for a project.
+required:
+  - query_templates
+properties:
+  query_templates:
+    type: array
+    description: Query templates on the current page.
+    items:
+      $ref: ./QueryTemplate.yaml
+  next_page_token:
+    type: string
+    description: Opaque token for cursor-based pagination.
