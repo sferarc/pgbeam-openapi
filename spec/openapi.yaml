@@ -130,8 +130,7 @@ paths:
   /v1/projects/{project_id}/agents/{agent_id}/rotate:
     $ref: paths/v1_projects_{project_id}_agents_{agent_id}_rotate.yaml
   /v1/projects/{project_id}/agents/{agent_id}/policy-recommendation:
-    $ref: >-
-      paths/v1_projects_{project_id}_agents_{agent_id}_policy-recommendation.yaml
+    $ref: paths/v1_projects_{project_id}_agents_{agent_id}_policy-recommendation.yaml
   /v1/projects/{project_id}/anomalies:
     $ref: paths/v1_projects_{project_id}_anomalies.yaml
   /v1/projects/{project_id}/anomalies/{anomaly_id}:
@@ -177,15 +176,13 @@ paths:
   /v1/projects/{project_id}/databases/{database_id}/cache-rules:
     $ref: paths/v1_projects_{project_id}_databases_{database_id}_cache-rules.yaml
   /v1/projects/{project_id}/databases/{database_id}/cache-rules/{query_hash}:
-    $ref: >-
-      paths/v1_projects_{project_id}_databases_{database_id}_cache-rules_{query_hash}.yaml
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}_cache-rules_{query_hash}.yaml
   /v1/projects/{project_id}/databases:
     $ref: paths/v1_projects_{project_id}_databases.yaml
   /v1/projects/{project_id}/databases/{database_id}:
     $ref: paths/v1_projects_{project_id}_databases_{database_id}.yaml
   /v1/projects/{project_id}/databases/{database_id}/test-connection:
-    $ref: >-
-      paths/v1_projects_{project_id}_databases_{database_id}_test-connection.yaml
+    $ref: paths/v1_projects_{project_id}_databases_{database_id}_test-connection.yaml
   /v1/projects/{project_id}/databases/{database_id}/scan-pii:
     $ref: paths/v1_projects_{project_id}_databases_{database_id}_scan-pii.yaml
   /v1/projects/{project_id}/databases/{database_id}/schema-catalog:
@@ -261,8 +258,7 @@ paths:
   /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}:
     $ref: paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}.yaml
   /v1/organizations/{org_id}/self-host-enrollments/{enrollment_id}/rotate:
-    $ref: >-
-      paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}_rotate.yaml
+    $ref: paths/v1_organizations_{org_id}_self-host-enrollments_{enrollment_id}_rotate.yaml
   /v1/organizations/{org_id}/support/cases:
     $ref: paths/v1_organizations_{org_id}_support_cases.yaml
   /v1/organizations/{org_id}/support/cases/{case_id}:
