@@ -121,7 +121,12 @@
     },
     {
       "name": "Internal",
-      "description": "Internal service-to-service endpoints"
+      "description": "Internal service-to-service endpoints",
+      "x-sdk-exclude": [
+        "go",
+        "ts",
+        "python"
+      ]
     },
     {
       "name": "MCP",
