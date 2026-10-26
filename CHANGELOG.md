@@ -1,5 +1,11 @@
 # @pgbeam/openapi
 
+## 0.5.1
+
+### Patch Changes
+
+- 0cf6810: refactor(policy): serve statement-kind verdicts from the engine to the CLI card
+
 ## 0.5.0
 
 ### Minor Changes
