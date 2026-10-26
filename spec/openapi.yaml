@@ -231,6 +231,8 @@ paths:
     $ref: paths/v1_projects_{project_id}_policies.yaml
   /v1/projects/{project_id}/policies/{policy_id}:
     $ref: paths/v1_projects_{project_id}_policies_{policy_id}.yaml
+  /v1/projects/{project_id}/policies/{policy_id}/statement-kinds:
+    $ref: paths/v1_projects_{project_id}_policies_{policy_id}_statement-kinds.yaml
   /v1/projects/{project_id}/policy-evaluations:
     $ref: paths/v1_projects_{project_id}_policy-evaluations.yaml
   /v1/projects/{project_id}/policy-replays:
@@ -501,3 +503,20 @@ x-iac-resources:
       update: updateApprovalRule
       delete: deleteApprovalRule
       list: listApprovalRules
+  QueryTemplate:
+    description: >-
+      Manages a query template: a named, parameterized statement, scoped to a
+      project, that a policy profile set to admit templates only lets its
+      credentials run in place of raw SQL. A template admits a statement; it
+      never grants access, so a statement it admits still meets the credential's
+      whole policy. The sql is validated on every write and must be exactly one
+      SELECT, INSERT, UPDATE or DELETE whose placeholders ($1, $2, ...) match
+      params in order. The name must be unique within the project. enabled=false
+      withdraws the template. A write is pushed to connected data planes
+      immediately.
+    operations:
+      create: createQueryTemplate
+      read: getQueryTemplate
+      update: updateQueryTemplate
+      delete: deleteQueryTemplate
+      list: listQueryTemplates

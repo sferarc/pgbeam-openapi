@@ -8,6 +8,7 @@ required:
   - table_allowlist
   - table_denylist
   - masking_rules
+  - query_mode
   - created_at
   - updated_at
 properties:
@@ -174,6 +175,22 @@ properties:
       simple-query batch share it rather than each getting a fresh allowance. 0
       uses the scanner default (4 MiB), which covers an interactive result set
       and deliberately does not cover a bulk export.
+  query_mode:
+    type: string
+    enum:
+      - sql
+      - templates
+    default: sql
+    description: >-
+      What an agent on this profile may send. sql admits any statement the rest
+      of the profile allows. templates admits only the project's enabled query
+      templates (matched on the parse tree, so spelling and literals in the
+      template's own text count), and refuses everything else with SQLSTATE
+      42501 and decision rule template_required, MCP query included. A matched
+      template still meets every other rule on this profile: a template narrows
+      what an agent can run and never grants access. The hosted MCP discovery
+      tools (list_tables, describe_table, schema_catalog) keep working under
+      templates.
   created_at:
     type: string
     format: date-time

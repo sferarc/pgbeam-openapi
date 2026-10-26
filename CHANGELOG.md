@@ -1,5 +1,27 @@
 # @pgbeam/openapi
 
+## 0.5.0
+
+### Minor Changes
+
+- 796f4a7: Policy profiles carry `query_mode` (`sql` or `templates`). A profile set to `templates` admits only the project's enabled query templates, and every other rule on the profile still applies to what a template runs. Setting `templates` is refused when the project has no enabled template, and while the organization has a live self-hosted enrollment. On update, an omitted `query_mode` keeps the stored mode. In Terraform, Crossplane and Pulumi, removing `query_mode` from a config plans `sql`, and the plan shows that change.
+
+## 0.4.1
+
+### Patch Changes
+
+- d651ca6: Query templates can be declared as code: `pgbeam_query_template`, the Crossplane `QueryTemplate` and the Pulumi `QueryTemplate`. Removing `description`, `include_sql`, `enabled` or `params` from a config resets it to the API default (empty, false, true, none) rather than keeping the last value. The query template input's `description` now declares its default (empty) in the contract, which is what the API already stored for an omitted one. Nothing restricts a credential to templates yet: the policy profile setting that does arrives in a later release.
+
+## 0.4.0
+
+### Minor Changes
+
+- f363bd7: Add the query templates API: create, list, get, update and delete named, parameterized statements on a project (`/v1/projects/{project_id}/query-templates`, under the Policies tag). A template is checked when it is written and refused with 400 if it is not exactly one SELECT, INSERT, UPDATE or DELETE whose `$n` placeholders match its declared parameters. Nothing restricts a credential to templates yet: the policy profile setting that does arrives in a later release.
+
+### Patch Changes
+
+- ba058a7: Describe the management MCP endpoint as it behaves: six registered tools, with API operations reached through `call_endpoint`, and the protocol version negotiated at `initialize` rather than pinned.
+
 ## 0.3.14
 
 ### Patch Changes

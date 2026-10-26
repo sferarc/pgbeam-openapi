@@ -1,0 +1,38 @@
+parameters:
+  - $ref: ../components/parameters/ProjectId.yaml
+  - $ref: ../components/parameters/PolicyId.yaml
+get:
+  operationId: getPolicyStatementKinds
+  x-feature-flag: agent-gateway
+  summary: List the statement kinds a policy permits
+  description: >-
+    Returns, for every statement kind the proxy classifies, whether this policy
+    permits a statement of that kind, and when it does not, the rule and reason
+    the proxy would refuse it with. The answer comes from the data plane's own
+    policy engine rather than from the stored fields, so it resolves them the
+    way enforcement does: COPY is refused whatever the allowlist says, deny
+    beats allow, read_only is a ceiling the allowlist cannot lift, and an
+    unclassified statement fails closed unless "other" is allowlisted. Each kind
+    is judged on its own, with no relations and a WHERE clause, so table lists,
+    masking, budgets and the other floors are not part of these verdicts.
+  tags:
+    - Policies
+  responses:
+    '200':
+      description: One verdict per statement kind.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/PolicyStatementKinds.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '429':
+      $ref: ../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

@@ -14,7 +14,10 @@ properties:
   description:
     type: string
     maxLength: 1000
-    description: What the template is for, shown to an agent that lists the templates.
+    default: ''
+    description: >
+      What the template is for, shown to an agent that lists the templates.
+      Defaults to empty.
     example: Open orders for one customer, newest first.
   sql:
     type: string
