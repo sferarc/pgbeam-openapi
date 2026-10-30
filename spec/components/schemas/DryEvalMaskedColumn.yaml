@@ -14,4 +14,6 @@ properties:
       - redact
       - 'null'
       - hash
+      - last4
+      - email_domain
     description: How the column is masked.
