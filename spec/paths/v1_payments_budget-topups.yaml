@@ -48,6 +48,7 @@ post:
         Ignored when it matches nothing this endpoint offers.
       schema:
         type: string
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: false
     content:
@@ -102,6 +103,8 @@ post:
       $ref: ../components/responses/Forbidden.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
     '503':

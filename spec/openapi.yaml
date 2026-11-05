@@ -108,12 +108,6 @@ tags:
   - name: Batch
     description: Apply many project-scoped operations in one request
     x-icon: Layers
-  - name: Internal
-    description: Internal service-to-service endpoints
-    x-sdk-exclude:
-      - go
-      - ts
-      - python
   - name: MCP
     description: Model Context Protocol (MCP) remote server endpoint
     x-sdk-exclude:
@@ -267,8 +261,6 @@ paths:
     $ref: paths/v1_organizations_{org_id}_support_cases_{case_id}.yaml
   /v1/organizations/{org_id}/support/cases/{case_id}/messages:
     $ref: paths/v1_organizations_{org_id}_support_cases_{case_id}_messages.yaml
-  /v1/internal/support/slack-event:
-    $ref: paths/v1_internal_support_slack-event.yaml
   /v1/scan/text:
     $ref: paths/v1_scan_text.yaml
   /v1/organizations/{org_id}/usage:
@@ -300,11 +292,6 @@ components:
       description: >-
         API key issued via the dashboard. Pass it as `Authorization: Bearer
         <api-key>`.
-    InternalSecret:
-      type: apiKey
-      in: header
-      name: X-Internal-Secret
-      description: Shared secret for dashboard-to-API service calls.
 x-iac-resources:
   Project:
     description: Manages a PgBeam project with a primary database.

@@ -53,6 +53,8 @@ post:
     higher-privilege flow.
   tags:
     - Account
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:

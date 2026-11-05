@@ -40,6 +40,8 @@ post:
     free way to probe the quota.
   tags:
     - Batch
+  parameters:
+    - $ref: ../components/parameters/IdempotencyKey.yaml
   requestBody:
     required: true
     content:
@@ -66,10 +68,15 @@ post:
     '409':
       description: >-
         An atomic batch was rolled back. Nothing applied. The failing operations
-        carry their error and every other one is `not_applied`.
+        carry their error and every other one is `not_applied`. An
+        `Idempotency-Key` reused with a different body answers 409 as problem
+        details instead, with code `IDEMPOTENCY_KEY_REUSED`.
       content:
         application/json:
           schema:
             $ref: ../components/schemas/BatchResponse.yaml
+        application/problem+json:
+          schema:
+            $ref: ../components/schemas/Error.yaml
     '429':
       $ref: ../components/responses/TooManyRequests.yaml
