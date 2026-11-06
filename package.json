@@ -32,6 +32,9 @@
     "spec"
   ],
   "keywords": [
+    "ai-agents",
+    "mcp",
+    "database-security",
     "pgbeam",
     "openapi",
     "openapi-spec",
@@ -41,6 +44,13 @@
     "api"
   ],
   "homepage": "https://pgbeam.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sferarc/pgbeam-openapi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sferarc/pgbeam-openapi/issues"
+  },
   "scripts": {
     "build": "bunchee",
     "prepublishOnly": "pnpm build",
